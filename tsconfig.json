@@ -1,0 +1,11 @@
+{
+  "extends": "./node_modules/@cleavera/config/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "declaration": false,
+    "paths": {
+      "@actoolkit/age-6": ["../../packages/age-6/src"],
+      "@actoolkit/your-company": ["../../packages/your-company/src"]
+    }
+  }
+}

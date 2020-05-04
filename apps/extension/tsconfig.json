@@ -1,0 +1,7 @@
+{
+  "extends": "./node_modules/@cleavera/config/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "declaration": false
+  }
+}

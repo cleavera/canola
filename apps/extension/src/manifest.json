@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+  "name": "Antisback's bushtarion toolkit",
+  "version": "1.0",
+
+  "description": "Adds features and extensions for the bushtarion web game",
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.bushtarion.com/*"],
+      "js": ["./content-script.js"]
+    }
+  ]
+}
