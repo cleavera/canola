@@ -1,16 +1,16 @@
 import { IDomElement, INJECTOR, IRequest, REQUEST } from '@actoolkit/core';
 
-import { Company } from '../classes/company';
+import { CompanyName } from '../classes/company-name';
 
-export class CompanyRepository {
-    public async getCompany(): Promise<Company> {
+export class CompanyNameRepository {
+    public async get(): Promise<CompanyName> {
         const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
 
         const response: IDomElement = await request.get('/overview.php');
 
         const companyElement: IDomElement = response.querySelector('#game-info-company') ?? this._throwNoCompanyInformationFound();
 
-        return Company.FromString(companyElement.textContent ?? this._throwNoCompanyInformationFound());
+        return CompanyName.FromString(companyElement.textContent ?? this._throwNoCompanyInformationFound());
     }
 
     private _throwNoRequestStrategy(): never {

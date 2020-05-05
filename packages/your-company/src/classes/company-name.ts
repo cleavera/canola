@@ -1,4 +1,4 @@
-export class Company {
+export class CompanyName {
     private static readonly PARSER_REGEX: RegExp = /([A-z0-9\s]+) \[([0-9]{1,4})]/;
 
     public id: string;
@@ -9,10 +9,10 @@ export class Company {
         this.name = name;
     }
 
-    public static FromString(str: string): Company {
+    public static FromString(str: string): CompanyName {
         const [, name, id]: RegExpExecArray = this.PARSER_REGEX.exec(str) ?? this._throwInvalidIdString(str); // eslint-disable-line array-element-newline
 
-        return new Company(id, name);
+        return new CompanyName(id, name);
     }
 
     private static _throwInvalidIdString(str: string): never {
