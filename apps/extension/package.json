@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm run clean && webpack",
     "clean": "del-cli ./dist",
-    "get-dependencies": "ts-node ./build/get-dependencies",
+    "get-dependencies": "ts-node ../../build/get-dependencies",
     "lint": "npx eslint ./src/**/*.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -33,7 +33,9 @@
     "webpack-cli": "^3.3.11"
   },
   "peerDependencies": {
-    "@actoolkit/age-6": "*"
+    "@actoolkit/age-6": "*",
+    "@actoolkit/browser": "*",
+    "@actoolkit/core": "*"
   },
   "dependencies": {
     "@cleavera/types": "^1.0.3",

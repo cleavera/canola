@@ -4,15 +4,16 @@ import { packageInstall } from 'gosod';
 import { join } from 'path';
 
 (async(): Promise<void> => {
-    const packageFile: { peerDependencies: IDict<string> } = JSON.parse(await fs.readFile('./package.json', {
+    const packageFile: { peerDependencies: IDict<string>; } = JSON.parse(await fs.readFile('./package.json', {
         encoding: 'utf-8'
     }));
+
     const packages: Array<string> = [];
 
     for (const dependency of Object.keys(packageFile.peerDependencies)) {
         if (dependency.startsWith('@actoolkit')) {
             const [, folder] = dependency.split('/');
-            packages.push(join('../../packages', folder));
+            packages.push(join(__dirname, '../packages', folder));
         }
     }
 
