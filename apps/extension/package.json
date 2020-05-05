@@ -35,7 +35,8 @@
   "peerDependencies": {
     "@actoolkit/age-6": "*",
     "@actoolkit/browser": "*",
-    "@actoolkit/core": "*"
+    "@actoolkit/core": "*",
+    "@actoolkit/your-company": "*"
   },
   "dependencies": {
     "@cleavera/types": "^1.0.3",
