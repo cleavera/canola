@@ -10,7 +10,7 @@ export class Score {
     }
 
     public static FromString(str: string): Score {
-        const [, scoreString, rankString]: RegExpExecArray = this.PARSER_REGEX.exec(str) ?? this._throwInvalidIdString(str); // eslint-disable-line array-element-newline
+        const [, scoreString, rankString]: RegExpExecArray = this.PARSER_REGEX.exec(str) ?? this._throwInvalidScoreString(str); // eslint-disable-line array-element-newline
 
         const score = parseInt(scoreString.replace(/,/g, ''), 10);
         const rank = parseInt(rankString, 10);
@@ -18,7 +18,7 @@ export class Score {
         return new Score(score, rank);
     }
 
-    private static _throwInvalidIdString(str: string): never {
-        throw new Error(`Invalid id string '${str}'`);
+    private static _throwInvalidScoreString(str: string): never {
+        throw new Error(`Invalid score string '${str}'`);
     }
 }
