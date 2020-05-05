@@ -1,6 +1,12 @@
 import { IRequest } from '@actoolkit/core';
 
 export class BrowserRequest implements IRequest {
+    private readonly _baseURL: string;
+
+    constructor(baseUrl: string) {
+        this._baseURL = baseUrl;
+    }
+
     public async get(url: string): Promise<string> {
         const response: Response = await fetch(this.getURL(url));
 
@@ -21,9 +27,9 @@ export class BrowserRequest implements IRequest {
         }
 
         if (path.startsWith('/')) {
-            return `http://www.bushtarion.com${path}`;
+            return `${this._baseURL}${path}`;
         }
 
-        return `http://www.bushtarion.com/${path}`;
+        return `${this._baseURL}/${path}`;
     }
 }

@@ -3,7 +3,7 @@ import { BrowserRequest } from '@actoolkit/browser';
 import { INJECTOR, REQUEST } from '@actoolkit/core';
 
 try {
-    INJECTOR.setValue(REQUEST, new BrowserRequest());
+    INJECTOR.setValue(REQUEST, new BrowserRequest('http://www.bushtarion.com'));
 
     age6ContentScript().catch((e: Error) => {
         console.error(e);
