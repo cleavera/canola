@@ -1,4 +1,4 @@
-import { IRequest } from '@actoolkit/core';
+import { IDomElement, IRequest } from '@actoolkit/core';
 
 export class BrowserRequest implements IRequest {
     private readonly _baseURL: string;
@@ -7,14 +7,18 @@ export class BrowserRequest implements IRequest {
         this._baseURL = baseUrl;
     }
 
-    public async get(url: string): Promise<string> {
+    public async get(url: string): Promise<IDomElement> {
         const response: Response = await fetch(this.getURL(url));
 
         if (!response.ok) {
             throw new Error(response.statusText);
         }
 
-        return response.text();
+        const div: HTMLElement = document.createElement('div');
+
+        div.innerHTML = await response.text();
+
+        return div;
     }
 
     public async post(): Promise<string> {

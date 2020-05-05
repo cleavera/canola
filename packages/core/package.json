@@ -22,6 +22,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@cleavera/types": "^1.0.3",
     "avaritia": "^1.0.0"
   },
   "files": [
