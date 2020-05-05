@@ -6,9 +6,9 @@ export class FundsRepository {
     public async get(): Promise<Funds> {
         const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
         const response: IDomElement = await request.get('/overview.php');
-        const companyElement: IDomElement = response.querySelector('#game-info-funds') ?? this._throwNoFundsInformationFound();
+        const fundsElement: IDomElement = response.querySelector('#game-info-funds') ?? this._throwNoFundsInformationFound();
 
-        return Funds.FromString(companyElement.textContent ?? this._throwNoFundsInformationFound());
+        return Funds.FromString(fundsElement.textContent ?? this._throwNoFundsInformationFound());
     }
 
     private _throwNoRequestStrategy(): never {

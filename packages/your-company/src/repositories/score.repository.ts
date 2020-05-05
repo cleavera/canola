@@ -6,9 +6,9 @@ export class ScoreRepository {
     public async get(): Promise<Score> {
         const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
         const response: IDomElement = await request.get('/overview.php');
-        const companyElement: IDomElement = response.querySelector('#game-info-rank-score') ?? this._throwNoScoreInformationFound();
+        const scoreElement: IDomElement = response.querySelector('#game-info-rank-score') ?? this._throwNoScoreInformationFound();
 
-        return Score.FromString(companyElement.textContent ?? this._throwNoScoreInformationFound());
+        return Score.FromString(scoreElement.textContent ?? this._throwNoScoreInformationFound());
     }
 
     private _throwNoRequestStrategy(): never {
