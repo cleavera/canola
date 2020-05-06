@@ -6,7 +6,8 @@ const WebpackShellPlugin = require('webpack-shell-plugin-next');
 
 const config: Configuration = {
     entry: {
-        'content-script': resolve(__dirname, './src/content-script.ts')
+        'content-script': resolve(__dirname, './src/content-script.ts'),
+        'background-script': resolve(__dirname, './src/background-script.ts')
     },
 
     output: {
@@ -38,6 +39,10 @@ const config: Configuration = {
             {
                 from: './src/manifest.json',
                 to: './manifest.json'
+            },
+            {
+                from: './node_modules/@actoolkit/age6/dist',
+                to: 'age6'
             }
         ]),
         new WebpackShellPlugin({
