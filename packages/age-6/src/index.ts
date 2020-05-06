@@ -1,4 +1,4 @@
-import { CurrentPointInTimeRepository } from '@actoolkit/game-info';
+import { CurrentPointInTimeRepository, WeatherRepository } from '@actoolkit/game-info';
 import { CompanyNameRepository, FundsRepository, InjuriesRepository, InsuranceRepository, ScoreRepository } from '@actoolkit/your-company';
 
 export async function age6ContentScript(): Promise<void> {
@@ -8,4 +8,5 @@ export async function age6ContentScript(): Promise<void> {
     console.log(await new InjuriesRepository().get()); // eslint-disable-line no-console
     console.log(await new InsuranceRepository().get()); // eslint-disable-line no-console
     console.log(await new CurrentPointInTimeRepository().get()); // eslint-disable-line no-console
+    console.log(await new WeatherRepository().get()); // eslint-disable-line no-console
 }
