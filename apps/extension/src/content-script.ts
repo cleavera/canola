@@ -1,3 +1,4 @@
+import { age6ContentScript } from '@actoolkit/age-6';
 import { BrowserRequest } from '@actoolkit/browser';
 import { INJECTOR, REQUEST } from '@actoolkit/core';
 
@@ -12,6 +13,10 @@ try {
     age6Button.style.cssText = 'position: fixed; bottom: 0; right: 0; display: inline-block; padding: 10px; background: #090; color: #fff; border: 1px solid #333;';
     age6Button.addEventListener('click', () => {
         browser.runtime.sendMessage('open sesame');
+    });
+
+    age6ContentScript().catch((e: Error) => {
+        console.error(e);
     });
 
     document.body.appendChild(age6Button);

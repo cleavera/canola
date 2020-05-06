@@ -37,6 +37,7 @@
     "@actoolkit/age6": "*",
     "@actoolkit/browser": "*",
     "@actoolkit/core": "*",
+    "@actoolkit/game-info": "*",
     "@actoolkit/your-company": "*"
   },
   "dependencies": {
