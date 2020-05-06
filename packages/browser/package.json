@@ -24,5 +24,9 @@
   },
   "peerDependencies": {
     "@actoolkit/core": "*"
+  },
+  "dependencies": {
+    "@cleavera/types": "^1.0.3",
+    "@cleavera/utils": "^4.0.0"
   }
 }
