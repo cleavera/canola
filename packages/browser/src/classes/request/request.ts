@@ -16,7 +16,7 @@ export class BrowserRequest implements IRequest {
 
         const div: HTMLElement = document.createElement('div');
 
-        div.innerHTML = response;
+        div.innerHTML = response.replace(/<script ([A-z0-9="/\s.]+)>[\s\S]+?<\/script>/g, '');
 
         return div;
     }
