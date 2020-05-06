@@ -1,4 +1,3 @@
-import { age6ContentScript } from '@actoolkit/age-6';
 import { BrowserRequest } from '@actoolkit/browser';
 import { INJECTOR, REQUEST } from '@actoolkit/core';
 
@@ -6,10 +5,6 @@ declare const browser: any;
 
 try {
     INJECTOR.setValue(REQUEST, new BrowserRequest('http://www.bushtarion.com'));
-
-    age6ContentScript().catch((e: Error) => {
-        console.error(e);
-    });
 
     const age6Button: HTMLButtonElement = document.createElement('button');
 

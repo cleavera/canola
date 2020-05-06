@@ -9,7 +9,9 @@
   "author": "Anthony Cleaver",
   "license": "ISC",
   "dependencies": {
+    "@cleavera/config": "^2.4.0",
     "@types/node": "^13.13.4",
-    "gosod": "^1.1.2"
+    "gosod": "^1.1.2",
+    "typescript": "^3.8.3"
   }
 }

@@ -1,3 +1,4 @@
+import { CompanyName, CompanyNameRepository } from '@actoolkit/your-company';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
     public title: string = 'age6';
+    public company: Promise<CompanyName>;
+
+    constructor() {
+        this.company = new CompanyNameRepository().get();
+    }
 }

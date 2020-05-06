@@ -1,1 +1,2 @@
-Hello world <span [textContent]="title"></span>
+Hello world <span [textContent]="(company | async)?.name"></span>
+
