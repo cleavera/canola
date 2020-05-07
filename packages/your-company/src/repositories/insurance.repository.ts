@@ -34,10 +34,9 @@ export class InsuranceRepository {
     }
 
     private _parseInsuranceRow(etaCell: IDomElement, fundsCell: IDomElement): Insurance {
-        const eta: number = parseInt(etaCell.textContent ?? this._throwNoEta(), 10);
-        const funds: number = parseInt((fundsCell.textContent ?? this._throwNoFunds(eta)).replace(/[£,]/g, ''), 10);
+        const eta: Ticks = Ticks.FromString(etaCell.textContent ?? this._throwNoEta());
 
-        return new Insurance(new Funds(funds), new Ticks(eta));
+        return new Insurance(Funds.FromString(fundsCell.textContent ?? this._throwNoFunds(eta.ticks)), eta);
     }
 
     private _throwNoRequestStrategy(): never {

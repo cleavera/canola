@@ -37,9 +37,8 @@ export class InjuriesRepository {
         const name: string = (nameCell.textContent ?? this._throwNoStaffName()).trim();
         const [, countString]: RegExpExecArray = InjuriesRepository.PARSE_COUNT_REGEX.exec((countCell.textContent ?? this._throwNoInjuryCount(name))) ?? this._throwNoInjuryCount(name);
         const count: number = parseInt(countString.replace(/,/g, ''), 10);
-        const eta: number = parseInt(etaCell.textContent ?? this._throwNoEta(name), 10);
 
-        return new Injury(new Staff(name, count), new Ticks(eta));
+        return new Injury(new Staff(name, count), Ticks.FromString(etaCell.textContent ?? this._throwNoEta(name)));
     }
 
     private _throwNoRequestStrategy(): never {

@@ -3,7 +3,7 @@ import { IDomElement, INJECTOR, IRequest, REQUEST } from '@actoolkit/core';
 import { Funds } from '../classes/funds';
 
 export class FundsRepository {
-    private static readonly PARSER_REGEX: RegExp = /Funds: £([0-9,]+)/;
+    private static readonly PARSER_REGEX: RegExp = /Funds: (£[0-9,]+)/;
 
     public async get(): Promise<Funds> {
         const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
@@ -16,9 +16,7 @@ export class FundsRepository {
     private _parseFundsString(str: string): Funds {
         const [, fundString]: RegExpExecArray = FundsRepository.PARSER_REGEX.exec(str) ?? this._throwInvalidFundsString(str);
 
-        const funds = parseInt(fundString.replace(/,/g, ''), 10);
-
-        return new Funds(funds);
+        return Funds.FromString(fundString);
     }
 
     private _throwNoRequestStrategy(): never {
