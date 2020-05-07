@@ -1,10 +1,12 @@
 export { Acres } from './classes/acres';
 export { CompanyName } from './classes/company-name';
+export { Crop } from './classes/crop';
 export { Funds } from './classes/funds';
 export { Injury } from './classes/injury';
 export { Insurance } from './classes/insurance';
 export { Land } from './classes/land';
 export { Score } from './classes/score';
+export { Stocks } from './classes/stocks';
 export { Staff } from './classes/staff';
 export { Ticks } from './classes/ticks';
 
@@ -14,3 +16,4 @@ export { InjuriesRepository } from './repositories/injuries.repository';
 export { InsuranceRepository } from './repositories/insurance.repository';
 export { LandRepository } from './repositories/land.repository';
 export { ScoreRepository } from './repositories/score.repository';
+export { StocksRepository } from './repositories/stocks.repository';
