@@ -9,6 +9,8 @@ export { Score } from './classes/score';
 export { Stocks } from './classes/stocks';
 export { Staff } from './classes/staff';
 export { Ticks } from './classes/ticks';
+export { Development } from './classes/development';
+export { Tech } from './classes/tech';
 
 export { CompanyNameRepository } from './repositories/company-name.repository';
 export { FundsRepository } from './repositories/funds.repository';
@@ -17,3 +19,4 @@ export { InsuranceRepository } from './repositories/insurance.repository';
 export { LandRepository } from './repositories/land.repository';
 export { ScoreRepository } from './repositories/score.repository';
 export { StocksRepository } from './repositories/stocks.repository';
+export { TechRepository } from './repositories/tech.repository';
