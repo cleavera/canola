@@ -1,4 +1,4 @@
-import { age6ContentScript } from '@actoolkit/age-6';
+import { age5 } from '@actoolkit/age5';
 import { BrowserRequest } from '@actoolkit/browser';
 import { INJECTOR, REQUEST } from '@actoolkit/core';
 
@@ -15,7 +15,7 @@ try {
         browser.runtime.sendMessage('open sesame');
     });
 
-    age6ContentScript().catch((e: Error) => {
+    age5().catch((e: Error) => {
         console.error(e);
     });
 

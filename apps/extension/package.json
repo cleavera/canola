@@ -33,7 +33,7 @@
     "webpack-cli": "^3.3.11"
   },
   "peerDependencies": {
-    "@actoolkit/age-6": "*",
+    "@actoolkit/age5": "*",
     "@actoolkit/age6": "*",
     "@actoolkit/browser": "*",
     "@actoolkit/core": "*",
