@@ -13,15 +13,15 @@ export class LandRepository {
         const bush: Acres = this._parseRow(rows[2]);
         const flower: Acres = this._parseRow(rows[3]);
         const grass: Acres = this._parseRow(rows[4]);
-        const uncultivated: number = this._getUncultivated(rows[5]);
+        const uncultivated: Acres = this._getUncultivated(rows[5]);
 
         return new Land(tree, bush, flower, grass, uncultivated);
     }
 
-    private _getUncultivated(row: IDomElement): number {
+    private _getUncultivated(row: IDomElement): Acres {
         const cells: ArrayLike<IDomElement> = row.querySelectorAll('td');
 
-        return this._parseValue(cells[1]);
+        return new Acres(this._parseValue(cells[1]), 0);
     }
 
     private _parseRow(row: IDomElement): Acres {
