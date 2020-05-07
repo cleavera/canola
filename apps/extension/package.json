@@ -37,8 +37,7 @@
     "@actoolkit/age6": "*",
     "@actoolkit/browser": "*",
     "@actoolkit/core": "*",
-    "@actoolkit/game-info": "*",
-    "@actoolkit/your-company": "*"
+    "@actoolkit/domain": "*"
   },
   "dependencies": {
     "@cleavera/types": "^1.0.3",

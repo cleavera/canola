@@ -1,5 +1,5 @@
 {
-  "name": "@actoolkit/game-info",
+  "name": "@actoolkit/domain",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",

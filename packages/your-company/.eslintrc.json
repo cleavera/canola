@@ -1,5 +1,0 @@
-{
-  "extends": [
-    "./node_modules/@cleavera/config/.eslintrc.json"
-  ]
-}

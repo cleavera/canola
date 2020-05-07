@@ -54,7 +54,7 @@
     "peerDependencies": {
         "@actoolkit/browser": "*",
         "@actoolkit/core": "*",
-        "@actoolkit/your-company": "*"
+        "@actoolkit/domain": "*"
     },
     "files": [
         "dist"

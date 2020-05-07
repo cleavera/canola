@@ -1,4 +1,4 @@
-import { CompanyName, CompanyNameRepository } from '@actoolkit/your-company';
+import { CompanyName, CompanyNameRepository } from '@actoolkit/domain';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,7 +7,6 @@ import { Component } from '@angular/core';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    public title: string = 'age6';
     public company: Promise<CompanyName>;
 
     constructor() {
