@@ -2,9 +2,11 @@ import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
 import { MONTH_LOOKUP } from '../constants/month-lookup.constant';
-import { SEASON_LOOKUP } from '../constants/season-lookup';
-import { START_TICK } from '../constants/start-tick';
-import * as TicksIn from '../constants/ticks-in';
+import { MONTH_SEASON_LOOKUP } from '../constants/month-season.lookup';
+import { SEASON_TICKS_LOOKUP } from '../constants/season-ticks.lookup';
+import { Season } from '../constants/season.constant';
+import { START_TICK } from '../constants/start-tick.constant';
+import * as TicksIn from '../constants/ticks-in.constant';
 
 export class PointInTime {
     public tickNumber: number;
@@ -41,6 +43,10 @@ export class PointInTime {
         return this._getTicksIntoMonth() % TicksIn.DAY;
     }
 
+    public get season(): Season {
+        return PointInTime.getSeason(this.month);
+    }
+
     private _getTicksIntoYear(): number {
         return this._absoluteTickNumber % TicksIn.YEAR;
     }
@@ -62,7 +68,7 @@ export class PointInTime {
         const day: number = this.getDay(normalisedDateString);
         const month: number = this.getMonth(normalisedDateString);
         const year: number = this.getYear(normalisedDateString);
-        const timeOfDay: number = this.getTimeOfDay(normalisedDateString, month);
+        const timeOfDay: number = this.getTimeOfDay(normalisedDateString, this.getSeason(month));
 
         let ticks = year * TicksIn.YEAR;
 
@@ -96,9 +102,13 @@ export class PointInTime {
             .replace(/th/g, '');
     }
 
-    private static getTimeOfDay(dateString: string, month: number): number {
+    private static getSeason(month: number): Season {
+        return MONTH_SEASON_LOOKUP[month];
+    }
+
+    private static getTimeOfDay(dateString: string, season: Season): number {
         const [, timeOfDayString]: Array<string> = dateString.split('. ');
-        const ticks: Array<unknown> = SEASON_LOOKUP[month].TICKS;
+        const ticks: Array<unknown> = SEASON_TICKS_LOOKUP[season];
 
         return ticks.indexOf(timeOfDayString);
     }
