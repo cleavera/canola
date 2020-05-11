@@ -10,32 +10,28 @@ export class Income {
         [CropType.TREE]: new Funds(314794),
         [CropType.BUSH]: new Funds(203393),
         [CropType.FLOWER]: new Funds(184634),
-        [CropType.GRASS]: new Funds(197667),
-        [CropType.UNCULTIVATED]: new Funds(0)
+        [CropType.GRASS]: new Funds(197667)
     };
 
     private static readonly [Season.SPRING]: ICropTypeMap<Funds> = {
         [CropType.TREE]: new Funds(160735),
         [CropType.BUSH]: new Funds(271501),
         [CropType.FLOWER]: new Funds(246428),
-        [CropType.GRASS]: new Funds(315850),
-        [CropType.UNCULTIVATED]: new Funds(0)
+        [CropType.GRASS]: new Funds(315850)
     };
 
     private static readonly [Season.SUMMER]: ICropTypeMap<Funds> = {
         [CropType.TREE]: new Funds(171243),
         [CropType.BUSH]: new Funds(285692),
         [CropType.FLOWER]: new Funds(392477),
-        [CropType.GRASS]: new Funds(277595),
-        [CropType.UNCULTIVATED]: new Funds(0)
+        [CropType.GRASS]: new Funds(277595)
     };
 
     private static readonly [Season.AUTUMN]: ICropTypeMap<Funds> = {
         [CropType.TREE]: new Funds(336817),
         [CropType.BUSH]: new Funds(239518),
         [CropType.FLOWER]: new Funds(217410),
-        [CropType.GRASS]: new Funds(232757),
-        [CropType.UNCULTIVATED]: new Funds(0)
+        [CropType.GRASS]: new Funds(232757)
     };
 
     public readonly tick: Funds;

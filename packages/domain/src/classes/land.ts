@@ -6,7 +6,7 @@ export class Land {
     public readonly [CropType.BUSH]: Acres;
     public readonly [CropType.FLOWER]: Acres;
     public readonly [CropType.GRASS]: Acres;
-    public readonly [CropType.UNCULTIVATED]: Acres;
+    public readonly uncultivated: Acres;
     public readonly total: Acres;
 
     constructor(tree: Acres, bush: Acres, flower: Acres, grass: Acres, uncultivated: Acres) {
@@ -14,7 +14,7 @@ export class Land {
         this[CropType.BUSH] = bush;
         this[CropType.FLOWER] = flower;
         this[CropType.GRASS] = grass;
-        this[CropType.UNCULTIVATED] = uncultivated;
+        this.uncultivated = uncultivated;
 
         this.total = Acres.Total(tree, bush, flower, grass, uncultivated);
     }
