@@ -28,4 +28,5 @@ export { LandRepository } from './repositories/land.repository';
 export { ScoreRepository } from './repositories/score.repository';
 export { StocksRepository } from './repositories/stocks.repository';
 export { TechRepository } from './repositories/tech.repository';
+export { UnitsRepository } from './repositories/units.repository';
 export { WeatherRepository } from './repositories/weather.repository';
