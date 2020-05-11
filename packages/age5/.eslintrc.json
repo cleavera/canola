@@ -1,5 +1,10 @@
 {
-  "extends": [
-    "./node_modules/@cleavera/config/.eslintrc.json"
-  ]
+    "extends": [
+        "./node_modules/@cleavera/config/.eslintrc.json"
+    ],
+    "rules": {
+        "@typescript-eslint/restrict-template-expressions": [
+            0
+        ]
+    }
 }

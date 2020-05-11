@@ -1,21 +1,19 @@
-import { Funds, Stocks, StocksRepository } from '@actoolkit/domain';
+import { Stocks, StocksRepository } from '@actoolkit/domain';
 
-import { OverlayComponentFactory, throwIt } from '../../shared';
-
-function getTotalSeedsStockedElement(landPlantsTable: HTMLElement): HTMLTableCellElement {
-    const rows: ArrayLike<HTMLTableRowElement> = landPlantsTable.querySelectorAll('tr');
-
-    return rows[0].querySelectorAll('td')[4];
-}
+import { OverlayComponentFactory } from '../../shared';
+import { LandSeedPlantsModel } from '../models/land-seed-plants.model';
 
 export async function stockValueFeature(): Promise<void> {
-    const landPlantsTable: HTMLElement = document.getElementById('LandPlants') ?? throwIt('Could not find land plants table');
-    const totalSeedsStockedElement: HTMLElement = getTotalSeedsStockedElement(landPlantsTable);
+    const lsp: LandSeedPlantsModel = LandSeedPlantsModel.ForCurrentPage();
 
     const stocks: Stocks = await new StocksRepository().get();
-    const sold: Funds = stocks.seeds.sold();
 
-    totalSeedsStockedElement.appendChild(OverlayComponentFactory('Value', `
-        Sold: ${sold.toString()}
+    lsp.getSeeds().appendChild(OverlayComponentFactory('Value', `
+        Sold: ${stocks.seeds.sold().toString()}</br>
+        Planted: ${stocks.seeds.plants().sold().toString()}
+    `));
+
+    lsp.getPlants().appendChild(OverlayComponentFactory('Value', `
+        Sold: ${stocks.plants.sold().toString()}</br>
     `));
 }

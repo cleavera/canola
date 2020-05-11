@@ -1,3 +1,5 @@
+export { CropType } from './constants/crop-type.constant';
+
 export { Acres } from './classes/acres';
 export { CompanyName } from './classes/company-name';
 export { Development } from './classes/development';

@@ -15,8 +15,8 @@ export function OverlayComponentFactory(title: string, description: string): HTM
         margin: 0 5px;
         vertical-align: middle;
         height: 14px;
-        margin-top: -2px;
         font-weight: bold;
+        position: absolute;
     `;
 
     return button;
