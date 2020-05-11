@@ -18,16 +18,20 @@ export class Seeds implements ICropTypeMap<number> {
         [CropType.GRASS]: 0.85
     };
 
+    private static readonly GARDENERS_PER_SEED: number = 100;
+
     public [CropType.TREE]: number;
     public [CropType.BUSH]: number;
     public [CropType.FLOWER]: number;
     public [CropType.GRASS]: number;
+    public total: number;
 
     constructor(tree: number, bush: number, flower: number, grass: number) {
         this[CropType.TREE] = tree;
         this[CropType.BUSH] = bush;
         this[CropType.FLOWER] = flower;
         this[CropType.GRASS] = grass;
+        this.total = tree + bush + flower + grass;
     }
 
     public sold(): Funds {
@@ -46,5 +50,9 @@ export class Seeds implements ICropTypeMap<number> {
             Math.floor(Seeds.PLANTING_RATE[CropType.FLOWER] * this[CropType.FLOWER]),
             Math.floor(Seeds.PLANTING_RATE[CropType.GRASS] * this[CropType.GRASS])
         );
+    }
+
+    public gardeners(): number {
+        return this.total / Seeds.GARDENERS_PER_SEED;
     }
 }
