@@ -1,14 +1,15 @@
 export { Acres } from './classes/acres';
 export { CompanyName } from './classes/company-name';
-export { Crop } from './classes/crop';
 export { Development } from './classes/development';
 export { Funds } from './classes/funds';
 export { Income } from './classes/income';
 export { Injury } from './classes/injury';
 export { Insurance } from './classes/insurance';
 export { Land } from './classes/land';
+export { Plants } from './classes/plants';
 export { PointInTime } from './classes/point-in-time';
 export { Score } from './classes/score';
+export { Seeds } from './classes/seeds';
 export { Stocks } from './classes/stocks';
 export { Staff } from './classes/staff';
 export { Tech } from './classes/tech';
