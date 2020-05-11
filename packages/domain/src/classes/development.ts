@@ -1,7 +1,7 @@
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
-import { DevelopmentType } from '../constants/development-type.constant';
 
+import { DevelopmentType } from '../constants/development-type.constant';
 import { Funds } from './funds';
 import { Ticks } from './ticks';
 

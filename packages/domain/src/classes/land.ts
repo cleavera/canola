@@ -1,7 +1,8 @@
 import { CropType } from '../constants/crop-type.constant';
+import { ICropTypeMap } from '../interfaces/crop-type-map.interface';
 import { Acres } from './acres';
 
-export class Land {
+export class Land implements ICropTypeMap<Acres> {
     public readonly [CropType.TREE]: Acres;
     public readonly [CropType.BUSH]: Acres;
     public readonly [CropType.FLOWER]: Acres;
