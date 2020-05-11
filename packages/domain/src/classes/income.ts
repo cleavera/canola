@@ -45,7 +45,7 @@ export class Income {
     }
 
     public per(time: Ticks): Funds {
-        return new Funds(this.tick.funds * time.ticks);
+        return Funds.Scale(this.tick, time.ticks);
     }
 
     public static ForLand(land: Land, season: Season): Income {
