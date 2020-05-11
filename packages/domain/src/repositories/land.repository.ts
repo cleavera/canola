@@ -2,32 +2,43 @@ import { IDomElement, INJECTOR, IRequest, REQUEST } from '@actoolkit/core';
 
 import { Acres } from '../classes/acres';
 import { Land } from '../classes/land';
+import { Plants } from '../classes/plants';
 
 export class LandRepository {
     public async get(): Promise<Land> {
         const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
         const response: IDomElement = await request.get('/overview.php');
         const landPlantsTableElement: IDomElement = response.querySelector('#LandPlants') ?? this._throwNoLandInformationFound();
-        const rows: ArrayLike<IDomElement> = landPlantsTableElement.querySelectorAll('tr');
-        const tree: Acres = this._parseRow(rows[1]);
-        const bush: Acres = this._parseRow(rows[2]);
-        const flower: Acres = this._parseRow(rows[3]);
-        const grass: Acres = this._parseRow(rows[4]);
-        const uncultivated: Acres = this._getUncultivated(rows[5]);
+        const [, tree, bush, flower, grass, uncultivated]: Array<IDomElement> = Array.from(landPlantsTableElement.querySelectorAll('tr'));
 
-        return new Land(tree, bush, flower, grass, uncultivated);
+        const acres: Acres = new Acres(
+            this._getLandForRow(tree),
+            this._getLandForRow(bush),
+            this._getLandForRow(flower),
+            this._getLandForRow(grass),
+            this._getLandForRow(uncultivated)
+        );
+
+        const plants: Plants = new Plants(
+            this._getPlantsForRow(tree),
+            this._getPlantsForRow(bush),
+            this._getPlantsForRow(flower),
+            this._getPlantsForRow(grass)
+        );
+
+        return new Land(acres, plants);
     }
 
-    private _getUncultivated(row: IDomElement): Acres {
+    private _getLandForRow(row: IDomElement): number {
         const cells: ArrayLike<IDomElement> = row.querySelectorAll('td');
 
-        return new Acres(this._parseValue(cells[1]), 0);
+        return this._parseValue(cells[1]);
     }
 
-    private _parseRow(row: IDomElement): Acres {
+    private _getPlantsForRow(row: IDomElement): number {
         const cells: ArrayLike<IDomElement> = row.querySelectorAll('td');
 
-        return new Acres(this._parseValue(cells[1]), this._parseValue(cells[2]));
+        return this._parseValue(cells[2]);
     }
 
     private _parseValue(cell: IDomElement): number {

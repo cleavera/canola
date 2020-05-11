@@ -13,10 +13,10 @@ export async function requiredHarvestersFeature(): Promise<void> {
     const lsp: LandSeedPlantsModel = LandSeedPlantsModel.ForCurrentPage();
 
     const land: Land = await new LandRepository().get();
-    const winter: number = land.harvesters(Season.WINTER);
-    const spring: number = land.harvesters(Season.SPRING);
-    const summer: number = land.harvesters(Season.SUMMER);
-    const autumn: number = land.harvesters(Season.AUTUMN);
+    const winter: number = land.acres.harvesters(Season.WINTER);
+    const spring: number = land.acres.harvesters(Season.SPRING);
+    const summer: number = land.acres.harvesters(Season.SUMMER);
+    const autumn: number = land.acres.harvesters(Season.AUTUMN);
 
     lsp.getLand().appendChild(OverlayComponentFactory('Harvesters required <span class="friendly">[Combines]</span>', `
         Winter: ${winter.toLocaleString('en')} <span class="friendly">[${harvestersToCombines(winter).toLocaleString('en')}]</span></br>

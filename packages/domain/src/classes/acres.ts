@@ -1,21 +1,39 @@
-export class Acres {
-    public readonly count: number;
-    public readonly plants: number;
+import { CropType } from '../constants/crop-type.constant';
+import { HARVESTER_REQUIRED_LOOKUP } from '../constants/harvester-requirements.lookup';
+import { Season } from '../constants/season.constant';
+import { ICropTypeMap } from '../interfaces/crop-type-map.interface';
 
-    constructor(count: number, plants: number) {
-        this.count = count;
-        this.plants = plants;
+export class Acres implements ICropTypeMap<number> {
+    public readonly [CropType.TREE]: number;
+    public readonly [CropType.BUSH]: number;
+    public readonly [CropType.FLOWER]: number;
+    public readonly [CropType.GRASS]: number;
+    public readonly uncultivated: number;
+    public readonly total: number;
+
+    constructor(tree: number, bush: number, flower: number, grass: number, uncultivated: number) {
+        this[CropType.TREE] = tree;
+        this[CropType.BUSH] = bush;
+        this[CropType.FLOWER] = flower;
+        this[CropType.GRASS] = grass;
+        this.uncultivated = uncultivated;
+        this.total = tree + bush + flower + grass + uncultivated;
     }
 
-    public static Total(...acresToSum: Array<Acres>): Acres {
-        let count: number = 0;
-        let plants: number = 0;
+    public harvesters(season: Season): number {
+        const lookupTable: ICropTypeMap<number> = HARVESTER_REQUIRED_LOOKUP[season];
 
-        acresToSum.forEach((acres: Acres) => {
-            count += acres.count;
-            plants += acres.plants;
-        });
+        return Math.ceil([
+            CropType.TREE,
+            CropType.BUSH,
+            CropType.FLOWER,
+            CropType.GRASS
+        ].reduce((sum: number, type: CropType) => {
+            return sum + this._harvestersForCropType(type, lookupTable);
+        }, 0));
+    }
 
-        return new Acres(count, plants);
+    private _harvestersForCropType(type: CropType, lookupTable: ICropTypeMap<number>): number {
+        return this[type] * lookupTable[type];
     }
 }

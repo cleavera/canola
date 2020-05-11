@@ -49,10 +49,10 @@ export class Income {
     }
 
     public static ForLand(land: Land, season: Season): Income {
-        const treeIncome: number = Income[season][CropType.TREE].funds * land[CropType.TREE].count;
-        const bushIncome: number = Income[season][CropType.BUSH].funds * land[CropType.BUSH].count;
-        const flowerIncome: number = Income[season][CropType.FLOWER].funds * land[CropType.FLOWER].count;
-        const grassIncome: number = Income[season][CropType.GRASS].funds * land[CropType.GRASS].count;
+        const treeIncome: number = Income[season][CropType.TREE].funds * land.acres[CropType.TREE];
+        const bushIncome: number = Income[season][CropType.BUSH].funds * land.acres[CropType.BUSH];
+        const flowerIncome: number = Income[season][CropType.FLOWER].funds * land.acres[CropType.FLOWER];
+        const grassIncome: number = Income[season][CropType.GRASS].funds * land.acres[CropType.GRASS];
 
         return new Income(new Funds(treeIncome + bushIncome + flowerIncome + grassIncome));
     }
