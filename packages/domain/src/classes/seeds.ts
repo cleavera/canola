@@ -41,10 +41,10 @@ export class Seeds implements ICropTypeMap<number> {
 
     public plants(): Plants {
         return new Plants(
-            Seeds.PLANTING_RATE[CropType.TREE] * this[CropType.TREE],
-            Seeds.PLANTING_RATE[CropType.BUSH] * this[CropType.BUSH],
-            Seeds.PLANTING_RATE[CropType.FLOWER] * this[CropType.FLOWER],
-            Seeds.PLANTING_RATE[CropType.GRASS] * this[CropType.GRASS]
+            Math.floor(Seeds.PLANTING_RATE[CropType.TREE] * this[CropType.TREE]),
+            Math.floor(Seeds.PLANTING_RATE[CropType.BUSH] * this[CropType.BUSH]),
+            Math.floor(Seeds.PLANTING_RATE[CropType.FLOWER] * this[CropType.FLOWER]),
+            Math.floor(Seeds.PLANTING_RATE[CropType.GRASS] * this[CropType.GRASS])
         );
     }
 }
