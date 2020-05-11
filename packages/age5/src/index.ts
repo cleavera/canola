@@ -1,6 +1,7 @@
 import { CompanyNameRepository, CurrentPointInTimeRepository, FundsRepository, InjuriesRepository, InsuranceRepository, LandRepository, ScoreRepository, StocksRepository, TechRepository, WeatherRepository } from '@actoolkit/domain';
 
 import { genericAdditions } from './generic';
+import { overviewAdditions } from './overview';
 
 export async function age5(): Promise<void> {
     console.log(await new CompanyNameRepository().get()); // eslint-disable-line no-console
@@ -16,6 +17,7 @@ export async function age5(): Promise<void> {
 
     try {
         await genericAdditions();
+        await overviewAdditions();
     } catch (e) {
         console.error(e);
     }

@@ -1,13 +1,9 @@
 import { CurrentPointInTimeRepository, Income, Land, LandRepository, PointInTime } from '@actoolkit/domain';
 
-import { OverlayComponentFactory } from '../../shared';
-
-export function throwIt(test: string): never {
-    throw new Error(test);
-}
+import { OverlayComponentFactory, throwIt } from '../../shared';
 
 export async function incomeFeature(): Promise<void> {
-    const fundsElement: HTMLElement = document.getElementById('game-info-funds') ?? throwIt('oops');
+    const fundsElement: HTMLElement = document.getElementById('game-info-funds') ?? throwIt('Could not find funds information on the page');
 
     const land: Land = await new LandRepository().get();
     const currentTime: PointInTime = await new CurrentPointInTimeRepository().get();
