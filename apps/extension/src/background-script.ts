@@ -1,4 +1,4 @@
-declare const browser: any;
+declare var browser: any;
 
 function openWindow() {
     let createData = {

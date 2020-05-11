@@ -3,6 +3,7 @@ export { CompanyName } from './classes/company-name';
 export { Crop } from './classes/crop';
 export { Development } from './classes/development';
 export { Funds } from './classes/funds';
+export { Income } from './classes/income';
 export { Injury } from './classes/injury';
 export { Insurance } from './classes/insurance';
 export { Land } from './classes/land';

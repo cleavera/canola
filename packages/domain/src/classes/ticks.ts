@@ -12,4 +12,12 @@ export class Ticks {
     public static Subtract(ticks1: Ticks, ticks2: Ticks): Ticks {
         return new Ticks(ticks1.ticks - ticks2.ticks);
     }
+
+    public static Hour(): Ticks {
+        return new Ticks(6);
+    }
+
+    public static Day(): Ticks {
+        return new Ticks(144);
+    }
 }

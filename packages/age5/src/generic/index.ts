@@ -1,5 +1,5 @@
-import { helloWorld } from './features/hello-world';
+import { incomeFeature } from './features/income';
 
 export async function genericAdditions(): Promise<void> {
-    await helloWorld();
+    await incomeFeature();
 }

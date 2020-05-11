@@ -2,7 +2,7 @@ import { age5 } from '@actoolkit/age5';
 import { BrowserRequest } from '@actoolkit/browser';
 import { INJECTOR, REQUEST } from '@actoolkit/core';
 
-declare const browser: any;
+declare var browser: any;
 
 try {
     INJECTOR.setValue(REQUEST, new BrowserRequest('http://www.bushtarion.com'));

@@ -13,5 +13,10 @@ export async function age5(): Promise<void> {
     console.log(await new LandRepository().get()); // eslint-disable-line no-console
     console.log(await new StocksRepository().get()); // eslint-disable-line no-console
     console.log(await new TechRepository().get()); // eslint-disable-line no-console
-    await genericAdditions();
+
+    try {
+        await genericAdditions();
+    } catch (e) {
+        console.error(e);
+    }
 }
