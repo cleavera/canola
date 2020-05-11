@@ -1,4 +1,4 @@
-export enum LandType {
+export enum CropType {
     TREE = 'Tree',
     BUSH = 'Bush',
     FLOWER = 'Flower',
