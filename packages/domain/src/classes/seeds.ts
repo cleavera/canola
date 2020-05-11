@@ -53,6 +53,6 @@ export class Seeds implements ICropTypeMap<number> {
     }
 
     public gardeners(): number {
-        return this.total / Seeds.GARDENERS_PER_SEED;
+        return Math.ceil(this.total / Seeds.GARDENERS_PER_SEED);
     }
 }
