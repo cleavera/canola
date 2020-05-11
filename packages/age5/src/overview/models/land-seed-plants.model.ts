@@ -11,6 +11,12 @@ export class LandSeedPlantsModel {
         this._table = table;
     }
 
+    public getLand(type: Maybe<CropType> = null): HTMLTableCellElement {
+        const row: HTMLTableRowElement = this._getRow(type);
+
+        return row.querySelectorAll('td')[1];
+    }
+
     public getPlants(type: Maybe<CropType> = null): HTMLTableCellElement {
         const row: HTMLTableRowElement = this._getRow(type);
 

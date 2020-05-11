@@ -1,4 +1,5 @@
 export { CropType } from './constants/crop-type.constant';
+export { Season } from './constants/season.constant';
 
 export { Acres } from './classes/acres';
 export { CompanyName } from './classes/company-name';

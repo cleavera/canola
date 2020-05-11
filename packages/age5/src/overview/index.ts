@@ -1,4 +1,5 @@
 import { isPage } from '../shared';
+import { requiredHarvestersFeature } from './features/required-harvesters.feature';
 import { stockValueFeature } from './features/stock-value.feature';
 
 export async function overviewAdditions(): Promise<void> {
@@ -7,4 +8,5 @@ export async function overviewAdditions(): Promise<void> {
     }
 
     await stockValueFeature();
+    await requiredHarvestersFeature();
 }
