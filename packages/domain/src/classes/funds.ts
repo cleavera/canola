@@ -1,8 +1,18 @@
-export class Funds {
-    public funds: number;
+import { Maybe } from '@cleavera/types';
+import { isNull } from '@cleavera/utils';
 
-    constructor(funds: number) {
+export class Funds {
+    public readonly funds: number;
+    public readonly score: number;
+
+    constructor(funds: number, score: Maybe<number> = null) {
         this.funds = funds;
+
+        if (isNull(score)) {
+            score = funds / 500;
+        }
+
+        this.score = score;
     }
 
     public toString(): string {
