@@ -1,4 +1,5 @@
 export { CropType } from './constants/crop-type.constant';
+export { MobType } from './constants/mob-type.constant';
 export { Season } from './constants/season.constant';
 
 export { Acres } from './classes/acres';
@@ -11,6 +12,7 @@ export { Income } from './classes/income';
 export { Injury } from './classes/injury';
 export { Insurance } from './classes/insurance';
 export { Land } from './classes/land';
+export { Mob } from './classes/mob';
 export { Plants } from './classes/plants';
 export { PointInTime } from './classes/point-in-time';
 export { Rank } from './classes/rank';
@@ -30,6 +32,7 @@ export { FundsRepository } from './repositories/funds.repository';
 export { InjuriesRepository } from './repositories/injuries.repository';
 export { InsuranceRepository } from './repositories/insurance.repository';
 export { LandRepository } from './repositories/land.repository';
+export { OutgoingsRepository } from './repositories/outgoings.repository';
 export { RankRepository } from './repositories/rank.repository';
 export { StocksRepository } from './repositories/stocks.repository';
 export { TechRepository } from './repositories/tech.repository';
