@@ -12,7 +12,7 @@ export class BrowserRequest implements IRequest {
     }
 
     public async get(url: string): Promise<IDomElement> {
-        const response: string = await this.fetch(url);
+        const response: string = await this._cachedFetch(url);
 
         const div: HTMLElement = document.createElement('div');
 
@@ -25,25 +25,29 @@ export class BrowserRequest implements IRequest {
         throw new Error('Method not implemented.');
     }
 
-    private async fetch(url: string): Promise<string> {
+    private async _cachedFetch(url: string): Promise<string> {
         if (this._cache.has(url)) {
             return this._cache.get(url);
         }
 
-        const response: Response = await fetch(this.getURL(url));
+        const request: Promise<string> = this._fetch(url);
+
+        this._cache.set(url, request);
+
+        return request;
+    }
+
+    private async _fetch(url: string): Promise<string> {
+        const response: Response = await fetch(this._getURL(url));
 
         if (!response.ok) {
             throw new Error(response.statusText);
         }
 
-        const text: string = await response.text();
-
-        this._cache.set(url, text);
-
-        return text;
+        return response.text();
     }
 
-    private getURL(path: string): string {
+    private _getURL(path: string): string {
         if (path.startsWith('http://')) {
             return path;
         }

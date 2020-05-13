@@ -26,7 +26,7 @@ export class Cache {
         return (cacheItem.updated + maxAge) > Date.now();
     }
 
-    public get(key: string): string {
+    public async get(key: string): Promise<string> {
         const cacheEntry: Maybe<CacheItem> = this._cache.get(key) ?? null;
 
         if (isNull(cacheEntry)) {
@@ -36,7 +36,7 @@ export class Cache {
         return cacheEntry.value;
     }
 
-    public set(key: string, value: string): void {
+    public set(key: string, value: Promise<string>): void {
         const cacheEntry: Maybe<CacheItem> = this._cache.get(key) ?? null;
 
         if (!isNull(cacheEntry)) {
