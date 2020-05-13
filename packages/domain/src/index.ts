@@ -18,6 +18,7 @@ export { Staff } from './classes/staff';
 export { Tech } from './classes/tech';
 export { Ticks } from './classes/ticks';
 export { Weather } from './classes/weather';
+export { Workforce } from './classes/workforce';
 
 export { CompanyNameRepository } from './repositories/company-name.repository';
 export { CurrentPointInTimeRepository } from './repositories/current-point-in-time.repository';
@@ -30,3 +31,4 @@ export { StocksRepository } from './repositories/stocks.repository';
 export { TechRepository } from './repositories/tech.repository';
 export { UnitsRepository } from './repositories/units.repository';
 export { WeatherRepository } from './repositories/weather.repository';
+export { WorkforceRepository } from './repositories/workforce.repository';
