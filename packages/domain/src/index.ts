@@ -2,6 +2,8 @@ export { CropType } from './constants/crop-type.constant';
 export { Season } from './constants/season.constant';
 
 export { Acres } from './classes/acres';
+export { BaseTech } from './classes/base-tech';
+export { BaseTechnologies } from './classes/base-technologies';
 export { CompanyName } from './classes/company-name';
 export { Development } from './classes/development';
 export { Funds } from './classes/funds';
@@ -21,6 +23,7 @@ export { Ticks } from './classes/ticks';
 export { Weather } from './classes/weather';
 export { Workforce } from './classes/workforce';
 
+export { BaseTechnologiesRepository } from './repositories/base-technologies.repository';
 export { CompanyNameRepository } from './repositories/company-name.repository';
 export { CurrentPointInTimeRepository } from './repositories/current-point-in-time.repository';
 export { FundsRepository } from './repositories/funds.repository';
