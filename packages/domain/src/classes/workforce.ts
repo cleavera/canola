@@ -1,3 +1,4 @@
+import { Funds } from './funds';
 import { Staff } from './staff';
 
 export class Workforce {
@@ -5,5 +6,11 @@ export class Workforce {
 
     constructor(staff: Array<Staff>) {
         this.staff = staff;
+    }
+
+    public value(): Funds {
+        return Funds.Sum(...this.staff.map((staff: Staff) => {
+            return staff.value();
+        }));
     }
 }

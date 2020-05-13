@@ -1,3 +1,4 @@
+import { Funds } from './funds';
 import { UnitStats } from './unit-stats';
 
 export class Staff {
@@ -9,5 +10,9 @@ export class Staff {
         this.name = name;
         this.amount = amount;
         this.stats = stats;
+    }
+
+    public value(): Funds {
+        return Funds.Scale(this.stats.cost, this.amount);
     }
 }
