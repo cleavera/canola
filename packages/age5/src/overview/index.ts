@@ -8,7 +8,9 @@ export async function overviewAdditions(): Promise<void> {
         return;
     }
 
-    await stockValueFeature();
-    await requiredHarvestersFeature();
-    await staffValueFeature();
+    await Promise.all([
+        stockValueFeature(),
+        requiredHarvestersFeature(),
+        staffValueFeature()
+    ]);
 }
