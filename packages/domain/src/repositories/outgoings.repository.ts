@@ -5,6 +5,7 @@ import { isNull } from '@cleavera/utils';
 import { CompanyName } from '../classes/company-name';
 import { Mob } from '../classes/mob';
 import { Outgoing } from '../classes/outgoing';
+import { Outgoings } from '../classes/outgoings';
 import { Staff } from '../classes/staff';
 import { Ticks } from '../classes/ticks';
 import { UnitStats } from '../classes/unit-stats';
@@ -28,7 +29,7 @@ export class OutgoingsRepository {
         this._units = null;
     }
 
-    public async get(): Promise<Maybe<Array<Outgoing>>> {
+    public async get(): Promise<Maybe<Outgoings>> {
         const response: IDomElement = await this._request.get('/overview.php');
         const outgoingsList: Maybe<IDomElement> = response.querySelector('#Outgoing') ?? null;
 
@@ -36,7 +37,7 @@ export class OutgoingsRepository {
             return null;
         }
 
-        return this._parseOutgoingList(outgoingsList);
+        return new Outgoings(await this._parseOutgoingList(outgoingsList));
     }
 
     private async _parseOutgoingList(outgoingsList: IDomElement): Promise<Array<Outgoing>> {

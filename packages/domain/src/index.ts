@@ -15,6 +15,8 @@ export { Insurance } from './classes/insurance';
 export { InsuranceClaims } from './classes/insurance-claims';
 export { Land } from './classes/land';
 export { Mob } from './classes/mob';
+export { Outgoing } from './classes/outgoing';
+export { Outgoings } from './classes/outgoings';
 export { Plants } from './classes/plants';
 export { PointInTime } from './classes/point-in-time';
 export { Rank } from './classes/rank';
