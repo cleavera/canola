@@ -2,6 +2,7 @@ import { IDomElement, INJECTOR, IRequest, REQUEST } from '@actoolkit/core';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
+import { Injuries } from '../classes/injuries';
 import { Injury } from '../classes/injury';
 import { Staff } from '../classes/staff';
 import { Ticks } from '../classes/ticks';
@@ -19,7 +20,7 @@ export class InjuriesRepository {
         this._units = null;
     }
 
-    public async get(): Promise<Maybe<Array<Injury>>> {
+    public async get(): Promise<Maybe<Injuries>> {
         const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
         const response: IDomElement = await request.get('/overview.php');
         const injuriesElement: Maybe<IDomElement> = response.querySelector('#Injuries');
@@ -28,7 +29,7 @@ export class InjuriesRepository {
             return null;
         }
 
-        return this._parseInjuriesTable(injuriesElement);
+        return new Injuries(await this._parseInjuriesTable(injuriesElement));
     }
 
     private async _parseInjuriesTable(injuriesTable: IDomElement): Promise<Array<Injury>> {

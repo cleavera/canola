@@ -10,6 +10,7 @@ export { Development } from './classes/development';
 export { Funds } from './classes/funds';
 export { Income } from './classes/income';
 export { Injury } from './classes/injury';
+export { Injuries } from './classes/injuries';
 export { Insurance } from './classes/insurance';
 export { Land } from './classes/land';
 export { Mob } from './classes/mob';
