@@ -8,4 +8,8 @@ export class UnitStats {
         this.name = name;
         this.cost = cost;
     }
+
+    public static HamsterFromHell(): UnitStats {
+        return new UnitStats('Hamster from Hell', new Funds(45000));
+    }
 }

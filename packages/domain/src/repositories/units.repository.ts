@@ -22,6 +22,8 @@ export class UnitsRepository {
             units.push(this._parseUnitRow(rows[i]));
         }
 
+        units.push(UnitStats.HamsterFromHell());
+
         return new Units(units);
     }
 
