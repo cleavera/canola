@@ -1,4 +1,5 @@
 export enum DevelopmentType {
     RESEARCH,
-    CONSTRUCTION
+    CONSTRUCTION,
+    ALLIANCE
 }

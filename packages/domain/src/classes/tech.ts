@@ -16,7 +16,7 @@ export class Tech {
 
     public value(): Funds {
         return Funds.Sum(...this.completed().map((development: Development) => {
-            return development.cost;
+            return development.base.cost;
         }));
     }
 }
