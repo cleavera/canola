@@ -9,7 +9,7 @@ export class Funds {
         this.funds = funds;
 
         if (isNull(score)) {
-            score = funds / 500;
+            score = Math.floor(funds / 500);
         }
 
         this.score = score;
