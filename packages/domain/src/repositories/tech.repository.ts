@@ -36,12 +36,11 @@ export class TechRepository {
 
             const name: string = cells[0].textContent ?? this._throwInvalidDevelopmentName();
             const ticks: Ticks = Ticks.FromString(cells[1].textContent ?? this._throwInvalidDevelopment(name));
-            const cost: Funds = Funds.FromString(cells[3].textContent ?? this._throwInvalidDevelopment(name));
 
             developments.push(new Development(
                 name.trim(),
                 ticks,
-                new Funds(cost.funds, Math.floor(cost.funds / 2500)),
+                Funds.FromString(cells[3].textContent ?? this._throwInvalidDevelopment(name)),
                 type,
                 this.getProgress(cells[4].textContent ?? this._throwInvalidDevelopment(name), ticks)
             ));

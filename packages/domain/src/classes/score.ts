@@ -1,9 +1,26 @@
+import { Acres } from './acres';
+import { Funds } from './funds';
+
 export class Score {
     public score: number;
-    public rank: number;
 
-    constructor(score: number, rank: number) {
+    constructor(score: number) {
         this.score = score;
-        this.rank = rank;
+    }
+
+    public toString(): string {
+        return this.score.toLocaleString('en');
+    }
+
+    public static ForDevelopment(developmentCost: Funds): Score {
+        return new Score(Math.floor(developmentCost.funds / 2500));
+    }
+
+    public static ForFunds(funds: Funds): Score {
+        return new Score(Math.floor(funds.funds / 500));
+    }
+
+    public static ForLand(acres: Acres): Score {
+        return new Score(acres.total * acres.total * 10);
     }
 }
