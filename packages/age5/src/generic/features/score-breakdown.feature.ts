@@ -1,4 +1,4 @@
-import { Land, LandRepository, Score, ScoreRepository, Stocks, StocksRepository, Workforce, WorkforceRepository } from '@actoolkit/domain';
+import { Development, Land, LandRepository, Score, ScoreRepository, Stocks, StocksRepository, Tech, TechRepository, Workforce, WorkforceRepository } from '@actoolkit/domain';
 
 import { OverlayComponentFactory, throwIt } from '../../shared';
 
@@ -13,18 +13,23 @@ export async function scoreBreakdownFeature(): Promise<void> {
     const land: Land = await new LandRepository().get();
     const stocks: Stocks = await new StocksRepository().get();
     const workforce: Workforce = await new WorkforceRepository().get();
+    const tech: Tech = await new TechRepository().get();
 
     const acresScore: number = land.acres.score;
     const plantedPlantsScore: number = land.plantedPlants.sold().score;
     const stockedPlantsScore: number = stocks.plants.sold().score;
     const stockedSeedsScore: number = stocks.seeds.sold().score;
     const staffScore: number = workforce.value().score;
+    const techScore: number = tech.completed().reduce((total: number, development: Development): number => {
+        return total + (development.cost.score as number);
+    }, 0);
 
     scoreElement.appendChild(OverlayComponentFactory('Breakdown', `
         Staff: ${staffScore.toLocaleString('en')} ${toPercentage(staffScore, score)}</br>
         Land: ${acresScore.toLocaleString('en')} ${toPercentage(acresScore, score)}</br>
         Planted plants: ${plantedPlantsScore.toLocaleString('en')} ${toPercentage(plantedPlantsScore, score)}</br>
         Stocked plants: ${stockedPlantsScore.toLocaleString('en')} ${toPercentage(stockedPlantsScore, score)}</br>
-        Stocked seeds: ${stockedSeedsScore.toLocaleString('en')} ${toPercentage(stockedSeedsScore, score)}
+        Stocked seeds: ${stockedSeedsScore.toLocaleString('en')} ${toPercentage(stockedSeedsScore, score)}</br>
+        Developments: ${techScore.toLocaleString('en')} ${toPercentage(techScore, score)}</br>
     `));
 }
