@@ -10,6 +10,7 @@ export class Acres implements ICropTypeMap<number> {
     public readonly [CropType.GRASS]: number;
     public readonly uncultivated: number;
     public readonly total: number;
+    public readonly score: number;
 
     constructor(tree: number, bush: number, flower: number, grass: number, uncultivated: number) {
         this[CropType.TREE] = tree;
@@ -18,6 +19,7 @@ export class Acres implements ICropTypeMap<number> {
         this[CropType.GRASS] = grass;
         this.uncultivated = uncultivated;
         this.total = tree + bush + flower + grass + uncultivated;
+        this.score = this.total * this.total * 10;
     }
 
     public harvesters(season: Season): number {
