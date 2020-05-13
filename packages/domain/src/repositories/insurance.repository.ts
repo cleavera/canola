@@ -4,10 +4,11 @@ import { isNull } from '@cleavera/utils';
 
 import { Funds } from '../classes/funds';
 import { Insurance } from '../classes/insurance';
+import { InsuranceClaims } from '../classes/insurance-claims';
 import { Ticks } from '../classes/ticks';
 
 export class InsuranceRepository {
-    public async get(): Promise<Maybe<Array<Insurance>>> {
+    public async get(): Promise<Maybe<InsuranceClaims>> {
         const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
         const response: IDomElement = await request.get('/overview.php');
         const insuranceElement: Maybe<IDomElement> = response.querySelector('#Insurances');
@@ -16,7 +17,7 @@ export class InsuranceRepository {
             return null;
         }
 
-        return this._parseInsuranceTable(insuranceElement);
+        return new InsuranceClaims(this._parseInsuranceTable(insuranceElement));
     }
 
     private _parseInsuranceTable(injuriesTable: IDomElement): Array<Insurance> {

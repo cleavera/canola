@@ -12,6 +12,7 @@ export { Income } from './classes/income';
 export { Injury } from './classes/injury';
 export { Injuries } from './classes/injuries';
 export { Insurance } from './classes/insurance';
+export { InsuranceClaims } from './classes/insurance-claims';
 export { Land } from './classes/land';
 export { Mob } from './classes/mob';
 export { Plants } from './classes/plants';
