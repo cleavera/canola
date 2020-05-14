@@ -1,4 +1,4 @@
-import { ArMod, Funds, Outgoing, OutgoingsRepository, Rank, RankRepository, Score } from '@actoolkit/domain';
+import { ArMod, Funds, MobType, Outgoing, OutgoingsRepository, Rank, RankRepository, Score } from '@actoolkit/domain';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
@@ -32,7 +32,7 @@ async function individualValue(outgoingElement: HTMLElement): Promise<void> {
     outgoingElement.appendChild(OverlayComponentFactory('Value', `
         Cost: ${value.toString()}</br>
         Score: ${mobScore.toString()}</br>
-        ${arModToTrigger(mobScore, targetRank.score)}
+        ${outgoing.mob.type === MobType.ATTACKING ? arModToTrigger(mobScore, targetRank.score) : ''}
     `));
 }
 
