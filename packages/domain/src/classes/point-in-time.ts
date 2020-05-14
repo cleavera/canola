@@ -7,6 +7,7 @@ import { SEASON_TICKS_LOOKUP } from '../constants/season-ticks.lookup';
 import { Season } from '../constants/season.constant';
 import { START_TICK } from '../constants/start-tick.constant';
 import * as TicksIn from '../constants/ticks-in.constant';
+import { Ticks } from './ticks';
 
 export class PointInTime {
     public tickNumber: number;
@@ -44,7 +45,7 @@ export class PointInTime {
     }
 
     public get season(): Season {
-        return PointInTime.getSeason(this.month);
+        return PointInTime._getSeason(this.month);
     }
 
     private _getTicksIntoYear(): number {
@@ -64,11 +65,11 @@ export class PointInTime {
     }
 
     public static FromDateString(dateString: string): PointInTime {
-        const normalisedDateString: string = this.normaliseDateString(dateString);
-        const day: number = this.getDay(normalisedDateString);
-        const month: number = this.getMonth(normalisedDateString);
-        const year: number = this.getYear(normalisedDateString);
-        const timeOfDay: number = this.getTimeOfDay(normalisedDateString, this.getSeason(month));
+        const normalisedDateString: string = this._normaliseDateString(dateString);
+        const day: number = this._getDay(normalisedDateString);
+        const month: number = this._getMonth(normalisedDateString);
+        const year: number = this._getYear(normalisedDateString);
+        const timeOfDay: number = this._getTimeOfDay(normalisedDateString, this._getSeason(month));
 
         let ticks = year * TicksIn.YEAR;
 
@@ -82,7 +83,11 @@ export class PointInTime {
         return new PointInTime(ticks - START_TICK);
     }
 
-    private static normaliseDateString(dateString: string): string {
+    public static Subtract(pointInTime1: PointInTime, pointInTime2: PointInTime): Ticks {
+        return new Ticks(pointInTime1.tickNumber - pointInTime2.tickNumber);
+    }
+
+    private static _normaliseDateString(dateString: string): string {
         return dateString
             .replace(/Morning time/g, 'Morning')
             .replace(/April Fools Day/g, 'Unk 1 Apr')
@@ -102,29 +107,29 @@ export class PointInTime {
             .replace(/th/g, '');
     }
 
-    private static getSeason(month: number): Season {
+    private static _getSeason(month: number): Season {
         return MONTH_SEASON_LOOKUP[month];
     }
 
-    private static getTimeOfDay(dateString: string, season: Season): number {
+    private static _getTimeOfDay(dateString: string, season: Season): number {
         const [, timeOfDayString]: Array<string> = dateString.split('. ');
         const ticks: Array<unknown> = SEASON_TICKS_LOOKUP[season];
 
-        return ticks.indexOf(timeOfDayString);
+        return ticks.indexOf(timeOfDayString.trim());
     }
 
-    private static getDay(dateString: string): number {
+    private static _getDay(dateString: string): number {
         return parseInt(dateString.split(' ')[1], 10) - 1;
     }
 
-    private static getMonth(dateString: string): number {
+    private static _getMonth(dateString: string): number {
         const [monthPart]: Array<string> = dateString.split(', ');
         const [, , month]: Array<any> = monthPart.split(' '); // eslint-disable-line @typescript-eslint/no-explicit-any
 
         return MONTH_LOOKUP[month] as unknown as number;
     }
 
-    private static getYear(dateString: string): number {
+    private static _getYear(dateString: string): number {
         const match: Maybe<RegExpExecArray> = (/year (\d+)./).exec(dateString);
 
         if (isNull(match)) {
