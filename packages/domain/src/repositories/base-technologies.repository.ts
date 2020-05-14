@@ -1,20 +1,21 @@
-import { IDomElement, INJECTOR, IRequest, REQUEST } from '@actoolkit/core';
+import { IDomElement, IRequest } from '@actoolkit/core';
 
 import { BaseTech } from '../classes/base-tech';
 import { BaseTechnologies } from '../classes/base-technologies';
 import { Funds } from '../classes/funds';
 import { Ticks } from '../classes/ticks';
 import { DevelopmentType } from '../constants/development-type.constant';
+import { getRequestService } from '../helpers/get-request-service.helper';
 
 export class BaseTechnologiesRepository {
     private static readonly TECH_TYPES: Array<DevelopmentType> = [
         DevelopmentType.RESEARCH,
         DevelopmentType.CONSTRUCTION,
         DevelopmentType.ALLIANCE
-    ]
+    ];
 
     public async get(): Promise<BaseTechnologies> {
-        const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
+        const request: IRequest = getRequestService();
         const response: IDomElement = await request.get('/manual/techs.php');
         const mainPageElement: IDomElement = response.querySelector('#main-page-data') ?? this._throwNoTechInformationFound();
         const techTable: IDomElement = mainPageElement.querySelector('table') ?? this._throwNoTechInformationFound();
@@ -53,9 +54,5 @@ export class BaseTechnologiesRepository {
 
     private _throwNoTechInformationFound(): never {
         throw new Error('No tech information found');
-    }
-
-    private _throwNoRequestStrategy(): never {
-        throw new Error('No request strategy registered');
     }
 }

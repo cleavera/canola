@@ -1,4 +1,4 @@
-import { IDomElement, INJECTOR, IRequest, REQUEST } from '@actoolkit/core';
+import { IDomElement, IRequest } from '@actoolkit/core';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
@@ -12,6 +12,7 @@ import { UnitStats } from '../classes/unit-stats';
 import { Units } from '../classes/units';
 import { MobDirection } from '../constants/mob-direction.constant';
 import { MobType } from '../constants/mob-type.constant';
+import { getRequestService } from '../helpers/get-request-service.helper';
 import { UnitsRepository } from './units.repository';
 
 export class OutgoingsRepository {
@@ -24,7 +25,7 @@ export class OutgoingsRepository {
     private _units: Maybe<Units>;
 
     constructor() {
-        this._request = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
+        this._request = getRequestService();
         this._unitsRepository = new UnitsRepository();
         this._units = null;
     }
@@ -153,10 +154,6 @@ export class OutgoingsRepository {
         }
 
         return this._units.getByName(name) ?? this._throwNotValidStaff(name);
-    }
-
-    private _throwNoRequestStrategy(): never {
-        throw new Error('No request strategy registered');
     }
 
     private _throwInvalidOutgoing(str: string = ''): never {

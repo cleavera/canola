@@ -1,12 +1,13 @@
-import { IDomElement, INJECTOR, IRequest, REQUEST } from '@actoolkit/core';
+import { IDomElement, IRequest } from '@actoolkit/core';
 
 import { Funds } from '../classes/funds';
+import { getRequestService } from '../helpers/get-request-service.helper';
 
 export class FundsRepository {
     private static readonly PARSER_REGEX: RegExp = /Funds: (£[0-9,]+)/;
 
     public async getOwn(): Promise<Funds> {
-        const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
+        const request: IRequest = getRequestService();
         const response: IDomElement = await request.get('/overview.php');
         const fundsElement: IDomElement = response.querySelector('#game-info-funds') ?? this._throwNoFundsInformationFound();
 
@@ -17,10 +18,6 @@ export class FundsRepository {
         const [, fundString]: RegExpExecArray = FundsRepository.PARSER_REGEX.exec(str) ?? this._throwInvalidFundsString(str);
 
         return Funds.FromString(fundString);
-    }
-
-    private _throwNoRequestStrategy(): never {
-        throw new Error('No request strategy registered');
     }
 
     private _throwNoFundsInformationFound(): never {

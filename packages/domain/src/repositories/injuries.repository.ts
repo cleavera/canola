@@ -1,4 +1,4 @@
-import { IDomElement, INJECTOR, IRequest, REQUEST } from '@actoolkit/core';
+import { IDomElement, IRequest } from '@actoolkit/core';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
@@ -8,6 +8,7 @@ import { Staff } from '../classes/staff';
 import { Ticks } from '../classes/ticks';
 import { UnitStats } from '../classes/unit-stats';
 import { Units } from '../classes/units';
+import { getRequestService } from '../helpers/get-request-service.helper';
 import { UnitsRepository } from './units.repository';
 
 export class InjuriesRepository {
@@ -21,7 +22,7 @@ export class InjuriesRepository {
     }
 
     public async getOwn(): Promise<Maybe<Injuries>> {
-        const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
+        const request: IRequest = getRequestService();
         const response: IDomElement = await request.get('/overview.php');
         const injuriesElement: Maybe<IDomElement> = response.querySelector('#Injuries');
 
@@ -59,10 +60,6 @@ export class InjuriesRepository {
         }
 
         return this._units.getByName(name) ?? this._throwNotValidStaff(name);
-    }
-
-    private _throwNoRequestStrategy(): never {
-        throw new Error('No request strategy registered');
     }
 
     private _throwNoStaffName(): never {

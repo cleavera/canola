@@ -1,4 +1,4 @@
-import { IDomElement, INJECTOR, IRequest, REQUEST } from '@actoolkit/core';
+import { IDomElement, IRequest } from '@actoolkit/core';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
@@ -6,6 +6,7 @@ import { Staff } from '../classes/staff';
 import { UnitStats } from '../classes/unit-stats';
 import { Units } from '../classes/units';
 import { Workforce } from '../classes/workforce';
+import { getRequestService } from '../helpers/get-request-service.helper';
 import { UnitsRepository } from './units.repository';
 
 export class WorkforceRepository {
@@ -18,7 +19,7 @@ export class WorkforceRepository {
     }
 
     public async getOwn(): Promise<Workforce> {
-        const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
+        const request: IRequest = getRequestService();
         const response: IDomElement = await request.get('/military.php');
         const mainPageElement: IDomElement = response.querySelector('#main-page-data') ?? this._throwNoStaffFound();
         const workforceTable: IDomElement = mainPageElement.querySelector('form table') ?? this._throwNoStaffFound();
@@ -54,10 +55,6 @@ export class WorkforceRepository {
         }
 
         return this._units.getByName(name) ?? this._throwNotValidStaff(name);
-    }
-
-    private _throwNoRequestStrategy(): never {
-        throw new Error('No request strategy registered');
     }
 
     private _throwNoStaffName(): never {

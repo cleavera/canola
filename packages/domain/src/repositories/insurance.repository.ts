@@ -1,4 +1,4 @@
-import { IDomElement, INJECTOR, IRequest, REQUEST } from '@actoolkit/core';
+import { IDomElement, IRequest } from '@actoolkit/core';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
@@ -6,10 +6,11 @@ import { Funds } from '../classes/funds';
 import { Insurance } from '../classes/insurance';
 import { InsuranceClaims } from '../classes/insurance-claims';
 import { Ticks } from '../classes/ticks';
+import { getRequestService } from '../helpers/get-request-service.helper';
 
 export class InsuranceRepository {
     public async getOwn(): Promise<Maybe<InsuranceClaims>> {
-        const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
+        const request: IRequest = getRequestService();
         const response: IDomElement = await request.get('/overview.php');
         const insuranceElement: Maybe<IDomElement> = response.querySelector('#Insurances');
 
@@ -38,10 +39,6 @@ export class InsuranceRepository {
         const eta: Ticks = Ticks.FromString(etaCell.textContent ?? this._throwNoEta());
 
         return new Insurance(Funds.FromString(fundsCell.textContent ?? this._throwNoFunds(eta.ticks)), eta);
-    }
-
-    private _throwNoRequestStrategy(): never {
-        throw new Error('No request strategy registered');
     }
 
     private _throwNoEta(): never {

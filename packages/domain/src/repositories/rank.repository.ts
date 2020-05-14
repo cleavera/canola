@@ -1,13 +1,14 @@
-import { IDomElement, INJECTOR, IRequest, REQUEST } from '@actoolkit/core';
+import { IDomElement, IRequest } from '@actoolkit/core';
 
 import { Rank } from '../classes/rank';
 import { Score } from '../classes/score';
+import { getRequestService } from '../helpers/get-request-service.helper';
 
 export class RankRepository {
     private static readonly PARSER_REGEX: RegExp = /Score: ([0-9,]+) \[([0-9]+)]/;
 
     public async getOwn(): Promise<Rank> {
-        const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
+        const request: IRequest = getRequestService();
         const response: IDomElement = await request.get('/overview.php');
         const scoreElement: IDomElement = response.querySelector('#game-info-rank-score') ?? this._throwNoScoreInformationFound();
 
@@ -25,10 +26,6 @@ export class RankRepository {
 
     private _throwInvalidScoreString(str: string): never {
         throw new Error(`Invalid score string '${str}'`);
-    }
-
-    private _throwNoRequestStrategy(): never {
-        throw new Error('No request strategy registered');
     }
 
     private _throwNoScoreInformationFound(): never {

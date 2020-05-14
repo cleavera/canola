@@ -3,10 +3,11 @@ import { IDomElement, INJECTOR, IRequest, REQUEST } from '@actoolkit/core';
 import { Plants } from '../classes/plants';
 import { Seeds } from '../classes/seeds';
 import { Stocks } from '../classes/stocks';
+import { getRequestService } from '../helpers/get-request-service.helper';
 
 export class StocksRepository {
     public async getOwn(): Promise<Stocks> {
-        const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
+        const request: IRequest = getRequestService();
         const response: IDomElement = await request.get('/overview.php');
         const landPlantsTableElement: IDomElement = response.querySelector('#LandPlants') ?? this._throwNoStockInformationFound();
         const [, tree, bush, flower, grass]: Array<IDomElement> = Array.from(landPlantsTableElement.querySelectorAll('tr'));
@@ -45,10 +46,6 @@ export class StocksRepository {
         const match: RegExpExecArray = (/\[([0-9,]+) (?:seeds|plants) in stock]/).exec(text) ?? this._throwNoStockInformationFound();
 
         return parseInt(match[1].replace(/,/g, ''), 10);
-    }
-
-    private _throwNoRequestStrategy(): never {
-        throw new Error('No request strategy registered');
     }
 
     private _throwNoStockInformationFound(): never {

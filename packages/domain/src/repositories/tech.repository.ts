@@ -1,4 +1,4 @@
-import { IDomElement, INJECTOR, IRequest, REQUEST } from '@actoolkit/core';
+import { IDomElement, IRequest } from '@actoolkit/core';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
@@ -8,6 +8,7 @@ import { Development } from '../classes/development';
 import { Funds } from '../classes/funds';
 import { Tech } from '../classes/tech';
 import { Ticks } from '../classes/ticks';
+import { getRequestService } from '../helpers/get-request-service.helper';
 import { BaseTechnologiesRepository } from './base-technologies.repository';
 
 export class TechRepository {
@@ -22,7 +23,7 @@ export class TechRepository {
     }
 
     public async getOwn(): Promise<Tech> {
-        const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
+        const request: IRequest = getRequestService();
         const response: IDomElement = await request.get('/development.php');
         const mainPageElement: IDomElement = response.querySelector('#main-page-data') ?? this._throwNoDevelopmentInformationFound();
         const developmentTable: IDomElement = mainPageElement.querySelector('table') ?? this._throwNoDevelopmentInformationFound();
@@ -79,10 +80,6 @@ export class TechRepository {
         }
 
         return this._techs.getByName(name) ?? this._throwNotValidTech(name);
-    }
-
-    private _throwNoRequestStrategy(): never {
-        throw new Error('No request strategy registered');
     }
 
     private _throwNoDevelopmentInformationFound(): never {
