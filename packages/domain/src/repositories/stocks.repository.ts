@@ -1,4 +1,4 @@
-import { IDomElement, INJECTOR, IRequest, REQUEST } from '@actoolkit/core';
+import { IDomElement, IRequest } from '@actoolkit/core';
 
 import { Plants } from '../classes/plants';
 import { Seeds } from '../classes/seeds';
