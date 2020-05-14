@@ -3,6 +3,7 @@ export { MobType } from './constants/mob-type.constant';
 export { Season } from './constants/season.constant';
 
 export { Acres } from './classes/acres';
+export { ArMod } from './classes/ar-mod';
 export { BaseTech } from './classes/base-tech';
 export { BaseTechnologies } from './classes/base-technologies';
 export { CompanyName } from './classes/company-name';
