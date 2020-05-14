@@ -41,19 +41,23 @@ export class OutgoingsRepository {
         return new Outgoings(await this._parseOutgoingList(outgoingsList));
     }
 
+    public async parseOutgoingElement(outgoingElement: IDomElement): Promise<Outgoing> {
+        const [, mobDetailsElement = null]: Array<Maybe<IDomElement>> = Array.from(outgoingElement.querySelectorAll('a'));
+        let mobDetailsLink: Maybe<string> = null;
+
+        if (!isNull(mobDetailsElement)) {
+            mobDetailsLink = mobDetailsElement.getAttribute('href');
+        }
+
+        return this._parseRow((outgoingElement.textContent ?? this._throwInvalidOutgoing()).trim(), mobDetailsLink);
+    }
+
     private async _parseOutgoingList(outgoingsList: IDomElement): Promise<Array<Outgoing>> {
         const rows: Array<IDomElement> = Array.from(outgoingsList.querySelectorAll('div'));
         const mobs: Array<Promise<Outgoing>> = [];
 
         for (const row of rows) {
-            const [, mobDetailsElement = null]: Array<Maybe<IDomElement>> = Array.from(row.querySelectorAll('a'));
-            let mobDetailsLink: Maybe<string> = null;
-
-            if (!isNull(mobDetailsElement)) {
-                mobDetailsLink = mobDetailsElement.getAttribute('href');
-            }
-
-            mobs.push(this._parseRow((row.textContent ?? this._throwInvalidOutgoing()).trim(), mobDetailsLink));
+            mobs.push(this.parseOutgoingElement(row));
         }
 
         return Promise.all(mobs);
