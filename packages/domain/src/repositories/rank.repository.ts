@@ -6,7 +6,7 @@ import { Score } from '../classes/score';
 export class RankRepository {
     private static readonly PARSER_REGEX: RegExp = /Score: ([0-9,]+) \[([0-9]+)]/;
 
-    public async get(): Promise<Rank> {
+    public async getOwn(): Promise<Rank> {
         const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
         const response: IDomElement = await request.get('/overview.php');
         const scoreElement: IDomElement = response.querySelector('#game-info-rank-score') ?? this._throwNoScoreInformationFound();

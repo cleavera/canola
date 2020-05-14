@@ -5,7 +5,7 @@ import { Land } from '../classes/land';
 import { Plants } from '../classes/plants';
 
 export class LandRepository {
-    public async get(): Promise<Land> {
+    public async getOwn(): Promise<Land> {
         const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
         const response: IDomElement = await request.get('/overview.php');
         const landPlantsTableElement: IDomElement = response.querySelector('#LandPlants') ?? this._throwNoLandInformationFound();

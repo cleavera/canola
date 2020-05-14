@@ -13,11 +13,11 @@ function getString(score: Score, total: Score): string {
 export async function scoreBreakdownFeature(): Promise<void> {
     const scoreElement: HTMLElement = document.getElementById('game-info-rank-score') ?? throwIt('Could not find score information on the page');
 
-    const { score }: Rank = await new RankRepository().get();
-    const land: Land = await new LandRepository().get();
-    const stocks: Stocks = await new StocksRepository().get();
-    const workforce: Workforce = await new WorkforceRepository().get();
-    const tech: Tech = await new TechRepository().get();
+    const { score }: Rank = await new RankRepository().getOwn();
+    const land: Land = await new LandRepository().getOwn();
+    const stocks: Stocks = await new StocksRepository().getOwn();
+    const workforce: Workforce = await new WorkforceRepository().getOwn();
+    const tech: Tech = await new TechRepository().getOwn();
 
     const acresScore: Score = Score.ForLand(land.acres);
     const plantedPlantsScore: Score = Score.ForFunds(land.plantedPlants.sold());

@@ -8,7 +8,7 @@ import { InsuranceClaims } from '../classes/insurance-claims';
 import { Ticks } from '../classes/ticks';
 
 export class InsuranceRepository {
-    public async get(): Promise<Maybe<InsuranceClaims>> {
+    public async getOwn(): Promise<Maybe<InsuranceClaims>> {
         const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
         const response: IDomElement = await request.get('/overview.php');
         const insuranceElement: Maybe<IDomElement> = response.querySelector('#Insurances');

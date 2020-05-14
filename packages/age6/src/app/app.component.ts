@@ -10,6 +10,6 @@ export class AppComponent {
     public company: Promise<CompanyName>;
 
     constructor() {
-        this.company = new CompanyNameRepository().get();
+        this.company = new CompanyNameRepository().getOwn();
     }
 }

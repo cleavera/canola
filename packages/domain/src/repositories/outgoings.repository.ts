@@ -29,7 +29,7 @@ export class OutgoingsRepository {
         this._units = null;
     }
 
-    public async get(): Promise<Maybe<Outgoings>> {
+    public async getOwn(): Promise<Maybe<Outgoings>> {
         const response: IDomElement = await this._request.get('/overview.php');
         const outgoingsList: Maybe<IDomElement> = response.querySelector('#Outgoing') ?? null;
 

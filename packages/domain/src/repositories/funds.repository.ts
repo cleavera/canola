@@ -5,7 +5,7 @@ import { Funds } from '../classes/funds';
 export class FundsRepository {
     private static readonly PARSER_REGEX: RegExp = /Funds: (£[0-9,]+)/;
 
-    public async get(): Promise<Funds> {
+    public async getOwn(): Promise<Funds> {
         const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
         const response: IDomElement = await request.get('/overview.php');
         const fundsElement: IDomElement = response.querySelector('#game-info-funds') ?? this._throwNoFundsInformationFound();

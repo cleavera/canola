@@ -21,7 +21,7 @@ export class TechRepository {
         this._techs = null;
     }
 
-    public async get(): Promise<Tech> {
+    public async getOwn(): Promise<Tech> {
         const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
         const response: IDomElement = await request.get('/development.php');
         const mainPageElement: IDomElement = response.querySelector('#main-page-data') ?? this._throwNoDevelopmentInformationFound();

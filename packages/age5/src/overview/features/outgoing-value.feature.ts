@@ -7,7 +7,7 @@ import { OverlayComponentFactory, throwIt } from '../../shared';
 export async function outgoingValueFeature(): Promise<void> {
     const mainPageElement: HTMLElement = document.getElementById('main-page-data') ?? throwIt('No staff information found');
     const outgoingElements: ArrayLike<HTMLElement> = mainPageElement.querySelectorAll('#Outgoing div');
-    const outgoings: Maybe<Outgoings> = await new OutgoingsRepository().get();
+    const outgoings: Maybe<Outgoings> = await new OutgoingsRepository().getOwn();
 
     if (isNull(outgoingElements) || isNull(outgoings)) {
         return;

@@ -5,7 +5,7 @@ import { isNull } from '@cleavera/utils';
 import { OverlayComponentFactory, throwIt } from '../../shared';
 
 export async function injuredStaffValueFeature(): Promise<void> {
-    const injuries: Maybe<Injuries> = await new InjuriesRepository().get();
+    const injuries: Maybe<Injuries> = await new InjuriesRepository().getOwn();
     const mainPageElement: HTMLElement = document.getElementById('main-page-data') ?? throwIt('No injured staff information found');
     const injuredStaffTitleElement: Maybe<HTMLElement> = mainPageElement.querySelector('[onClick^="SwitchSetDisplay(\'Injuries\'"]') ?? null;
 

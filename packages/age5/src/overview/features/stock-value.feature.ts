@@ -6,7 +6,7 @@ import { LandSeedPlantsModel } from '../models/land-seed-plants.model';
 export async function stockValueFeature(): Promise<void> {
     const lsp: LandSeedPlantsModel = LandSeedPlantsModel.ForCurrentPage();
 
-    const stocks: Stocks = await new StocksRepository().get();
+    const stocks: Stocks = await new StocksRepository().getOwn();
     const plantedSeeds: Plants = stocks.seeds.plants();
 
     lsp.getSeeds().appendChild(OverlayComponentFactory('Value', `

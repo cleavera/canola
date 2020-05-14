@@ -20,7 +20,7 @@ export class InjuriesRepository {
         this._units = null;
     }
 
-    public async get(): Promise<Maybe<Injuries>> {
+    public async getOwn(): Promise<Maybe<Injuries>> {
         const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
         const response: IDomElement = await request.get('/overview.php');
         const injuriesElement: Maybe<IDomElement> = response.querySelector('#Injuries');

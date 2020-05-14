@@ -5,7 +5,7 @@ import { Seeds } from '../classes/seeds';
 import { Stocks } from '../classes/stocks';
 
 export class StocksRepository {
-    public async get(): Promise<Stocks> {
+    public async getOwn(): Promise<Stocks> {
         const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
         const response: IDomElement = await request.get('/overview.php');
         const landPlantsTableElement: IDomElement = response.querySelector('#LandPlants') ?? this._throwNoStockInformationFound();

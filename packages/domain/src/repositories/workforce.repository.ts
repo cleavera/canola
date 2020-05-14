@@ -17,7 +17,7 @@ export class WorkforceRepository {
         this._units = null;
     }
 
-    public async get(): Promise<Workforce> {
+    public async getOwn(): Promise<Workforce> {
         const request: IRequest = INJECTOR.get<IRequest>(REQUEST) ?? this._throwNoRequestStrategy();
         const response: IDomElement = await request.get('/military.php');
         const mainPageElement: IDomElement = response.querySelector('#main-page-data') ?? this._throwNoStaffFound();
