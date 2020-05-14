@@ -15,9 +15,9 @@ import { MobType } from '../constants/mob-type.constant';
 import { UnitsRepository } from './units.repository';
 
 export class OutgoingsRepository {
-    private static readonly RETURNING_MOB_PATTERN: RegExp = /^([0-9,]+) staff returning from ([A-z0-9\s-_|.'{},]+? \[[0-9]+]) eta ([0-9]+)/;
-    private static readonly APPROACHING_MOB_PATTERN: RegExp = /^([0-9,]+) staff approaching ([A-z0-9\s-_|.'{},]+? \[[0-9]+]) eta ([0-9]+)\. (Defending|Attacking)/;
-    private static readonly THERE_MOB_PATTERN: RegExp = /^([0-9,]+) staff at ([A-z0-9\s-_|.'{},]+? \[[0-9]+]) (Defending|Attacking) for ([1-3]) tick/;
+    private static readonly RETURNING_MOB_PATTERN: RegExp = /^([0-9,]+) staff returning from ([A-z0-9\s-_|.'{},=]+? \[[0-9]+]) eta ([0-9]+)/;
+    private static readonly APPROACHING_MOB_PATTERN: RegExp = /^([0-9,]+) staff approaching ([A-z0-9\s-_|.'{},=]+? \[[0-9]+]) eta ([0-9]+)\. (Defending|Attacking)/;
+    private static readonly THERE_MOB_PATTERN: RegExp = /^([0-9,]+) staff at ([A-z0-9\s-_|.'{},=]+? \[[0-9]+]) (Defending|Attacking) for ([1-3]) tick/;
 
     private readonly _request: IRequest;
     private readonly _unitsRepository: UnitsRepository;
@@ -44,24 +44,35 @@ export class OutgoingsRepository {
         const rows: Array<IDomElement> = Array.from(outgoingsList.querySelectorAll('div'));
         const mobs: Array<Promise<Outgoing>> = [];
 
-        for (let i = 0; i < rows.length; i++) {
-            mobs.push(this._parseRow((rows[i].textContent ?? this._throwInvalidOutgoing()).trim(), i + 1));
+        for (const row of rows) {
+            const [, mobDetailsElement = null]: Array<Maybe<IDomElement>> = Array.from(row.querySelectorAll('a'));
+            let mobDetailsLink: Maybe<string> = null;
+
+            if (!isNull(mobDetailsElement)) {
+                mobDetailsLink = mobDetailsElement.getAttribute('href');
+            }
+
+            mobs.push(this._parseRow((row.textContent ?? this._throwInvalidOutgoing()).trim(), mobDetailsLink));
         }
 
         return Promise.all(mobs);
     }
 
-    private async _parseRow(row: string, id: number): Promise<Outgoing> {
+    private async _parseRow(row: string, mobDetailsLink: Maybe<string>): Promise<Outgoing> {
         const mob: Mob = this._parseMobRow(row);
-        const staff: Array<Staff> = await this._getStaff(id);
+        let staff: Maybe<Array<Staff>> = null;
+
+        if (!isNull(mobDetailsLink)) {
+            staff = await this._getStaff(mobDetailsLink);
+        }
 
         return new Outgoing(mob, staff);
     }
 
-    private async _getStaff(id: number): Promise<Array<Staff>> {
-        const response: IDomElement = await this._request.get(`/military.php?MobDetail=${id.toString(10)}`);
-        const staffElement: IDomElement = response.querySelector('#CPBox textarea') ?? this._throwOutgoingStaff(id);
-        const staffInformation: string = staffElement.textContent ?? this._throwOutgoingStaff(id);
+    private async _getStaff(mobDetailsLink: string): Promise<Array<Staff>> {
+        const response: IDomElement = await this._request.get(mobDetailsLink);
+        const staffElement: IDomElement = response.querySelector('#CPBox textarea') ?? this._throwOutgoingStaff(mobDetailsLink);
+        const staffInformation: string = staffElement.textContent ?? this._throwOutgoingStaff(mobDetailsLink);
         const [, staff]: Array<string> = staffInformation.trim().split('\n\n');
         const staffRows: Array<string> = staff.split('\n');
 
@@ -152,8 +163,8 @@ export class OutgoingsRepository {
         throw new Error(`Could not parse outgoing '${str}'`);
     }
 
-    private _throwOutgoingStaff(id: number): never {
-        throw new Error(`Could not parse outgoing staff '${id.toString(10)}'`);
+    private _throwOutgoingStaff(mobDetailsLink: string): never {
+        throw new Error(`Could not parse outgoing staff '${mobDetailsLink}'`);
     }
 
     private _throwNotValidStaff(staffName: string): never {
