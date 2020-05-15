@@ -30,6 +30,7 @@ export { Ticks } from './classes/ticks';
 export { Weather } from './classes/weather';
 export { Workforce } from './classes/workforce';
 
+export { ArModRepository } from './repositories/ar-mod.repository';
 export { BaseTechnologiesRepository } from './repositories/base-technologies.repository';
 export { CompanyNameRepository } from './repositories/company-name.repository';
 export { CurrentPointInTimeRepository } from './repositories/current-point-in-time.repository';

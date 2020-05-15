@@ -12,6 +12,10 @@ export class Score {
         return this.score.toLocaleString('en');
     }
 
+    public toFunds(): Funds {
+        return new Funds(this.score * 500);
+    }
+
     public static ForDevelopment(developmentCost: Funds): Score {
         return new Score(Math.floor(developmentCost.funds / 2500));
     }

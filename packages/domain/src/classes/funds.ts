@@ -10,7 +10,7 @@ export class Funds {
     }
 
     public static Scale(funds: Funds, scalar: number): Funds {
-        return new Funds(funds.funds * scalar);
+        return new Funds(Math.floor(funds.funds * scalar));
     }
 
     public static Sum(...funds: Array<Funds>): Funds {

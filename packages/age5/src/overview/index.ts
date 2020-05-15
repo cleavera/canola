@@ -1,4 +1,5 @@
 import { isPage } from '../shared';
+import { arModFeature } from './features/ar-mod.feature';
 import { injuredStaffValueFeature } from './features/injured-staff-value.feature';
 import { insuranceClaimsValueFeature } from './features/insurance-claims-value.feature';
 import { outgoingValueFeature } from './features/outgoing-value.feature';
@@ -17,6 +18,7 @@ export async function overviewAdditions(): Promise<void> {
         staffValueFeature(),
         injuredStaffValueFeature(),
         insuranceClaimsValueFeature(),
-        outgoingValueFeature()
+        outgoingValueFeature(),
+        arModFeature()
     ]);
 }
