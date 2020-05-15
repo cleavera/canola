@@ -12,7 +12,14 @@ export async function ticksSinceFeature(): Promise<void> {
         const pointInTime: PointInTime = PointInTime.FromDateString(timeOfDayElement.textContent ?? throwIt('Invalid date cell'));
         const tickDifference: Ticks = PointInTime.Subtract(currentPointInTime, pointInTime);
         const timeOfDayCell: HTMLElement = timeOfDayElement.parentElement ?? throwIt('Invalid date cell');
+        let output: string = `${tickDifference.ticks.toLocaleString('en')} ticks ago.`;
 
-        timeOfDayCell.appendChild(PositiveTextComponentFactory(`${tickDifference.ticks.toLocaleString('en')} ticks ago.`));
+        if (tickDifference.ticks === 0) {
+            output = 'This tick.';
+        } else if (tickDifference.ticks === 1) {
+            output = 'Last tick.';
+        }
+
+        timeOfDayCell.appendChild(PositiveTextComponentFactory(output));
     }
 }
