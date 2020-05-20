@@ -38,7 +38,9 @@ export class BrowserRequest implements IRequest {
     }
 
     private async _fetch(url: string): Promise<string> {
-        const response: Response = await fetch(this._getURL(url));
+        const response: Response = await fetch(this._getURL(url), {
+            credentials: 'include'
+        });
 
         if (!response.ok) {
             throw new Error(response.statusText);
