@@ -37,6 +37,7 @@ export { CurrentPointInTimeRepository } from './repositories/current-point-in-ti
 export { FundsRepository } from './repositories/funds.repository';
 export { InjuriesRepository } from './repositories/injuries.repository';
 export { InsuranceRepository } from './repositories/insurance.repository';
+export { IntelRepository } from './repositories/intel.repository';
 export { LandRepository } from './repositories/land.repository';
 export { OutgoingsRepository } from './repositories/outgoings.repository';
 export { RankRepository } from './repositories/rank.repository';
