@@ -1,4 +1,5 @@
 import { isPage } from '../shared';
+import { driveByValueFeature } from './features/drive-by-value.feature';
 import { hackValueFeature } from './features/hack-value.feature';
 
 export async function intelAdditions(): Promise<void> {
@@ -6,5 +7,8 @@ export async function intelAdditions(): Promise<void> {
         return;
     }
 
-    await hackValueFeature();
+    await Promise.all([
+        hackValueFeature(),
+        driveByValueFeature()
+    ]);
 }

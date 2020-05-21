@@ -7,6 +7,7 @@ export { ArMod } from './classes/ar-mod';
 export { BaseTech } from './classes/base-tech';
 export { BaseTechnologies } from './classes/base-technologies';
 export { CompanyName } from './classes/company-name';
+export { DriveByReport } from './classes/drive-by-report';
 export { Development } from './classes/development';
 export { Funds } from './classes/funds';
 export { HackReport } from './classes/hack-report';
