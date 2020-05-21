@@ -2,6 +2,8 @@ import { IDomElement } from '@actoolkit/core';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
+import { CompanyName } from '../classes/company-name';
+import { HackReport } from '../classes/hack-report';
 import { Staff } from '../classes/staff';
 import { UnitStats } from '../classes/unit-stats';
 import { Units } from '../classes/units';
@@ -17,10 +19,13 @@ export class IntelRepository {
         this._units = null;
     }
 
-    public async parseHackReport(hackReportTable: IDomElement): Promise<Workforce> {
+    public async parseHackReport(hackReportTable: IDomElement): Promise<HackReport> {
         const staff: Array<Promise<Staff>> = [];
 
         const rows: ArrayLike<IDomElement> = hackReportTable.querySelectorAll('tr');
+        const targetNameElement: IDomElement = rows[0].querySelector('span');
+        const targetName: string = targetNameElement.textContent ?? this._throwNotValidIntelPage();
+        const target: CompanyName = CompanyName.FromString(targetName.trim());
 
         for (let x = 2; x < rows.length; x++) {
             const cells: ArrayLike<IDomElement> = rows[x].querySelectorAll('td');
@@ -30,12 +35,14 @@ export class IntelRepository {
             }
         }
 
-        return new Workforce(await Promise.all(staff));
+        const workforce: Workforce = new Workforce(await Promise.all(staff));
+
+        return new HackReport(target, workforce);
     }
 
     private async _getStaff(nameCell: IDomElement, countCell: IDomElement): Promise<Staff> {
-        const name: string = (nameCell.textContent ?? this.throwNotValidIntelPage()).trim();
-        const countString: string = countCell.textContent ?? this.throwNotValidStaffCount(name);
+        const name: string = (nameCell.textContent ?? this._throwNotValidIntelPage()).trim();
+        const countString: string = countCell.textContent ?? this._throwNotValidStaffCount(name);
         const count: number = parseInt(countString.replace(/[,[\]]/g, ''), 10);
         const staffStats: UnitStats = await this._getStaffStats(name);
 
@@ -50,7 +57,7 @@ export class IntelRepository {
         return this._units.getByName(name) ?? this._throwNotValidStaff(name);
     }
 
-    private throwNotValidIntelPage(): never {
+    private _throwNotValidIntelPage(): never {
         throw new Error('Not a valid intel page');
     }
 
@@ -58,7 +65,7 @@ export class IntelRepository {
         throw new Error(`Not valid staff '${staffName}'`);
     }
 
-    private throwNotValidStaffCount(staffName: string): never {
+    private _throwNotValidStaffCount(staffName: string): never {
         throw new Error(`Could not parse count for staff '${staffName}'`);
     }
 }

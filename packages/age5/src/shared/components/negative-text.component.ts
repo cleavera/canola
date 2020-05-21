@@ -2,10 +2,10 @@ import { Maybe } from '@cleavera/types';
 
 import { TextComponentFactory } from './text.component';
 
-export function PositiveTextComponentFactory(text: string, title: Maybe<string> = null): HTMLSpanElement {
+export function NegativeTextComponentFactory(text: string, title: Maybe<string> = null): HTMLSpanElement {
     const span: HTMLSpanElement = TextComponentFactory(text, title);
 
-    span.classList.add('friendly');
+    span.classList.add('hostile');
 
     return span;
 }

@@ -27,4 +27,8 @@ export class Score {
     public static ForLand(acres: Acres): Score {
         return new Score(acres.total * acres.total * 10);
     }
+
+    public static Subtract(score1: Score, score2: Score): Score {
+        return new Score(score1.score - score2.score);
+    }
 }

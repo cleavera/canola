@@ -9,6 +9,7 @@ export { BaseTechnologies } from './classes/base-technologies';
 export { CompanyName } from './classes/company-name';
 export { Development } from './classes/development';
 export { Funds } from './classes/funds';
+export { HackReport } from './classes/hack-report';
 export { Income } from './classes/income';
 export { Injury } from './classes/injury';
 export { Injuries } from './classes/injuries';
