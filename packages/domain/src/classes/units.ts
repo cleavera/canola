@@ -14,4 +14,10 @@ export class Units {
             return unit.name === name;
         }) ?? null;
     }
+
+    public getStealth(): Units {
+        return new Units(this.list.filter((unit: UnitStats) => {
+            return unit.isStealth;
+        }));
+    }
 }

@@ -28,6 +28,8 @@ export { Stocks } from './classes/stocks';
 export { Staff } from './classes/staff';
 export { Tech } from './classes/tech';
 export { Ticks } from './classes/ticks';
+export { Units } from './classes/units';
+export { UnitStats } from './classes/unit-stats';
 export { Weather } from './classes/weather';
 export { Workforce } from './classes/workforce';
 

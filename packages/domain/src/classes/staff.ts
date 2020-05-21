@@ -15,4 +15,14 @@ export class Staff {
     public value(): Funds {
         return Funds.Scale(this.stats.cost, this.amount);
     }
+
+    public toString(): string {
+        return `${this.name} [${this.amount.toLocaleString('en')}]`;
+    }
+
+    public static ForValue(value: Funds, unit: UnitStats): Staff {
+        const count: number = Math.floor(Math.floor(value.funds / unit.cost.funds));
+
+        return new Staff(unit.name, count, unit);
+    }
 }

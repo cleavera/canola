@@ -31,8 +31,9 @@ export class UnitsRepository {
     private _parseUnitRow(row: IDomElement): UnitStats {
         const cells: ArrayLike<IDomElement> = row.querySelectorAll('td') ?? this._throwNoUnitStatsFound();
         const name: IDomElement = cells[0].querySelector('a') ?? this._throwNoUnitStatsFound();
+        const isStealth: boolean = (cells[10].textContent ?? this._throwNoUnitStatsFound()).includes('S');
 
-        return new UnitStats(name.textContent ?? this._throwNoUnitStatsFound(), Funds.FromString(cells[9].textContent ?? this._throwNoUnitStatsFound()));
+        return new UnitStats(name.textContent ?? this._throwNoUnitStatsFound(), Funds.FromString(cells[9].textContent ?? this._throwNoUnitStatsFound()), isStealth);
     }
 
     private _throwNoUnitStatsFound(): never {
