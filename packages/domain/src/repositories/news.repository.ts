@@ -2,6 +2,7 @@ import { IDomElement } from '@actoolkit/core';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
+import { BattleReport } from '../classes/battle-report';
 import { CompanyName } from '../classes/company-name';
 import { Mob } from '../classes/mob';
 import { NewsReport } from '../classes/news-report';
@@ -9,17 +10,48 @@ import { PointInTime } from '../classes/point-in-time';
 import { Ticks } from '../classes/ticks';
 import { MobDirection } from '../constants/mob-direction.constant';
 import { MobType } from '../constants/mob-type.constant';
+import { INewsContent } from '../interfaces/news-content.interface';
 
 export class NewsRepository {
     private static readonly OUTGOING_MOB_PATTERN: RegExp = /You sent [0-9,]+ employees to (attack|defend) ([A-z0-9\s-_|.'{},=]+ \[[0-9]{1,4}]), they are set to arrive in (\d+) ticks./;
     private static readonly INCOMING_MOB_PATTERN: RegExp = /News from your sources is that in (\d+) ticks, [\d,]+ people from ([A-z0-9\s-_|.'{},=]+? \[[0-9]{1,4}]) will arrive to (attack|defend) you./;
     private static readonly STEALTH_MOB_PATTERN: RegExp = /A stealth mob has been detected, ETA now (\d+) ticks, [\d,]+ currently visible. Mob sent from ([A-z0-9\s-_|.'{},=]+? \[[0-9]{1,4}]) to (defend|attack) you./;
+    private static readonly BATTLE_REPORT_PATTERN: RegExp = /Battle Report - (Attacking|Defending) ([A-z0-9\s-_|.'{},=]+ \[[0-9]{1,4}])/;
 
     public parseNewsReport(context: CompanyName, headerRow: IDomElement, contentRow: IDomElement): NewsReport {
         const timeOfDayElement: IDomElement = headerRow.querySelector('td:first-child > span') ?? this._throwInvalidPointInTime();
         const pointInTime: PointInTime = PointInTime.FromDateString(timeOfDayElement.textContent ?? this._throwInvalidPointInTime());
 
-        return new NewsReport(pointInTime, this._parseMob(context, contentRow.textContent ?? this._throwInvalidContent()));
+        return new NewsReport(pointInTime, this._parseContent(context, contentRow));
+    }
+
+    private _parseContent(context: CompanyName, contentRow: IDomElement): Maybe<INewsContent> {
+        const mob: Maybe<Mob> = this._parseMob(context, contentRow.textContent ?? this._throwInvalidContent());
+
+        if (!isNull(mob)) {
+            return mob;
+        }
+
+        return this._parseBattleReport(contentRow);
+    }
+
+    private _parseBattleReport(contentRow: IDomElement): Maybe<BattleReport> {
+        const reportHeaderElement: Maybe<IDomElement> = contentRow.querySelector('table tr') ?? null;
+
+        if (isNull(reportHeaderElement)) {
+            return null;
+        }
+
+        const reportHeaderMatch: Maybe<RegExpExecArray> = NewsRepository.BATTLE_REPORT_PATTERN.exec(reportHeaderElement.textContent ?? '');
+
+        if (isNull(reportHeaderMatch)) {
+            return null;
+        }
+
+        const type: MobType = this._getMobType(reportHeaderMatch[1]);
+        const target: CompanyName = CompanyName.FromString(reportHeaderMatch[2]);
+
+        return new BattleReport(target, type);
     }
 
     private _parseMob(context: CompanyName, contentString: string): Maybe<Mob> {
@@ -57,7 +89,7 @@ export class NewsRepository {
     }
 
     private _getMobType(typeString: string): MobType {
-        if (typeString === 'defend') {
+        if (typeString.toLowerCase().includes('defend')) {
             return MobType.DEFENDING;
         }
 

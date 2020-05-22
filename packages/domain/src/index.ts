@@ -6,6 +6,7 @@ export { Acres } from './classes/acres';
 export { ArMod } from './classes/ar-mod';
 export { BaseTech } from './classes/base-tech';
 export { BaseTechnologies } from './classes/base-technologies';
+export { BattleReport } from './classes/battle-report';
 export { CompanyName } from './classes/company-name';
 export { DriveByReport } from './classes/drive-by-report';
 export { Development } from './classes/development';
