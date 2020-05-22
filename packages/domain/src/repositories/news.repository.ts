@@ -7,16 +7,18 @@ import { CompanyName } from '../classes/company-name';
 import { Mob } from '../classes/mob';
 import { NewsReport } from '../classes/news-report';
 import { PointInTime } from '../classes/point-in-time';
+import { Recall } from '../classes/recall';
 import { Ticks } from '../classes/ticks';
 import { MobDirection } from '../constants/mob-direction.constant';
 import { MobType } from '../constants/mob-type.constant';
 import { INewsContent } from '../interfaces/news-content.interface';
 
 export class NewsRepository {
-    private static readonly OUTGOING_MOB_PATTERN: RegExp = /You sent [0-9,]+ employees to (attack|defend) ([A-z0-9\s-_|.'{},=]+ \[[0-9]{1,4}]), they are set to arrive in (\d+) ticks./;
-    private static readonly INCOMING_MOB_PATTERN: RegExp = /News from your sources is that in (\d+) ticks, [\d,]+ people from ([A-z0-9\s-_|.'{},=]+? \[[0-9]{1,4}]) will arrive to (attack|defend) you./;
-    private static readonly STEALTH_MOB_PATTERN: RegExp = /A stealth mob has been detected, ETA now (\d+) ticks, [\d,]+ currently visible. Mob sent from ([A-z0-9\s-_|.'{},=]+? \[[0-9]{1,4}]) to (defend|attack) you./;
+    private static readonly OUTGOING_MOB_PATTERN: RegExp = /You sent [0-9,]+ employees to (attack|defend) ([A-z0-9\s-_|.'{},=]+ \[[0-9]{1,4}]), they are set to arrive in (\d+) ticks/;
+    private static readonly INCOMING_MOB_PATTERN: RegExp = /News from your sources is that in (\d+) ticks, [\d,]+ people from ([A-z0-9\s-_|.'{},=]+? \[[0-9]{1,4}]) will arrive to (attack|defend) you/;
+    private static readonly STEALTH_MOB_PATTERN: RegExp = /A stealth mob has been detected, ETA now (\d+) ticks, [\d,]+ currently visible\. Mob sent from ([A-z0-9\s-_|.'{},=]+? \[[0-9]{1,4}]) to (defend|attack) you/;
     private static readonly BATTLE_REPORT_PATTERN: RegExp = /Battle Report - (Attacking|Defending) ([A-z0-9\s-_|.'{},=]+ \[[0-9]{1,4}])/;
+    private static readonly RECALL_PATTERN: RegExp = /^Staff Recalled|You recalled [\d,]+ employees that were sent to defend ([A-z0-9\s-_|.'{},=]+ \[[0-9]{1,4}])/
 
     public parseNewsReport(context: CompanyName, headerRow: IDomElement, contentRow: IDomElement): NewsReport {
         const timeOfDayElement: IDomElement = headerRow.querySelector('td:first-child > span') ?? this._throwInvalidPointInTime();
@@ -26,13 +28,34 @@ export class NewsRepository {
     }
 
     private _parseContent(context: CompanyName, contentRow: IDomElement): Maybe<INewsContent> {
-        const mob: Maybe<Mob> = this._parseMob(context, contentRow.textContent ?? this._throwInvalidContent());
+        const contentString: string = (contentRow.textContent ?? this._throwInvalidContent()).trim();
+        const mob: Maybe<Mob> = this._parseMob(context, contentString);
 
         if (!isNull(mob)) {
             return mob;
         }
 
+        const recall: Maybe<Recall> = this._parseRecalls(contentString);
+
+        if (!isNull(recall)) {
+            return recall;
+        }
+
         return this._parseBattleReport(contentRow);
+    }
+
+    private _parseRecalls(contentString: string): Maybe<Recall> {
+        const recallMatch: Maybe<RegExpExecArray> = NewsRepository.RECALL_PATTERN.exec(contentString);
+
+        if (isNull(recallMatch)) {
+            return null;
+        }
+
+        if (isNull(recallMatch[1])) {
+            return new Recall();
+        }
+
+        return new Recall(CompanyName.FromString(recallMatch[1]));
     }
 
     private _parseBattleReport(contentRow: IDomElement): Maybe<BattleReport> {
