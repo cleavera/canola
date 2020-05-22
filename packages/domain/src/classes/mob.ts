@@ -10,8 +10,10 @@ export class Mob {
     public eta: Ticks;
     public direction: MobDirection;
     public type: Maybe<MobType>;
+    public sender: CompanyName;
 
-    constructor(target: CompanyName, eta: Ticks, direction: MobDirection, type: Maybe<MobType> = null) {
+    constructor(sender: CompanyName, target: CompanyName, eta: Ticks, direction: MobDirection, type: Maybe<MobType> = null) {
+        this.sender = sender;
         this.target = target;
         this.eta = eta;
         this.direction = direction;

@@ -1,4 +1,4 @@
-import { ArMod, Funds, MobType, Outgoing, OutgoingsRepository, Rank, RankRepository, Score } from '@actoolkit/domain';
+import { ArMod, CompanyName, CompanyNameRepository, Funds, MobType, Outgoing, OutgoingsRepository, Rank, RankRepository, Score } from '@actoolkit/domain';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
@@ -18,8 +18,8 @@ function arModToTrigger(mobScore: Score, targetScore: Score): string {
     return `Min AR modifier to trigger: ${arMod.toString()}`;
 }
 
-async function individualValue(outgoingElement: HTMLElement): Promise<void> {
-    const outgoing: Outgoing = await new OutgoingsRepository().parseOutgoingElement(outgoingElement);
+async function individualValue(outgoingElement: HTMLElement, currentCompany: CompanyName): Promise<void> {
+    const outgoing: Outgoing = await new OutgoingsRepository().parseOutgoingElement(outgoingElement, currentCompany);
     const value: Maybe<Funds> = outgoing.value();
 
     if (isNull(value)) {
@@ -39,12 +39,13 @@ async function individualValue(outgoingElement: HTMLElement): Promise<void> {
 export async function outgoingValueFeature(): Promise<void> {
     const mainPageElement: HTMLElement = document.getElementById('main-page-data') ?? throwIt('No staff information found');
     const outgoingElements: Array<HTMLElement> = Array.from(mainPageElement.querySelectorAll('#Outgoing div'));
+    const currentCompany: CompanyName = await new CompanyNameRepository().getOwn();
 
     if (isNull(outgoingElements)) {
         return;
     }
 
     await Promise.all(outgoingElements.map(async(outgoing: HTMLElement): Promise<void> => {
-        return individualValue(outgoing);
+        return individualValue(outgoing, currentCompany);
     }));
 }

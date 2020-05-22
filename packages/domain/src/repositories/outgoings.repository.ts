@@ -13,6 +13,7 @@ import { Units } from '../classes/units';
 import { MobDirection } from '../constants/mob-direction.constant';
 import { MobType } from '../constants/mob-type.constant';
 import { getRequestService } from '../helpers/get-request-service.helper';
+import { CompanyNameRepository } from './company-name.repository';
 import { UnitsRepository } from './units.repository';
 
 export class OutgoingsRepository {
@@ -38,10 +39,12 @@ export class OutgoingsRepository {
             return null;
         }
 
-        return new Outgoings(await this._parseOutgoingList(outgoingsList));
+        const sender: CompanyName = await new CompanyNameRepository().getOwn();
+
+        return new Outgoings(await this._parseOutgoingList(outgoingsList, sender));
     }
 
-    public async parseOutgoingElement(outgoingElement: IDomElement): Promise<Outgoing> {
+    public async parseOutgoingElement(outgoingElement: IDomElement, sender: CompanyName): Promise<Outgoing> {
         const [, mobDetailsElement = null]: Array<Maybe<IDomElement>> = Array.from(outgoingElement.querySelectorAll('a'));
         let mobDetailsLink: Maybe<string> = null;
 
@@ -49,22 +52,22 @@ export class OutgoingsRepository {
             mobDetailsLink = mobDetailsElement.getAttribute('href');
         }
 
-        return this._parseRow((outgoingElement.textContent ?? this._throwInvalidOutgoing()).trim(), mobDetailsLink);
+        return this._parseRow((outgoingElement.textContent ?? this._throwInvalidOutgoing()).trim(), mobDetailsLink, sender);
     }
 
-    private async _parseOutgoingList(outgoingsList: IDomElement): Promise<Array<Outgoing>> {
+    private async _parseOutgoingList(outgoingsList: IDomElement, sender: CompanyName): Promise<Array<Outgoing>> {
         const rows: Array<IDomElement> = Array.from(outgoingsList.querySelectorAll('div'));
         const mobs: Array<Promise<Outgoing>> = [];
 
         for (const row of rows) {
-            mobs.push(this.parseOutgoingElement(row));
+            mobs.push(this.parseOutgoingElement(row, sender));
         }
 
         return Promise.all(mobs);
     }
 
-    private async _parseRow(row: string, mobDetailsLink: Maybe<string>): Promise<Outgoing> {
-        const mob: Mob = this._parseMobRow(row);
+    private async _parseRow(row: string, mobDetailsLink: Maybe<string>, sender: CompanyName): Promise<Outgoing> {
+        const mob: Mob = this._parseMobRow(row, sender);
         let staff: Maybe<Array<Staff>> = null;
 
         if (!isNull(mobDetailsLink)) {
@@ -96,36 +99,38 @@ export class OutgoingsRepository {
         );
     }
 
-    private _parseMobRow(row: string): Mob {
+    private _parseMobRow(row: string, sender: CompanyName): Mob {
         if (OutgoingsRepository.APPROACHING_MOB_PATTERN.test(row)) {
-            return this._parseApproachingMob(row);
+            return this._parseApproachingMob(row, sender);
         }
 
         if (OutgoingsRepository.RETURNING_MOB_PATTERN.test(row)) {
-            return this._parseReturningMob(row);
+            return this._parseReturningMob(row, sender);
         }
 
         if (OutgoingsRepository.THERE_MOB_PATTERN.test(row)) {
-            return this._parseThereMob(row);
+            return this._parseThereMob(row, sender);
         }
 
         this._throwInvalidOutgoing(row);
     }
 
-    private _parseReturningMob(mobString: string): Mob {
+    private _parseReturningMob(mobString: string, sender: CompanyName): Mob {
         const [, , targetString, etaString]: RegExpExecArray = OutgoingsRepository.RETURNING_MOB_PATTERN.exec(mobString) ?? this._throwInvalidOutgoing(mobString);
 
         return new Mob(
+            sender,
             CompanyName.FromString(targetString),
             Ticks.FromString(etaString),
             MobDirection.RETURNING
         );
     }
 
-    private _parseApproachingMob(mobString: string): Mob {
+    private _parseApproachingMob(mobString: string, sender: CompanyName): Mob {
         const [, , targetString, etaString, typeString]: RegExpExecArray = OutgoingsRepository.APPROACHING_MOB_PATTERN.exec(mobString) ?? this._throwInvalidOutgoing(mobString);
 
         return new Mob(
+            sender,
             CompanyName.FromString(targetString),
             Ticks.FromString(etaString),
             MobDirection.APPROACHING,
@@ -133,10 +138,11 @@ export class OutgoingsRepository {
         );
     }
 
-    private _parseThereMob(mobString: string): Mob {
+    private _parseThereMob(mobString: string, sender: CompanyName): Mob {
         const [, , targetString, typeString, etaString]: RegExpExecArray = OutgoingsRepository.THERE_MOB_PATTERN.exec(mobString) ?? this._throwInvalidOutgoing(mobString);
 
         return new Mob(
+            sender,
             CompanyName.FromString(targetString),
             Ticks.FromString(etaString),
             MobDirection.THERE,
