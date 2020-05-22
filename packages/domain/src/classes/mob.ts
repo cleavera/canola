@@ -1,4 +1,5 @@
 import { Maybe } from '@cleavera/types';
+
 import { MobDirection } from '../constants/mob-direction.constant';
 import { MobType } from '../constants/mob-type.constant';
 import { CompanyName } from './company-name';

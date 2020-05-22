@@ -1,17 +1,17 @@
-import { CurrentPointInTimeRepository, PointInTime, Ticks } from '@actoolkit/domain';
+import { CurrentPointInTimeRepository, NewsRepository, NewsReport, PointInTime, Ticks } from '@actoolkit/domain';
+
 import { PositiveTextComponentFactory, throwIt } from '../../shared';
 
 export async function ticksSinceFeature(): Promise<void> {
     const mainPageElement: HTMLElement = document.getElementById('main-page-data') ?? throwIt('No news information found');
-    const newReportsTable: HTMLElement = mainPageElement.querySelector('table:nth-of-type(2)') ?? throwIt('No news information found');
-    const newsHeaderRows: Array<HTMLTableRowElement> = Array.from(newReportsTable.querySelectorAll('tr + tr:nth-child(odd)')); // The headers are the odd rows, skip the first row
+    const newsRows: ArrayLike<HTMLElement> = mainPageElement.querySelectorAll('table:nth-of-type(2) > tbody > tr') ?? throwIt('No news information found');
     const currentPointInTime: PointInTime = await new CurrentPointInTimeRepository().get();
+    const newsRepository: NewsRepository = await new NewsRepository();
 
-    for (const row of newsHeaderRows) {
-        const timeOfDayElement: HTMLElement = row.querySelector('td:first-child > span') ?? throwIt('Invalid date row');
-        const pointInTime: PointInTime = PointInTime.FromDateString(timeOfDayElement.textContent ?? throwIt('Invalid date cell'));
-        const tickDifference: Ticks = PointInTime.Subtract(currentPointInTime, pointInTime);
-        const timeOfDayCell: HTMLElement = timeOfDayElement.parentElement ?? throwIt('Invalid date cell');
+    for (let x = 2; x < newsRows.length; x += 2) {
+        const report: NewsReport = newsRepository.parseNewsReport(newsRows[x], newsRows[x + 1]);
+        const tickDifference: Ticks = PointInTime.Subtract(currentPointInTime, report.time);
+        const timeOfDayCell: ChildNode = newsRows[x].firstElementChild ?? throwIt('Invalid date cell');
         let output: string = `${tickDifference.ticks.toLocaleString('en')} ticks ago.`;
 
         if (tickDifference.ticks === 0) {
