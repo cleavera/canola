@@ -27,6 +27,14 @@ export class NewsRepository {
         return new NewsReport(pointInTime, this._parseContent(context, contentRow));
     }
 
+    public isBattle(report: NewsReport): report is NewsReport<BattleReport> {
+        return report.content instanceof BattleReport;
+    }
+
+    public isMob(report: NewsReport): report is NewsReport<Mob> {
+        return report.content instanceof Mob;
+    }
+
     private _parseContent(context: CompanyName, contentRow: IDomElement): Maybe<INewsContent> {
         const contentString: string = (contentRow.textContent ?? this._throwInvalidContent()).trim();
         const mob: Maybe<Mob> = this._parseMob(context, contentString);
