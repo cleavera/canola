@@ -21,7 +21,7 @@ export class NewsRepository {
     private static readonly RECALL_PATTERN: RegExp = /^Staff Recalled|You recalled [\d,]+ employees that were sent to defend ([A-z0-9\s-_|.'{},=]+ \[[0-9]{1,4}])/
 
     public parseNewsReport(context: CompanyName, headerRow: IDomElement, contentRow: IDomElement): NewsReport {
-        const timeOfDayElement: IDomElement = headerRow.querySelector('td:first-child > span') ?? this._throwInvalidPointInTime();
+        const timeOfDayElement: IDomElement = headerRow.querySelector('td:first-child') ?? this._throwInvalidPointInTime();
         const pointInTime: PointInTime = PointInTime.FromDateString(timeOfDayElement.textContent ?? this._throwInvalidPointInTime());
 
         return new NewsReport(pointInTime, this._parseContent(context, contentRow));
@@ -51,7 +51,7 @@ export class NewsRepository {
             return null;
         }
 
-        if (isNull(recallMatch[1])) {
+        if (isNull(recallMatch[1] ?? null)) {
             return new Recall();
         }
 

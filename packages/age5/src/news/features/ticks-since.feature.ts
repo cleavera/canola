@@ -11,7 +11,6 @@ export async function ticksSinceFeature(): Promise<void> {
 
     for (let x = 2; x < newsRows.length - 2; x += 2) {
         const report: NewsReport = newsRepository.parseNewsReport(currentCompany, newsRows[x], newsRows[x + 1]);
-        console.log(report);
         const tickDifference: Ticks = PointInTime.Subtract(currentPointInTime, report.time);
         const timeOfDayCell: ChildNode = newsRows[x].firstElementChild ?? throwIt('Invalid date cell');
         let output: string = `${tickDifference.ticks.toLocaleString('en')} ticks ago.`;
