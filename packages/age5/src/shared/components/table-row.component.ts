@@ -5,5 +5,7 @@ export function TableRowComponentFactory(...cells: Array<HTMLTableCellElement>):
         row.appendChild(cell);
     });
 
+    row.style.verticalAlign = 'top';
+
     return row;
 }

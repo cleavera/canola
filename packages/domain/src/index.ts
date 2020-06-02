@@ -1,4 +1,5 @@
 export { CropType } from './constants/crop-type.constant';
+export { MobDirection } from './constants/mob-direction.constant';
 export { MobType } from './constants/mob-type.constant';
 export { Season } from './constants/season.constant';
 
@@ -19,6 +20,7 @@ export { Insurance } from './classes/insurance';
 export { InsuranceClaims } from './classes/insurance-claims';
 export { Land } from './classes/land';
 export { Mob } from './classes/mob';
+export { MobNews } from './classes/mob-news';
 export { NewsReport } from './classes/news-report';
 export { Outgoing } from './classes/outgoing';
 export { Outgoings } from './classes/outgoings';

@@ -1,5 +1,5 @@
 import { BattleReport } from '../classes/battle-report';
-import { Mob } from '../classes/mob';
+import { MobNews } from '../classes/mob-news';
 import { Recall } from '../classes/recall';
 
-export type INewsContent = Mob | BattleReport | Recall;
+export type INewsContent = MobNews | BattleReport | Recall;

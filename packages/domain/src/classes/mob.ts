@@ -6,6 +6,8 @@ import { CompanyName } from './company-name';
 import { Ticks } from './ticks';
 
 export class Mob {
+    public static readonly THERE_FOR_TICKS: Ticks = new Ticks(3);
+
     public target: CompanyName;
     public eta: Ticks;
     public direction: MobDirection;
