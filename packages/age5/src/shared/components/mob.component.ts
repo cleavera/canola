@@ -17,14 +17,14 @@ function getSecondPart(mob: MobNews): string {
 
     if (mob.mob.direction === MobDirection.THERE) {
         if (mob.mob.type === MobType.DEFENDING) {
-            return ` defending for ${ticks}`;
+            return ` defending for ${ticks}.`;
         }
 
-        return ` attacking for ${ticks}`;
+        return ` attacking for ${ticks}.`;
     }
 
     if (mob.mob.direction === MobDirection.RETURNING) {
-        return ` eta ${ticks}`;
+        return ` eta ${ticks}.`;
     }
 
     if (mob.mob.type === MobType.DEFENDING) {

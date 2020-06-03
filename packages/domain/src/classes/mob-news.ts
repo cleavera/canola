@@ -17,10 +17,10 @@ export class MobNews {
         this.count = count;
         this.originalMob = originalMob;
         this.context = context;
-        this.isOutgoing = originalMob.sender.id === this.context.id;
+        this.isOutgoing = MobNews._isOutgoing(originalMob, context);
     }
 
-    public static adjustedMob(tickDifference: Ticks, mob: Mob): Maybe<Mob> {
+    public static adjustedMob(tickDifference: Ticks, mob: Mob, context: CompanyName): Maybe<Mob> {
         const etaDifference: Ticks = Ticks.Subtract(mob.eta, tickDifference);
 
         if (etaDifference.ticks > 0) {
@@ -35,7 +35,7 @@ export class MobNews {
 
         const returningEtaDifference: Ticks = Ticks.Add(mob.eta, thereForDifference);
 
-        if (returningEtaDifference.ticks > 0) {
+        if (returningEtaDifference.ticks > 0 && this._isOutgoing(mob, context)) {
             return new Mob(mob.sender, mob.target, returningEtaDifference, MobDirection.RETURNING, mob.type);
         }
 
@@ -43,6 +43,10 @@ export class MobNews {
     }
 
     public static FromOriginalMob(context: CompanyName, count: number, mob: Mob, tickSinceSent: Ticks): MobNews {
-        return new MobNews(context, count, this.adjustedMob(tickSinceSent, mob), mob);
+        return new MobNews(context, count, this.adjustedMob(tickSinceSent, mob, context), mob);
+    }
+
+    private static _isOutgoing(mob: Mob, context: CompanyName): boolean {
+        return mob.sender.id === context.id;
     }
 }

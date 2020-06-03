@@ -36,6 +36,10 @@ export class NewsRepository {
         return report.content instanceof MobNews;
     }
 
+    public isRecall(report: NewsReport): report is NewsReport<Recall> {
+        return report.content instanceof Recall;
+    }
+
     private _parseContent(context: CompanyName, contentRow: IDomElement, ticksSinceReport: Ticks): Maybe<INewsContent> {
         const contentString: string = (contentRow.textContent ?? this._throwInvalidContent()).trim();
         const mob: Maybe<MobNews> = this._parseMob(context, contentString, ticksSinceReport);
@@ -124,7 +128,7 @@ export class NewsRepository {
     }
 
     private _parseCount(countString: string): number {
-        return parseInt(countString.replace(/,/g, ''));
+        return parseInt(countString.replace(/,/g, ''), 10);
     }
 
     private _getMobType(typeString: string): MobType {
