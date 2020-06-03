@@ -1,5 +1,6 @@
 export * from './constants/pages.constant';
 
+export { MobComponentFactory } from './components/mob.component';
 export { NegativeTextComponentFactory } from './components/negative-text.component';
 export { OverlayComponentFactory } from './components/overlay.component';
 export { PositiveTextComponentFactory } from './components/positive-text.component';

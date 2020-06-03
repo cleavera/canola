@@ -1,13 +1,12 @@
-import { ArMod, CompanyName, MobNews, MobType, NewsReport, NewsRepository, PointInTime, Ticks } from '@actoolkit/domain';
-import { Maybe } from '@cleavera/types';
+import { ArMod, CompanyName, CurrentPointInTimeRepository, MobNews, MobType, NewsReport, NewsRepository, PointInTime, Ticks } from '@actoolkit/domain';
+import { IDict, Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
-import { insertAfter, PositiveTextComponentFactory, TableCellComponentFactory, TableRowComponentFactory, TextComponentFactory, throwIt } from '../../shared';
-import { MobComponentFactory } from '../../shared/components/mob.component';
+import { insertAfter, MobComponentFactory, PositiveTextComponentFactory, TableCellComponentFactory, TableRowComponentFactory, TextComponentFactory, throwIt } from '../../shared';
 import { isSpyReport } from '../helpers/is-spy-report.helper';
 
 export async function spyReportFeature(): Promise<void> {
-    const mainPage: HTMLDivElement = getDoc().querySelector('#main-page-data') ?? throwIt('Cannot find main page data');
+    const mainPage: HTMLDivElement = document.querySelector('#main-page-data') ?? throwIt('Cannot find main page data');
 
     if (!isSpyReport(mainPage)) {
         return;
@@ -17,16 +16,16 @@ export async function spyReportFeature(): Promise<void> {
     const reportElement: HTMLElement = mainPage.querySelector(':scope > div > table:nth-child(2)') ?? throwIt('No spy reports found');
     const reportHeader: HTMLElement = reportElement.querySelector(':scope > tbody > tr:first-child') ?? throwIt('No spy reports found');
     const reportRows: ArrayLike<HTMLElement> = reportElement.querySelectorAll(':scope > tbody > tr + tr') ?? throwIt('No spy reports found'); // Eugh
-    // const currentPointInTime: PointInTime = await new CurrentPointInTimeRepository().get();
+    const currentPointInTime: PointInTime = await new CurrentPointInTimeRepository().get();
     // const currentPointInTime: PointInTime = PointInTime.FromDateString('Tue 22nd Aug, year 3. Noon');
-    const currentPointInTime: PointInTime = PointInTime.FromDateString('Mon 18th Sep, year 3. Afternoon');
+    // const currentPointInTime: PointInTime = PointInTime.FromDateString('Mon 18th Sep, year 3. Afternoon');
     const newsRepository: NewsRepository = new NewsRepository();
     const target: CompanyName = CompanyName.FromString(targetElement.textContent ?? throwIt('Could not find target'));
     let arMod: Maybe<ArMod> = null;
     const incomings: Array<MobNews> = [];
     const outgoings: Array<MobNews> = [];
-    const recalls: Maybe<Array<Ticks>> = [];
     let recallCount: number = 0;
+    const defenders: IDict<CompanyName> = {};
 
     for (let x = 0; x < reportRows.length - 2; x += 2) {
         const report: NewsReport = newsRepository.parseNewsReport(target, reportRows[x], reportRows[x + 1], currentPointInTime);
@@ -40,6 +39,20 @@ export async function spyReportFeature(): Promise<void> {
 
         if (newsRepository.isMob(report)) {
             const mob: MobNews = report.content;
+
+            if (mob.originalMob.type === MobType.DEFENDING) {
+                let defender;
+
+                if (mob.isOutgoing) {
+                    defender = mob.originalMob.target;
+                } else {
+                    defender = mob.originalMob.sender;
+                }
+
+                if (defender.id !== '1') {
+                    defenders[defender.id] = (mob.originalMob.sender);
+                }
+            }
 
             if (!isNull(mob.mob)) {
                 // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -61,10 +74,6 @@ export async function spyReportFeature(): Promise<void> {
             }
         }
 
-        if (newsRepository.isRecall(report)) {
-            recalls.push(tickDifference);
-        }
-
         const timeOfDayCell: ChildNode = reportRows[x].firstElementChild ?? throwIt('Invalid date cell');
         let output: string = `${tickDifference.ticks.toLocaleString('en')} ticks ago.`;
 
@@ -81,10 +90,14 @@ export async function spyReportFeature(): Promise<void> {
         arMod = ArMod.Min();
     }
 
+    const defendingIds: Array<string> = Object.keys(defenders);
+
     const summaryHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Summary')], 2);
     const incomingHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Incoming')]);
     const outgoingHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Outgoing')]);
     const recallCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory(`Recalls: ${recallCount.toLocaleString('en')}`)], 2);
+    const defendersLabelCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory(`Defenders [${defendingIds.length} total]`)], 2);
+    const defendersCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory(defendingIds.join(', '))], 2);
 
     const incomingCell: HTMLTableCellElement = TableCellComponentFactory(incomings.map((incoming: MobNews) => {
         return MobComponentFactory(incoming);
@@ -98,6 +111,8 @@ export async function spyReportFeature(): Promise<void> {
     const summaryHeaderRow: HTMLTableRowElement = TableRowComponentFactory(summaryHeaderCell);
     const mobRow: HTMLTableRowElement = TableRowComponentFactory(incomingCell, outgoingCell);
     const recallsRow: HTMLTableRowElement = TableRowComponentFactory(recallCell);
+    const defendersRow: HTMLTableRowElement = TableRowComponentFactory(defendersCell);
+    const defendersHeaderRow: HTMLTableRowElement = TableRowComponentFactory(defendersLabelCell);
 
     const arModCell: HTMLTableCellElement = TableCellComponentFactory([
         TextComponentFactory('Max ar modifier: '),
@@ -107,17 +122,24 @@ export async function spyReportFeature(): Promise<void> {
     const arModRow: HTMLTableRowElement = TableRowComponentFactory(arModCell);
     arModRow.classList.add('lightbackground');
     mobHeaderRow.classList.add('lightbackground');
-    // recallsRow.classList.add('nonebackground');
+    defendersRow.classList.add('nonebackground');
+    recallsRow.classList.add('lightbackground');
     summaryHeaderRow.classList.add('header');
+    defendersHeaderRow.classList.add('header');
+
+    summaryHeaderRow.style.textAlign = 'center';
+    defendersHeaderRow.style.textAlign = 'center';
 
     (reportHeader.parentElement ?? throwIt('Cannot append to report')).insertBefore(summaryHeaderRow, reportHeader);
 
+    insertAfter(defendersRow, summaryHeaderRow);
+    insertAfter(defendersHeaderRow, summaryHeaderRow);
     insertAfter(arModRow, summaryHeaderRow);
-    insertAfter(recallsRow, summaryHeaderRow);
+    // insertAfter(recallsRow, summaryHeaderRow);
     insertAfter(mobRow, summaryHeaderRow);
     insertAfter(mobHeaderRow, summaryHeaderRow);
 
-    (document.querySelector('#main-page-data') ?? throwIt('Cannot find main page data')).appendChild(reportElement);
+    // (document.querySelector('#main-page-data') ?? throwIt('Cannot find main page data')).appendChild(reportElement);
 }
 
 let content = `<div id="main-page-data">
