@@ -28,11 +28,11 @@ export class WorkforceRepository {
     }
 
     private async _parseWorkforceTable(workforceTable: IDomElement): Promise<Workforce> {
-        const rows: ArrayLike<IDomElement> = workforceTable.querySelectorAll('tr');
+        const rows: Array<IDomElement> = Array.from(workforceTable.querySelectorAll('tr[title]'));
         const staffPromises: Array<Promise<Staff>> = [];
 
-        for (let x = 2; x < rows.length - 4; x++) {
-            staffPromises.push(this._parseStaffRow(rows[x]));
+        for (const row of rows) {
+            staffPromises.push(this._parseStaffRow(row));
         }
 
         const staff: Array<Staff> = await Promise.all(staffPromises);
