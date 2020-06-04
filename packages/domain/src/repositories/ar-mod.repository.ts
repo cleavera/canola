@@ -9,9 +9,10 @@ export class ArModRepository {
     public async getOwn(): Promise<Maybe<ArMod>> {
         const request: IRequest = getRequestService();
         const response: IDomElement = await request.get('/overview.php');
+        const arModTitleCellElement: Maybe<IDomElement> = response.querySelector('#Misc tr:nth-of-type(4) td:nth-of-type(1)') ?? null;
         const arModCellElement: Maybe<IDomElement> = response.querySelector('#Misc tr:nth-of-type(4) td:nth-of-type(2)') ?? null;
 
-        if (isNull(arModCellElement)) {
+        if (!this._hasArMod(arModTitleCellElement, arModCellElement)) {
             return null;
         }
 
@@ -20,5 +21,11 @@ export class ArModRepository {
 
     private _throwNoArModInformationFound(): never {
         throw new Error('Could not find AR modifier information');
+    }
+
+    private _hasArMod(arModTitleCellElement: Maybe<IDomElement>, arModCellElement: Maybe<IDomElement>): boolean {
+        return !(
+            isNull(arModTitleCellElement) || isNull(arModCellElement)
+        ) && (arModTitleCellElement.textContent ?? this._throwNoArModInformationFound()).includes('AR Modifier');
     }
 }

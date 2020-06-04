@@ -26,7 +26,13 @@ export class ArMod {
     }
 
     public static FromString(str: string): ArMod {
-        return new ArMod(parseFloat(str) / 100);
+        let mod: number = parseFloat(str) / 100;
+
+        if (isNaN(mod)) {
+            mod = 0;
+        }
+
+        return new ArMod(mod);
     }
 
     public static FromMobRatio(ratio: number): Maybe<ArMod> {
