@@ -90,6 +90,7 @@ export class PointInTime {
     private static _normaliseDateString(dateString: string): string {
         return dateString
             .replace(/Morning time/g, 'Morning')
+            .replace(/Mon, 1st Mar/g, 'Mon 1st Mar')
             .replace(/April Fools Day/g, 'Unk 1 Apr')
             .replace(/Valentines Day/g, 'Unk 14 Feb')
             .replace(/Christmas Eve/g, 'Unk 24 Dec')
