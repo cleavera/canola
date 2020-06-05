@@ -6,7 +6,7 @@ declare var browser: any;
 
 try {
     INJECTOR.setValue(CACHE, new MemoryCache(60000));
-    INJECTOR.setValue(REQUEST, new BrowserRequest('http://www.bushtarion.com'));
+    INJECTOR.setValue(REQUEST, new BrowserRequest(`http://${window.location.host}`));
 
     const age6Button: HTMLButtonElement = document.createElement('button');
 
