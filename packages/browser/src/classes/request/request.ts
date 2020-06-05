@@ -1,14 +1,14 @@
-import { IDomElement, IRequest } from '@actoolkit/core';
-
-import { Cache } from '../cache/cache';
+import { CACHE, ICache, IDomElement, INJECTOR, IRequest } from '@actoolkit/core';
 
 export class BrowserRequest implements IRequest {
     private readonly _baseURL: string;
-    private readonly _cache: Cache;
+    private readonly _cache: ICache;
 
     constructor(baseUrl: string) {
         this._baseURL = baseUrl;
-        this._cache = new Cache(60000); // One minute
+        this._cache = INJECTOR.get<ICache>(CACHE) ?? ((): never => {
+            throw new Error('Cannot get cache');
+        })();
     }
 
     public async get(url: string): Promise<IDomElement> {

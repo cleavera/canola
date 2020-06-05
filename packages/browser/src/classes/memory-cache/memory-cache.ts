@@ -1,18 +1,19 @@
+import { ICache, ICacheKey } from '@actoolkit/core';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
 import { CacheItem } from '../cache-item/cache-item';
 
-export class Cache {
-    private readonly _cache: Map<string, CacheItem>;
+export class MemoryCache implements ICache {
+    private readonly _cache: Map<ICacheKey, CacheItem>;
     private readonly _defaultLifespan: number;
 
     constructor(defaultLifespan: number) {
         this._defaultLifespan = defaultLifespan;
-        this._cache = new Map<string, CacheItem>();
+        this._cache = new Map<ICacheKey, CacheItem>();
     }
 
-    public has(key: string, maxAge: Maybe<number> = null): boolean {
+    public has(key: ICacheKey, maxAge: Maybe<number> = null): boolean {
         const cacheItem: Maybe<CacheItem> = this._cache.get(key) ?? null;
 
         if (isNull(cacheItem)) {
@@ -26,17 +27,17 @@ export class Cache {
         return (cacheItem.updated + maxAge) > Date.now();
     }
 
-    public async get(key: string): Promise<string> {
+    public get<T = unknown>(key: ICacheKey): T {
         const cacheEntry: Maybe<CacheItem> = this._cache.get(key) ?? null;
 
         if (isNull(cacheEntry)) {
-            throw new Error(`Missing cache entry for ${key}`);
+            throw new Error(`Missing cache entry for ${key.toString()}`);
         }
 
         return cacheEntry.value;
     }
 
-    public set(key: string, value: Promise<string>): void {
+    public set(key: ICacheKey, value: unknown, cacheExpiry: number = this._defaultLifespan): void {
         const cacheEntry: Maybe<CacheItem> = this._cache.get(key) ?? null;
 
         if (!isNull(cacheEntry)) {
@@ -47,7 +48,7 @@ export class Cache {
 
         this._cache.set(key, new CacheItem(value, () => {
             this._cache.delete(key);
-        }, this._defaultLifespan));
+        }, cacheExpiry));
     }
 
     public clear(): void {

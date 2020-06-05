@@ -1,10 +1,11 @@
-import { IDomElement, IRequest } from '@actoolkit/core';
+import { ICache, IDomElement, IRequest } from '@actoolkit/core';
 
 import { BaseTech } from '../classes/base-tech';
 import { BaseTechnologies } from '../classes/base-technologies';
 import { Funds } from '../classes/funds';
 import { Ticks } from '../classes/ticks';
 import { DevelopmentType } from '../constants/development-type.constant';
+import { getCacheService } from '../helpers/get-cache-service.helper';
 import { getRequestService } from '../helpers/get-request-service.helper';
 
 export class BaseTechnologiesRepository {
@@ -14,7 +15,23 @@ export class BaseTechnologiesRepository {
         DevelopmentType.ALLIANCE
     ];
 
+    private static readonly TECH_CACHE_KEY: symbol = Symbol('Base technologies cache key');
+
+    private readonly _cache: ICache;
+
+    constructor() {
+        this._cache = getCacheService();
+    }
+
     public async get(): Promise<BaseTechnologies> {
+        if (!this._cache.has(BaseTechnologiesRepository.TECH_CACHE_KEY)) {
+            this._cache.set(BaseTechnologiesRepository.TECH_CACHE_KEY, this._cachedGet(), 10000);
+        }
+
+        return this._cache.get(BaseTechnologiesRepository.TECH_CACHE_KEY);
+    }
+
+    private async _cachedGet(): Promise<BaseTechnologies> {
         const request: IRequest = getRequestService();
         const response: IDomElement = await request.get('/manual/techs.php');
         const mainPageElement: IDomElement = response.querySelector('#main-page-data') ?? this._throwNoTechInformationFound();

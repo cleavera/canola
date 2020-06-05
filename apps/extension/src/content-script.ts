@@ -1,10 +1,11 @@
 import { age5 } from '@actoolkit/age5';
-import { BrowserRequest } from '@actoolkit/browser';
-import { INJECTOR, REQUEST } from '@actoolkit/core';
+import { MemoryCache, BrowserRequest } from '@actoolkit/browser';
+import { CACHE, INJECTOR, REQUEST } from '@actoolkit/core';
 
 declare var browser: any;
 
 try {
+    INJECTOR.setValue(CACHE, new MemoryCache(60000));
     INJECTOR.setValue(REQUEST, new BrowserRequest('http://www.bushtarion.com'));
 
     const age6Button: HTMLButtonElement = document.createElement('button');

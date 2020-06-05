@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@cleavera/types": "^1.0.3",
+    "@cleavera/utils": "^4.0.0",
     "avaritia": "^1.0.0"
   },
   "files": [

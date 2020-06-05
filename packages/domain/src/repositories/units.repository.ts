@@ -1,12 +1,29 @@
-import { IDomElement, IRequest } from '@actoolkit/core';
+import { ICache, IDomElement, IRequest } from '@actoolkit/core';
 
 import { Funds } from '../classes/funds';
 import { UnitStats } from '../classes/unit-stats';
 import { Units } from '../classes/units';
+import { getCacheService } from '../helpers/get-cache-service.helper';
 import { getRequestService } from '../helpers/get-request-service.helper';
 
 export class UnitsRepository {
+    private static readonly UNITS_CACHE_KEY: symbol = Symbol('Base technologies cache key');
+
+    private readonly _cache: ICache;
+
+    constructor() {
+        this._cache = getCacheService();
+    }
+
     public async get(): Promise<Units> {
+        if (!this._cache.has(UnitsRepository.UNITS_CACHE_KEY)) {
+            this._cache.set(UnitsRepository.UNITS_CACHE_KEY, this._cachedGet(), 10000);
+        }
+
+        return this._cache.get(UnitsRepository.UNITS_CACHE_KEY);
+    }
+
+    private async _cachedGet(): Promise<Units> {
         const request: IRequest = getRequestService();
         const response: IDomElement = await request.get('/manual/units.php');
         const mainPageElement: IDomElement = response.querySelector('#main-page-data') ?? this._throwNoUnitStatsFound();
