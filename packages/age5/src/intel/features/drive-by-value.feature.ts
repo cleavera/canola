@@ -1,6 +1,6 @@
 import { CurrentPointInTimeRepository, DriveByReport, Income, IntelRepository, PointInTime } from '@actoolkit/domain';
 
-import { OverlayComponentFactory, PositiveTextComponentFactory, throwIt } from '../../shared';
+import { OverlayComponentFactory, PositiveTextComponentFactory, SeedInformationComponentFactory, throwIt } from '../../shared';
 import { isDriveByReport } from '../helpers/is-drive-by-report.helper';
 
 async function driveByReport(intelRepository: IntelRepository, targetElement: HTMLElement, reportElement: HTMLElement): Promise<void> {
@@ -18,11 +18,7 @@ async function driveByReport(intelRepository: IntelRepository, targetElement: HT
     `));
 
     plantTitleCell.appendChild(PositiveTextComponentFactory(`[${report.stocks.plants.sold()}]`, 'Value'));
-    seedTitleCell.appendChild(OverlayComponentFactory('Value', `
-        Sold: ${report.stocks.seeds.sold().toString()}</br>
-        Planted: ${report.stocks.seeds.plants().sold().toString()}</br>
-        Gardeners required: ${report.stocks.seeds.gardeners().toLocaleString('en')}
-    `));
+    seedTitleCell.appendChild(SeedInformationComponentFactory(report.stocks.seeds));
 }
 
 export async function driveByValueFeature(): Promise<void> {
