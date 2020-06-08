@@ -1,6 +1,7 @@
 export function OverlayComponentFactory(title: string, description: string): HTMLButtonElement {
     const button: HTMLButtonElement = document.createElement('button');
 
+    button.type = 'button';
     button.textContent = 'i';
     button.title = `${title}{}${description}`;
     button.style.cssText = `

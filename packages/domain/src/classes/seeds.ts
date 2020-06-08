@@ -55,4 +55,22 @@ export class Seeds implements ICropTypeMap<number> {
     public gardeners(): number {
         return Math.ceil(this.total / Seeds.GARDENERS_PER_SEED);
     }
+
+    public static FilterForCropType(seeds: Seeds, cropType: CropType): Seeds {
+        const filteredSeeds: number = seeds[cropType];
+
+        if (cropType === CropType.TREE) {
+            return new Seeds(filteredSeeds, 0, 0, 0);
+        }
+
+        if (cropType === CropType.BUSH) {
+            return new Seeds(0, filteredSeeds, 0, 0);
+        }
+
+        if (cropType === CropType.FLOWER) {
+            return new Seeds(0, 0, filteredSeeds, 0);
+        }
+
+        return new Seeds(0, 0, 0, filteredSeeds);
+    }
 }
