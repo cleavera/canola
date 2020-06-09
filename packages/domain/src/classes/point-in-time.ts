@@ -98,6 +98,7 @@ export class PointInTime {
             .replace(/Boxing Day/g, 'Unk 26 Dec')
             .replace(/New Years Eve/, 'Unk 31 Dec')
             .replace(/New Years Day/, 'Unk 1 Jan')
+            .replace(/Day of Worship/, 'Wed 28th Feb')
             .replace(/International Comma of Angst Day/, 'Unk 4 Aug')
             .replace(/Bonfire Night/, 'Unk 5 Nov')
             .replace(/Halloween/, 'Unk 31 Oct')

@@ -1,4 +1,4 @@
-import { IDomElement } from '@actoolkit/core';
+import { IDomElement, IRequest } from '@actoolkit/core';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
@@ -15,6 +15,7 @@ import { UnitStats } from '../classes/unit-stats';
 import { Units } from '../classes/units';
 import { Workforce } from '../classes/workforce';
 import { CropType } from '../constants/crop-type.constant';
+import { getRequestService } from '../helpers/get-request-service.helper';
 import { ICropTypeMap } from '../interfaces/crop-type-map.interface';
 import { UnitsRepository } from './units.repository';
 
@@ -26,6 +27,19 @@ export class IntelRepository {
     constructor() {
         this._unitsRepository = new UnitsRepository();
         this._units = null;
+    }
+
+    public async driveBy(target: CompanyName): Promise<DriveByReport> {
+        const request: IRequest = getRequestService();
+        const response: IDomElement = await request.post('/intelligence.php', {
+            CK: await this._getIntelCkValue(),
+            IntelType: 'Drive',
+            Target: target.id
+        });
+
+        const tableElements: ArrayLike<IDomElement> = response.querySelectorAll('#main-page-data > table');
+
+        return this.parseDriveBy(tableElements[0], tableElements[1]);
     }
 
     public async parseDriveBy(targetTable: IDomElement, driveByReportTable: IDomElement): Promise<DriveByReport> {
@@ -59,6 +73,15 @@ export class IntelRepository {
         const workforce: Workforce = new Workforce(await Promise.all(staff));
 
         return new HackReport(target, workforce);
+    }
+
+    private async _getIntelCkValue(): Promise<string> {
+        const request: IRequest = getRequestService();
+        const response: IDomElement = await request.get('/intelligence.php');
+
+        const ckField: IDomElement = response.querySelector('#main-page-data form[action="intelligence.php"] input[name=CK i]');
+
+        return ckField.getAttribute('value') ?? this._throwNoIntelCKValue();
     }
 
     private _parseSeeds(treeRow: IDomElement, bushRow: IDomElement, flowerRow: IDomElement, grassRow: IDomElement): Seeds {
@@ -150,6 +173,10 @@ export class IntelRepository {
 
     private _throwNotValidIntelPage(): never {
         throw new Error('Not a valid intel page');
+    }
+
+    private _throwNoIntelCKValue(): never {
+        throw new Error('Could not get a CK value for the intel page');
     }
 
     private _throwNotValidStaff(staffName: string): never {

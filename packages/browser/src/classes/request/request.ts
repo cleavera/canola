@@ -1,4 +1,6 @@
 import { CACHE, ICache, IDomElement, INJECTOR, IRequest } from '@actoolkit/core';
+import { IDict, Maybe } from '@cleavera/types';
+import { isNull } from '@cleavera/utils';
 
 export class BrowserRequest implements IRequest {
     private readonly _baseURL: string;
@@ -12,17 +14,21 @@ export class BrowserRequest implements IRequest {
     }
 
     public async get(url: string): Promise<IDomElement> {
-        const response: string = await this._cachedFetch(url);
+        return this._parseResponse(await this._cachedFetch(url));
+    }
 
+    public async post(url: string, params: IDict<string>): Promise<IDomElement> {
+        const body: string = new URLSearchParams(params).toString();
+
+        return this._parseResponse(await this._fetch(url, body));
+    }
+
+    private _parseResponse(response: string): IDomElement {
         const div: HTMLElement = document.createElement('div');
 
         div.innerHTML = response.replace(/<script ([A-z0-9="/\s.]+)>[\s\S]+?<\/script>/g, '');
 
         return div;
-    }
-
-    public async post(): Promise<string> {
-        throw new Error('Method not implemented.');
     }
 
     private async _cachedFetch(url: string): Promise<string> {
@@ -37,9 +43,18 @@ export class BrowserRequest implements IRequest {
         return request;
     }
 
-    private async _fetch(url: string): Promise<string> {
+    private async _fetch(url: string, body: Maybe<string> = null): Promise<string> {
+        const headers: Headers = new Headers();
+
+        if (!isNull(body)) {
+            headers.append('Content-Type', 'application/x-www-form-urlencoded');
+        }
+
         const response: Response = await fetch(this._getURL(url), {
-            credentials: 'include'
+            method: isNull(body) ? 'GET' : 'POST',
+            credentials: 'include',
+            headers,
+            body
         });
 
         if (!response.ok) {
