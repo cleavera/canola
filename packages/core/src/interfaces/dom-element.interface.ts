@@ -5,5 +5,4 @@ export interface IDomElement {
     querySelector(selector: string): IDomElement;
     getAttribute(attributeName: string): Maybe<string>;
     textContent: Maybe<string>;
-    innerHTML: string;
 }

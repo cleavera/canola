@@ -24,11 +24,11 @@ export class BrowserRequest implements IRequest {
     }
 
     private _parseResponse(response: string): IDomElement {
-        const div: HTMLElement = document.createElement('div');
+        const templateElement: HTMLTemplateElement = document.createElement('template');
 
-        div.innerHTML = response.replace(/<script ([A-z0-9="/\s.]+)>[\s\S]+?<\/script>/g, '');
+        templateElement.innerHTML = response.replace(/<script ([A-z0-9="/\s.]+)>[\s\S]+?<\/script>/g, '');
 
-        return div;
+        return templateElement.content as any;
     }
 
     private async _cachedFetch(url: string): Promise<string> {
