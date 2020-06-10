@@ -4,12 +4,6 @@
     "version": "1.0",
     "description": "Adds features and extensions for the bushtarion web game",
 
-    "background": {
-        "scripts": [
-            "background-script.js"
-        ]
-    },
-
     "permissions": [
         "*://*.bushtarion.com/*"
     ],

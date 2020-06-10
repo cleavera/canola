@@ -34,7 +34,6 @@
   },
   "peerDependencies": {
     "@actoolkit/age5": "*",
-    "@actoolkit/age6": "*",
     "@actoolkit/browser": "*",
     "@actoolkit/core": "*",
     "@actoolkit/domain": "*"
