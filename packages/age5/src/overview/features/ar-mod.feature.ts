@@ -1,8 +1,8 @@
-import { ArMod, ArModRepository, Funds, Rank, RankRepository, Score } from '@actoolkit/domain';
+import { ArMod, ArModRepository, Rank, RankRepository } from '@actoolkit/domain';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
-import { OverlayComponentFactory } from '../../shared';
+import { ArModComponentFactory } from '../../shared';
 
 export async function arModFeature(): Promise<void> {
     const arModCell: Maybe<HTMLElement> = document.querySelector('#Misc tr:nth-of-type(4) td:nth-of-type(1)') ?? null;
@@ -13,10 +13,6 @@ export async function arModFeature(): Promise<void> {
     }
 
     const rank: Rank = await new RankRepository().getOwn();
-    const value: Funds = arMod.triggerValue(rank.score);
 
-    arModCell.appendChild(OverlayComponentFactory('Amount to trigger', `
-        Cost: ${value.toString()}</br>
-        Score: ${Score.ForFunds(value).toString()}
-    `));
+    arModCell.appendChild(ArModComponentFactory(arMod, rank.score));
 }

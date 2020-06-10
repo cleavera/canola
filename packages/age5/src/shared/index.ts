@@ -1,5 +1,6 @@
 export * from './constants/pages.constant';
 
+export { ArModComponentFactory } from './components/ar-mod.component';
 export { MobComponentFactory } from './components/mob.component';
 export { NegativeTextComponentFactory } from './components/negative-text.component';
 export { OverlayComponentFactory } from './components/overlay.component';

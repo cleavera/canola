@@ -1,8 +1,8 @@
-import { ArMod, CompanyName, CurrentPointInTimeRepository, MobNews, MobType, NewsReport, NewsRepository, PointInTime, Ticks } from '@actoolkit/domain';
+import { ArMod, CompanyName, CurrentPointInTimeRepository, MobNews, MobType, NewsReport, NewsRepository, PointInTime, Rank, RankRepository, Ticks } from '@actoolkit/domain';
 import { IDict, Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
-import { insertAfter, MobComponentFactory, PositiveTextComponentFactory, TableCellComponentFactory, TableRowComponentFactory, TextComponentFactory, throwIt } from '../../shared';
+import { ArModComponentFactory, insertAfter, MobComponentFactory, PositiveTextComponentFactory, TableCellComponentFactory, TableRowComponentFactory, TextComponentFactory, throwIt } from '../../shared';
 import { isSpyReport } from '../helpers/is-spy-report.helper';
 
 export async function spyReportFeature(): Promise<void> {
@@ -91,6 +91,7 @@ export async function spyReportFeature(): Promise<void> {
     }
 
     const defendingIds: Array<string> = Object.keys(defenders);
+    const targetRank: Rank = await new RankRepository().getForId(target.id);
 
     const summaryHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Summary')], 2);
     const incomingHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Incoming')]);
@@ -127,7 +128,8 @@ export async function spyReportFeature(): Promise<void> {
 
     const arModCell: HTMLTableCellElement = TableCellComponentFactory([
         TextComponentFactory('Max ar modifier: '),
-        PositiveTextComponentFactory(arMod.toString())
+        PositiveTextComponentFactory(arMod.toString()),
+        ArModComponentFactory(arMod, targetRank.score)
     ], 2);
 
     const arModRow: HTMLTableRowElement = TableRowComponentFactory(arModCell);
