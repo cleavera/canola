@@ -31,6 +31,14 @@ export class IntelRepository {
 
     public async driveBy(target: CompanyName): Promise<DriveByReport> {
         const request: IRequest = getRequestService();
+
+        await request.post('/actions/intelligence_2.php', {
+            drive_by: '1',
+            fly_over: '1',
+            haxor: '0',
+            spy: '0'
+        });
+
         const response: IDomElement = await request.post('/intelligence.php', {
             CK: await this._getIntelCkValue(),
             IntelType: 'Drive',
