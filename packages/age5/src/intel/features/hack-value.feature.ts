@@ -33,7 +33,13 @@ export async function hackValueFeature(): Promise<void> {
         const titleCell: HTMLTableCellElement = reportElement.querySelector('tr:nth-of-type(2) > td') ?? throwIt(`Cannot find title cell for hack report ${index}`);
         const rank: Rank = await rankRepository.getForId(report.target.id);
         const staffValue: Funds = report.staff.value();
-        const hiddenScore: Score = calculateHiddenScore(rank.score, Score.ForFunds(staffValue), Score.ForFunds(driveByReport.stocks.seeds.sold()), Score.ForFunds(driveByReport.stocks.plants.sold()), Score.ForLand(driveByReport.land.acres));
+        const hiddenScore: Score = calculateHiddenScore(
+            rank.score,
+            Score.ForFunds(staffValue),
+            Score.ForFunds(driveByReport.stocks.seeds.sold()),
+            Score.ForFunds(driveByReport.stocks.plants.sold()),
+            Score.ForLand(driveByReport.land.acres)
+        );
 
         titleCell.appendChild(PositiveTextComponentFactory(`[${staffValue.toString()}]`, 'Visible funds'));
         titleCell.appendChild(NegativeTextComponentFactory(`[${hiddenScore.toFunds().toString()}]`, 'Hidden funds'));
