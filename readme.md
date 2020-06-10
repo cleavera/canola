@@ -1,6 +1,6 @@
 # Antisback's bushtarion toolkit
 
-Add on functionality for bushtarion.
+Add on functionality for bushtarion web game (http://www.bushtarion.com).
 
 # The repo
 
