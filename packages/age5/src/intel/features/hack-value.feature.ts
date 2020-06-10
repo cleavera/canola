@@ -3,6 +3,18 @@ import { DriveByReport, Funds, HackReport, IntelRepository, Rank, RankRepository
 import { NegativeTextComponentFactory, OverlayComponentFactory, PositiveTextComponentFactory, throwIt } from '../../shared';
 import { isHackReport } from '../helpers/is-hack-report.helper';
 
+function calculateHiddenScore(score: Score, ...visibleElements: Array<Score>): Score {
+    return visibleElements.reduce((workingScore: Score, element: Score) => {
+        return Score.Subtract(workingScore, element);
+    }, score);
+}
+
+function getPotentialStealth(stealthUnits: Units, hiddenScore: Score): Array<Staff> {
+    return stealthUnits.list.map((unit: UnitStats): Staff => {
+        return Staff.ForValue(hiddenScore.toFunds(), unit);
+    });
+}
+
 export async function hackValueFeature(): Promise<void> {
     const mainPage: HTMLElement = document.getElementById('main-page-data') ?? throwIt('Cannot find main page data');
 
@@ -21,26 +33,10 @@ export async function hackValueFeature(): Promise<void> {
         const titleCell: HTMLTableCellElement = reportElement.querySelector('tr:nth-of-type(2) > td') ?? throwIt(`Cannot find title cell for hack report ${index}`);
         const rank: Rank = await rankRepository.getForId(report.target.id);
         const staffValue: Funds = report.staff.value();
-        const hiddenScore: Score = Score.Subtract(
-            Score.Subtract(
-                Score.Subtract(
-                    Score.Subtract(
-                        rank.score,
-                        Score.ForFunds(staffValue)
-                    ),
-                    Score.ForFunds(driveByReport.stocks.seeds.sold())
-                ),
-                Score.ForFunds(driveByReport.stocks.plants.sold())
-            ),
-            Score.ForLand(driveByReport.land.acres)
-        );
-
-        const potentialStealth: Array<Staff> = stealthUnits.list.map((unit: UnitStats): Staff => {
-            return Staff.ForValue(hiddenScore.toFunds(), unit);
-        });
+        const hiddenScore: Score = calculateHiddenScore(rank.score, Score.ForFunds(staffValue), Score.ForFunds(driveByReport.stocks.seeds.sold()), Score.ForFunds(driveByReport.stocks.plants.sold()), Score.ForLand(driveByReport.land.acres));
 
         titleCell.appendChild(PositiveTextComponentFactory(`[${staffValue.toString()}]`, 'Visible funds'));
         titleCell.appendChild(NegativeTextComponentFactory(`[${hiddenScore.toFunds().toString()}]`, 'Hidden funds'));
-        titleCell.appendChild(OverlayComponentFactory('Potential stealth', `${potentialStealth.join('</br>')}`));
+        titleCell.appendChild(OverlayComponentFactory('Potential stealth', `${getPotentialStealth(stealthUnits, hiddenScore).join('</br>')}`));
     }));
 }

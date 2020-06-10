@@ -29,15 +29,18 @@ export class IntelRepository {
         this._units = null;
     }
 
+    public async buyIntel(driveBy: Maybe<number> = null, flyOver: Maybe<number> = null, haxor: Maybe<number> = null, spy: Maybe<number> = null): Promise<void> {
+        await getRequestService().post('/actions/intelligence_2.php', {
+            drive_by: (driveBy ?? 0).toString(10),
+            fly_over: (flyOver ?? 0).toString(10),
+            haxor: (haxor ?? 0).toString(10),
+            spy: (spy ?? 0).toString(10)
+        });
+    }
+
     public async driveBy(target: CompanyName): Promise<DriveByReport> {
         const request: IRequest = getRequestService();
-
-        await request.post('/actions/intelligence_2.php', {
-            drive_by: '1',
-            fly_over: '1',
-            haxor: '0',
-            spy: '0'
-        });
+        await this.buyIntel(1);
 
         const response: IDomElement = await request.post('/intelligence.php', {
             CK: await this._getIntelCkValue(),
