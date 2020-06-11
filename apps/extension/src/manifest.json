@@ -1,12 +1,18 @@
 {
     "manifest_version": 2,
-    "name": "Antisback's bushtarion toolkit",
+    "name": "Canola toolkit",
     "version": "1.0",
-    "description": "Adds features and extensions for the bushtarion web game",
+    "author": "Anthony Cleaver",
+    "description": "Adds features and extensions for the bushtarion web game (formerly Antisback's bushtarion toolkit)",
 
     "permissions": [
         "*://*.bushtarion.com/*"
     ],
+
+    "icons": {
+        "48": "icons/icon48.png",
+        "96": "icons/icon96.png"
+    },
 
     "content_scripts": [
         {

@@ -38,6 +38,11 @@ const config: Configuration = {
             {
                 from: './src/manifest.json',
                 to: './manifest.json'
+            },
+            {
+                from: './src/icons/*.png',
+                flatten: true,
+                to: './icons/'
             }
         ]),
         new WebpackShellPlugin({
