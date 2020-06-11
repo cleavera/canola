@@ -1,8 +1,10 @@
 import { ICache, IDomElement, IRequest } from '@canola/core';
 
 import { Funds } from '../classes/funds';
+import { UnitAction } from '../classes/unit-action';
 import { UnitStats } from '../classes/unit-stats';
 import { Units } from '../classes/units';
+import { ActionType } from '../constants/action-type.constant';
 import { getCacheService } from '../helpers/get-cache-service.helper';
 import { getRequestService } from '../helpers/get-request-service.helper';
 
@@ -50,7 +52,31 @@ export class UnitsRepository {
         const name: IDomElement = cells[0].querySelector('a') ?? this._throwNoUnitStatsFound();
         const isStealth: boolean = (cells[10].textContent ?? this._throwNoUnitStatsFound()).includes('S');
 
-        return new UnitStats(name.textContent ?? this._throwNoUnitStatsFound(), Funds.FromString(cells[9].textContent ?? this._throwNoUnitStatsFound()), isStealth);
+        return new UnitStats(
+            name.textContent ?? this._throwNoUnitStatsFound(),
+            Funds.FromString(cells[9].textContent ?? this._throwNoUnitStatsFound()),
+            this._parseUnitAction(cells[2], cells[13]),
+            isStealth
+        );
+    }
+
+    private _parseUnitAction(actionTypeCell: IDomElement, actionAmountCell: IDomElement): UnitAction {
+        const actionTypeString: string = (actionTypeCell.textContent ?? this._throwNoUnitStatsFound()).trim();
+        const actionAmount: number = parseFloat((actionAmountCell.textContent ?? this._throwNoUnitStatsFound()).replace(/[^0-9.]/g, ''));
+
+        if (this._isActionTypeINN(actionTypeString)) {
+            return new UnitAction(actionTypeString, actionAmount);
+        }
+
+        return new UnitAction(actionTypeString as ActionType);
+    }
+
+    private _isActionTypeINN(actionTypeString: string): actionTypeString is ActionType {
+        return actionTypeString === ActionType.GARDENS
+            || actionTypeString === ActionType.HARVESTS
+            || ([ActionType.STEALS_LAND, ActionType.STEALS_SEEDS, ActionType.STEALS_PLANTS, ActionType.DESTROYS_FUNDS, ActionType.STEALS_FLAGS]).some((actionType: ActionType) => {
+                return actionTypeString.startsWith(actionType);
+            });
     }
 
     private _throwNoUnitStatsFound(): never {

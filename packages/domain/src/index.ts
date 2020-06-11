@@ -1,3 +1,4 @@
+export { ActionType } from './constants/action-type.constant';
 export { CropType } from './constants/crop-type.constant';
 export { MobDirection } from './constants/mob-direction.constant';
 export { MobType } from './constants/mob-type.constant';
@@ -33,6 +34,7 @@ export { Stocks } from './classes/stocks';
 export { Staff } from './classes/staff';
 export { Tech } from './classes/tech';
 export { Ticks } from './classes/ticks';
+export { UnitAction } from './classes/unit-action';
 export { Units } from './classes/units';
 export { UnitStats } from './classes/unit-stats';
 export { Weather } from './classes/weather';
