@@ -19,6 +19,6 @@ export async function seedValuesFeature(): Promise<void> {
     getValueCell(rows[20]).appendChild(SeedInformationComponentFactory(Seeds.FilterForCropType(stocks.seeds, CropType.GRASS)));
 
     if (processingStocks.seeds.total > 0) {
-        rows[25].children[0].appendChild(SeedInformationComponentFactory(processingStocks.seeds));
+        rows[rows.length - 1].children[0].appendChild(SeedInformationComponentFactory(processingStocks.seeds));
     }
 }

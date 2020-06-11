@@ -50,8 +50,8 @@ export class StocksRepository {
     public async getOwnProcessingStocks(): Promise<Stocks> {
         const request: IRequest = getRequestService();
         const response: IDomElement = await request.get('/maintenance.php');
-        const plantingRow: IDomElement = response.querySelector('#main-page-data form > table tr:nth-child(25)');
-        const growingRow: IDomElement = response.querySelector('#main-page-data form > table tr:nth-child(26)');
+        const plantingRow: IDomElement = response.querySelector('#main-page-data form > table tr:nth-last-child(2)');
+        const growingRow: IDomElement = response.querySelector('#main-page-data form > table tr:nth-last-child(1)');
 
         return new Stocks(this._parseGrowingRow(growingRow), this._parsePlantingRow(plantingRow));
     }
