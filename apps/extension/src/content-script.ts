@@ -1,6 +1,6 @@
-import { age5 } from '@actoolkit/age5';
-import { MemoryCache, BrowserRequest } from '@actoolkit/browser';
-import { CACHE, INJECTOR, REQUEST } from '@actoolkit/core';
+import { age5 } from '@canola/age5';
+import { MemoryCache, BrowserRequest } from '@canola/browser';
+import { CACHE, INJECTOR, REQUEST } from '@canola/core';
 
 try {
     INJECTOR.setValue(CACHE, new MemoryCache(60000));

@@ -1,4 +1,4 @@
-import { Land, LandRepository, Rank, RankRepository, Score, Stocks, StocksRepository, Tech, TechRepository, Workforce, WorkforceRepository } from '@actoolkit/domain';
+import { Land, LandRepository, Rank, RankRepository, Score, Stocks, StocksRepository, Tech, TechRepository, Workforce, WorkforceRepository } from '@canola/domain';
 
 import { OverlayComponentFactory, throwIt } from '../../shared';
 

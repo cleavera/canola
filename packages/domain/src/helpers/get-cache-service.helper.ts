@@ -1,4 +1,4 @@
-import { CACHE, ICache, INJECTOR } from '@actoolkit/core';
+import { CACHE, ICache, INJECTOR } from '@canola/core';
 
 function _throwNoCacheStrategy(): never {
     throw new Error('No cache strategy registered');

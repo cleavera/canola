@@ -1,4 +1,4 @@
-import { DriveByReport, Funds, HackReport, IntelRepository, Rank, RankRepository, Score, Staff, Units, UnitsRepository, UnitStats } from '@actoolkit/domain';
+import { DriveByReport, Funds, HackReport, IntelRepository, Rank, RankRepository, Score, Staff, Units, UnitsRepository, UnitStats } from '@canola/domain';
 
 import { NegativeTextComponentFactory, OverlayComponentFactory, PositiveTextComponentFactory, throwIt } from '../../shared';
 import { isHackReport } from '../helpers/is-hack-report.helper';

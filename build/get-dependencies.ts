@@ -11,7 +11,7 @@ import { join } from 'path';
     const packages: Array<string> = [];
 
     for (const dependency of Object.keys(packageFile.peerDependencies)) {
-        if (dependency.startsWith('@actoolkit')) {
+        if (dependency.startsWith('@canola')) {
             const [, folder] = dependency.split('/');
             packages.push(join(__dirname, '../packages', folder));
         }

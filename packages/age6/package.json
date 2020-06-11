@@ -1,5 +1,5 @@
 {
-    "name": "@actoolkit/age6",
+    "name": "@canola/age6",
     "version": "1.0.0",
     "scripts": {
         "ng": "ng",
@@ -52,9 +52,9 @@
         "typescript": "~3.8.3"
     },
     "peerDependencies": {
-        "@actoolkit/browser": "*",
-        "@actoolkit/core": "*",
-        "@actoolkit/domain": "*"
+        "@canola/browser": "*",
+        "@canola/core": "*",
+        "@canola/domain": "*"
     },
     "files": [
         "dist"

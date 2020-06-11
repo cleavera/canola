@@ -18,7 +18,7 @@ const path_1 = require("path");
     }));
     const packages = [];
     for (const dependency of Object.keys(packageFile.peerDependencies)) {
-        if (dependency.startsWith('@actoolkit')) {
+        if (dependency.startsWith('@canola')) {
             const [, folder] = dependency.split('/');
             packages.push(path_1.join(__dirname, '../packages', folder));
         }

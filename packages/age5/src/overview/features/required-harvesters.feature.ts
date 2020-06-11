@@ -1,4 +1,4 @@
-import { Land, LandRepository, Season } from '@actoolkit/domain';
+import { Land, LandRepository, Season } from '@canola/domain';
 
 import { OverlayComponentFactory } from '../../shared';
 import { LandSeedPlantsModel } from '../models/land-seed-plants.model';

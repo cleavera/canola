@@ -1,4 +1,4 @@
-import { ArMod, CompanyName, CompanyNameRepository, Funds, MobType, Outgoing, OutgoingsRepository, Rank, RankRepository, Score } from '@actoolkit/domain';
+import { ArMod, CompanyName, CompanyNameRepository, Funds, MobType, Outgoing, OutgoingsRepository, Rank, RankRepository, Score } from '@canola/domain';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 

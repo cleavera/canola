@@ -1,4 +1,4 @@
-import { ArMod, ArModRepository, Rank, RankRepository } from '@actoolkit/domain';
+import { ArMod, ArModRepository, Rank, RankRepository } from '@canola/domain';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 

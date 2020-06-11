@@ -1,4 +1,4 @@
-import { CropType, Seeds, Stocks, StocksRepository } from '@actoolkit/domain';
+import { CropType, Seeds, Stocks, StocksRepository } from '@canola/domain';
 
 import { SeedInformationComponentFactory, throwIt } from '../../shared';
 

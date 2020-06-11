@@ -1,4 +1,4 @@
-import { IDomElement } from '@actoolkit/core';
+import { IDomElement } from '@canola/core';
 
 import { throwIt } from '../../shared';
 

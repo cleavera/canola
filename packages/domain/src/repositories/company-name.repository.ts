@@ -1,4 +1,4 @@
-import { IDomElement, IRequest } from '@actoolkit/core';
+import { IDomElement, IRequest } from '@canola/core';
 
 import { CompanyName } from '../classes/company-name';
 import { getRequestService } from '../helpers/get-request-service.helper';

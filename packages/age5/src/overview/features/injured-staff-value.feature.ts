@@ -1,4 +1,4 @@
-import { Injuries, InjuriesRepository, Score } from '@actoolkit/domain';
+import { Injuries, InjuriesRepository, Score } from '@canola/domain';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 

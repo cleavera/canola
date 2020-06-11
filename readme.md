@@ -1,4 +1,4 @@
-# Antisback's bushtarion toolkit
+# Canola (formerly Antisback's bushtarion toolkit)
 
 Add on functionality for bushtarion web game (http://www.bushtarion.com).
 

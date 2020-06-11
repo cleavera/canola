@@ -1,4 +1,4 @@
-import { Funds, Plants, Score, Seeds } from '@actoolkit/domain';
+import { Funds, Plants, Score, Seeds } from '@canola/domain';
 
 import { OverlayComponentFactory } from './overlay.component';
 

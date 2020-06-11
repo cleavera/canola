@@ -1,4 +1,4 @@
-import { Workforce, WorkforceRepository } from '@actoolkit/domain';
+import { Workforce, WorkforceRepository } from '@canola/domain';
 
 import { PositiveTextComponentFactory, throwIt } from '../../shared';
 

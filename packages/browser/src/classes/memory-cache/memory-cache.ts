@@ -1,4 +1,4 @@
-import { ICache, ICacheKey } from '@actoolkit/core';
+import { ICache, ICacheKey } from '@canola/core';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 

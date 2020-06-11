@@ -1,4 +1,4 @@
-import { CurrentPointInTimeRepository, Income, Land, LandRepository, PointInTime } from '@actoolkit/domain';
+import { CurrentPointInTimeRepository, Income, Land, LandRepository, PointInTime } from '@canola/domain';
 
 import { OverlayComponentFactory, throwIt } from '../../shared';
 

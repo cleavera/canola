@@ -1,4 +1,4 @@
-import { ICache, IDomElement, IRequest } from '@actoolkit/core';
+import { ICache, IDomElement, IRequest } from '@canola/core';
 
 import { Funds } from '../classes/funds';
 import { UnitStats } from '../classes/unit-stats';

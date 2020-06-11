@@ -1,4 +1,4 @@
-import { CACHE, ICache, IDomElement, INJECTOR, IRequest } from '@actoolkit/core';
+import { CACHE, ICache, IDomElement, INJECTOR, IRequest } from '@canola/core';
 import { IDict, Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 

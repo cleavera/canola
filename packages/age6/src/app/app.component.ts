@@ -1,4 +1,4 @@
-import { CompanyName, CompanyNameRepository } from '@actoolkit/domain';
+import { CompanyName, CompanyNameRepository } from '@canola/domain';
 import { Component } from '@angular/core';
 
 @Component({

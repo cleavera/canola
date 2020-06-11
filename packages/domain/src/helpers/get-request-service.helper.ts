@@ -1,4 +1,4 @@
-import { INJECTOR, IRequest, REQUEST } from '@actoolkit/core';
+import { INJECTOR, IRequest, REQUEST } from '@canola/core';
 
 function _throwNoRequestStrategy(): never {
     throw new Error('No request strategy registered');

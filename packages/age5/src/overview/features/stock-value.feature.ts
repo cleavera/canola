@@ -1,4 +1,4 @@
-import { Stocks, StocksRepository } from '@actoolkit/domain';
+import { Stocks, StocksRepository } from '@canola/domain';
 
 import { OverlayComponentFactory, SeedInformationComponentFactory } from '../../shared';
 import { LandSeedPlantsModel } from '../models/land-seed-plants.model';

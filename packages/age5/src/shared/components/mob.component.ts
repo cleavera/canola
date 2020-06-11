@@ -1,4 +1,4 @@
-import { MobDirection, MobNews, MobType } from '@actoolkit/domain';
+import { MobDirection, MobNews, MobType } from '@canola/domain';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 

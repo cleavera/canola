@@ -1,5 +1,5 @@
 {
-  "name": "@actoolkit/age5",
+  "name": "@canola/age5",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -25,8 +25,8 @@
     "typescript": "^3.8.3"
   },
   "peerDependencies": {
-    "@actoolkit/core": "*",
-    "@actoolkit/domain": "*"
+    "@canola/core": "*",
+    "@canola/domain": "*"
   },
   "dependencies": {
     "@cleavera/types": "^1.0.3",

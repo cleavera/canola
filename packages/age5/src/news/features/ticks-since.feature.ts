@@ -1,4 +1,4 @@
-import { CompanyName, CompanyNameRepository, CurrentPointInTimeRepository, NewsReport, NewsRepository, PointInTime, Ticks } from '@actoolkit/domain';
+import { CompanyName, CompanyNameRepository, CurrentPointInTimeRepository, NewsReport, NewsRepository, PointInTime, Ticks } from '@canola/domain';
 
 import { PositiveTextComponentFactory, throwIt } from '../../shared';
 

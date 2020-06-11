@@ -1,4 +1,4 @@
-import { ArMod, Funds, Score } from '@actoolkit/domain';
+import { ArMod, Funds, Score } from '@canola/domain';
 
 import { OverlayComponentFactory } from './overlay.component';
 

@@ -1,5 +1,5 @@
-import { BrowserRequest } from '@actoolkit/browser';
-import { INJECTOR, REQUEST } from '@actoolkit/core';
+import { BrowserRequest } from '@canola/browser';
+import { INJECTOR, REQUEST } from '@canola/core';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 

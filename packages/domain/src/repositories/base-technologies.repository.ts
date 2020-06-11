@@ -1,4 +1,4 @@
-import { ICache, IDomElement, IRequest } from '@actoolkit/core';
+import { ICache, IDomElement, IRequest } from '@canola/core';
 
 import { BaseTech } from '../classes/base-tech';
 import { BaseTechnologies } from '../classes/base-technologies';

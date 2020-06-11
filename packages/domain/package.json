@@ -1,5 +1,5 @@
 {
-    "name": "@actoolkit/domain",
+    "name": "@canola/domain",
     "version": "1.0.0",
     "description": "",
     "main": "dist/index.js",
@@ -18,7 +18,7 @@
         "@cleavera/utils": "^4.0.0"
     },
     "peerDependencies": {
-        "@actoolkit/core": "*"
+        "@canola/core": "*"
     },
     "devDependencies": {
         "@cleavera/config": "^2.4.0",

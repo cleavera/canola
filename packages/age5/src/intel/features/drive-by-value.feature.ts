@@ -1,4 +1,4 @@
-import { CurrentPointInTimeRepository, DriveByReport, Income, IntelRepository, PointInTime } from '@actoolkit/domain';
+import { CurrentPointInTimeRepository, DriveByReport, Income, IntelRepository, PointInTime } from '@canola/domain';
 
 import { OverlayComponentFactory, PositiveTextComponentFactory, SeedInformationComponentFactory, throwIt } from '../../shared';
 import { isDriveByReport } from '../helpers/is-drive-by-report.helper';

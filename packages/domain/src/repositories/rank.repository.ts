@@ -1,4 +1,4 @@
-import { IDomElement, IRequest } from '@actoolkit/core';
+import { IDomElement, IRequest } from '@canola/core';
 
 import { Rank } from '../classes/rank';
 import { Score } from '../classes/score';

@@ -1,4 +1,4 @@
-import { CompanyName } from '@actoolkit/domain';
+import { CompanyName } from '@canola/domain';
 
 import { TextComponentFactory } from './text.component';
 

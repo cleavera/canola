@@ -1,4 +1,4 @@
-import { IDomElement, IRequest } from '@actoolkit/core';
+import { IDomElement, IRequest } from '@canola/core';
 
 import { Acres } from '../classes/acres';
 import { Land } from '../classes/land';

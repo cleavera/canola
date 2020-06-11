@@ -1,4 +1,4 @@
-import { ArMod, CompanyName, CurrentPointInTimeRepository, MobNews, MobType, NewsReport, NewsRepository, PointInTime, Rank, RankRepository, Ticks } from '@actoolkit/domain';
+import { ArMod, CompanyName, CurrentPointInTimeRepository, MobNews, MobType, NewsReport, NewsRepository, PointInTime, Rank, RankRepository, Ticks } from '@canola/domain';
 import { IDict, Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
