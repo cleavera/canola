@@ -30,6 +30,7 @@ export { PointInTime } from './classes/point-in-time';
 export { Rank } from './classes/rank';
 export { Score } from './classes/score';
 export { Seeds } from './classes/seeds';
+export { SpyReport } from './classes/spy-report';
 export { Stocks } from './classes/stocks';
 export { Staff } from './classes/staff';
 export { Tech } from './classes/tech';

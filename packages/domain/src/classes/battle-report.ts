@@ -9,4 +9,8 @@ export class BattleReport {
         this.target = target;
         this.type = type;
     }
+
+    public static isDefendingSelf(report: BattleReport, selfCompany: CompanyName): boolean {
+        return report.type === MobType.DEFENDING && CompanyName.is(report.target, selfCompany);
+    }
 }

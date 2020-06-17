@@ -20,7 +20,11 @@ export class MobNews {
         this.isOutgoing = MobNews._isOutgoing(originalMob, context);
     }
 
-    public static adjustedMob(tickDifference: Ticks, mob: Mob, context: CompanyName): Maybe<Mob> {
+    public static FromOriginalMob(context: CompanyName, count: number, mob: Mob, tickSinceSent: Ticks): MobNews {
+        return new MobNews(context, count, this._adjustedMob(tickSinceSent, mob, context), mob);
+    }
+
+    private static _adjustedMob(tickDifference: Ticks, mob: Mob, context: CompanyName): Maybe<Mob> {
         const etaDifference: Ticks = Ticks.Subtract(mob.eta, tickDifference);
 
         if (etaDifference.ticks > 0) {
@@ -40,10 +44,6 @@ export class MobNews {
         }
 
         return null;
-    }
-
-    public static FromOriginalMob(context: CompanyName, count: number, mob: Mob, tickSinceSent: Ticks): MobNews {
-        return new MobNews(context, count, this.adjustedMob(tickSinceSent, mob, context), mob);
     }
 
     private static _isOutgoing(mob: Mob, context: CompanyName): boolean {

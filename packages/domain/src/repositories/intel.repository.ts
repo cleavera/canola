@@ -1,7 +1,9 @@
 import { IDomElement, IRequest } from '@canola/core';
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
+import { NewsReport } from '..';
 
+import { PointInTime } from '../classes/point-in-time';
 import { Acres } from '../classes/acres';
 import { CompanyName } from '../classes/company-name';
 import { DriveByReport } from '../classes/drive-by-report';
@@ -9,6 +11,7 @@ import { HackReport } from '../classes/hack-report';
 import { Land } from '../classes/land';
 import { Plants } from '../classes/plants';
 import { Seeds } from '../classes/seeds';
+import { SpyReport } from '../classes/spy-report';
 import { Staff } from '../classes/staff';
 import { Stocks } from '../classes/stocks';
 import { UnitStats } from '../classes/unit-stats';
@@ -17,6 +20,7 @@ import { Workforce } from '../classes/workforce';
 import { CropType } from '../constants/crop-type.constant';
 import { getRequestService } from '../helpers/get-request-service.helper';
 import { ICropTypeMap } from '../interfaces/crop-type-map.interface';
+import { NewsRepository } from './news.repository';
 import { UnitsRepository } from './units.repository';
 
 export class IntelRepository {
@@ -84,6 +88,21 @@ export class IntelRepository {
         const workforce: Workforce = new Workforce(await Promise.all(staff));
 
         return new HackReport(target, workforce);
+    }
+
+    public parseSpyReport(mainPage: IDomElement, currentPointInTime: PointInTime): SpyReport {
+        const targetElement: IDomElement = mainPage.querySelector(':scope > div > table:first-child span > span') ?? this._throwNotValidTarget();
+        const reportElement: IDomElement = mainPage.querySelector(':scope > div > table:nth-child(2)') ?? this._throwNotValidIntelPage();
+        const reportRows: ArrayLike<IDomElement> = reportElement.querySelectorAll(':scope > tbody > tr + tr') ?? this._throwNotValidIntelPage();
+        const newsRepository: NewsRepository = new NewsRepository();
+        const target: CompanyName = CompanyName.FromString(targetElement.textContent ?? this._throwNotValidTarget());
+        const reports: Array<NewsReport> = [];
+
+        for (let x = 0; x < reportRows.length - 2; x += 2) {
+            reports.push(newsRepository.parseNewsReport(target, reportRows[x], reportRows[x + 1], currentPointInTime));
+        }
+
+        return SpyReport.ForReports(reports, currentPointInTime, target);
     }
 
     private async _getIntelCkValue(): Promise<string> {
@@ -184,6 +203,10 @@ export class IntelRepository {
 
     private _throwNotValidIntelPage(): never {
         throw new Error('Not a valid intel page');
+    }
+
+    private _throwNotValidTarget(): never {
+        throw new Error('Could not get the report target');
     }
 
     private _throwNoIntelCKValue(): never {
