@@ -1,8 +1,7 @@
-import { CompanyName, CurrentPointInTimeRepository, IntelRepository, MobNews, NewsReport, PointInTime, Rank, RankRepository, SpyReport, Ticks } from '@canola/domain';
+import { CurrentPointInTimeRepository, IntelRepository, MobNews, NewsReport, PointInTime, Rank, RankRepository, SpyReport, Ticks } from '@canola/domain';
 import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
 
-import { ArModComponentFactory, insertAfter, MobComponentFactory, PositiveTextComponentFactory, TableCellComponentFactory, TableRowComponentFactory, TextComponentFactory, throwIt } from '../../shared';
+import { ArModComponentFactory, IdListComponentFactory, insertAfter, MobComponentFactory, PositiveTextComponentFactory, TableCellComponentFactory, TableRowComponentFactory, TextComponentFactory, throwIt } from '../../shared';
 import { isSpyReport } from '../helpers/is-spy-report.helper';
 
 export async function spyReportFeature(): Promise<void> {
@@ -39,15 +38,7 @@ export async function spyReportFeature(): Promise<void> {
     const incomingHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Incoming')]);
     const outgoingHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Outgoing')]);
     const defendersLabelCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory(`Defenders [${spyReport.defenders.length} total]`)], 2);
-    const defendersCell: HTMLTableCellElement = TableCellComponentFactory([
-        TextComponentFactory(spyReport.defenders.reduce<string>((accumulator: Maybe<string>, defender: CompanyName): string => {
-            if (isNull(accumulator)) {
-                return defender.id;
-            }
-
-            return `${accumulator}, ${defender.id}`;
-        }, null as any)) // eslint-disable-line @typescript-eslint/no-explicit-any
-    ], 2);
+    const defendersCell: HTMLTableCellElement = TableCellComponentFactory([IdListComponentFactory(spyReport.defenders)], 2);
 
     let incomingCell: Maybe<HTMLTableCellElement> = null;
     let outgoingCell: Maybe<HTMLTableCellElement> = null;
