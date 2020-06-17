@@ -38,7 +38,6 @@ export async function spyReportFeature(): Promise<void> {
     const summaryHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Summary')], 2);
     const incomingHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Incoming')]);
     const outgoingHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Outgoing')]);
-    const recallCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory(`Recalls: ${spyReport.recallCount.toLocaleString('en')}`)], 2);
     const defendersLabelCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory(`Defenders [${spyReport.defenders.length} total]`)], 2);
     const defendersCell: HTMLTableCellElement = TableCellComponentFactory([
         TextComponentFactory(spyReport.defenders.reduce<string>((accumulator: Maybe<string>, defender: CompanyName): string => {
@@ -47,7 +46,7 @@ export async function spyReportFeature(): Promise<void> {
             }
 
             return `${accumulator}, ${defender.id}`;
-        }, null as any))
+        }, null as any)) // eslint-disable-line @typescript-eslint/no-explicit-any
     ], 2);
 
     let incomingCell: Maybe<HTMLTableCellElement> = null;
@@ -72,7 +71,6 @@ export async function spyReportFeature(): Promise<void> {
     const mobHeaderRow: HTMLTableRowElement = TableRowComponentFactory(incomingHeaderCell, outgoingHeaderCell);
     const summaryHeaderRow: HTMLTableRowElement = TableRowComponentFactory(summaryHeaderCell);
     const mobRow: HTMLTableRowElement = TableRowComponentFactory(incomingCell, outgoingCell);
-    const recallsRow: HTMLTableRowElement = TableRowComponentFactory(recallCell);
     const defendersRow: HTMLTableRowElement = TableRowComponentFactory(defendersCell);
     const defendersHeaderRow: HTMLTableRowElement = TableRowComponentFactory(defendersLabelCell);
 
@@ -86,7 +84,6 @@ export async function spyReportFeature(): Promise<void> {
     arModRow.classList.add('lightbackground');
     mobHeaderRow.classList.add('lightbackground');
     defendersRow.classList.add('nonebackground');
-    recallsRow.classList.add('lightbackground');
     summaryHeaderRow.classList.add('header');
     defendersHeaderRow.classList.add('header');
 

@@ -17,17 +17,15 @@ export class SpyReport {
     public outgoings: Array<MobNews>;
     public defenders: Array<CompanyName>;
     public activity: Array<PointInTime>;
-    public recallCount: number;
     public arMod: ArMod;
 
-    constructor(target: CompanyName, reports: Array<NewsReport>, defenders: Array<CompanyName>, activity: Array<PointInTime>, incoming: Array<MobNews>, outgoings: Array<MobNews>, recallCount: number, arMod: ArMod) {
+    constructor(target: CompanyName, reports: Array<NewsReport>, defenders: Array<CompanyName>, activity: Array<PointInTime>, incoming: Array<MobNews>, outgoings: Array<MobNews>, arMod: ArMod) {
         this.target = target;
         this.reports = reports;
         this.incoming = incoming;
         this.outgoings = outgoings;
         this.defenders = defenders;
         this.activity = activity;
-        this.recallCount = recallCount;
         this.arMod = arMod;
     }
 
@@ -35,7 +33,6 @@ export class SpyReport {
         let arMod: Maybe<ArMod> = null;
         const incoming: Array<MobNews> = [];
         const outgoings: Array<MobNews> = [];
-        let recallCount: number = 0;
         const defenders: IDict<CompanyName> = {};
         const activity: Array<PointInTime> = [];
 
@@ -60,18 +57,14 @@ export class SpyReport {
 
                 if (!isNull(mob.mob)) {
                     if (mob.isOutgoing) {
-                        if (outgoings.some((outgoing: MobNews) => {
+                        if (!outgoings.some((outgoing: MobNews) => {
                             return outgoing.mob?.target.id === mob.mob?.target.id;
                         })) {
-                            recallCount--;
-                        } else {
                             outgoings.push(mob);
                         }
-                    } else if (incoming.some((mobNews: MobNews) => {
+                    } else if (!incoming.some((mobNews: MobNews) => {
                         return mobNews.mob?.sender.id === mob.mob?.sender.id;
                     })) {
-                        recallCount--;
-                    } else {
                         incoming.push(mob);
                     }
                 }
@@ -82,7 +75,7 @@ export class SpyReport {
             arMod = ArMod.Min();
         }
 
-        return new SpyReport(target, reports, Object.values(defenders), activity, incoming, outgoings, recallCount, arMod);
+        return new SpyReport(target, reports, Object.values(defenders), activity, incoming, outgoings, arMod);
     }
 
     private static _getDefender(mob: MobNews): Maybe<CompanyName> {
