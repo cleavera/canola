@@ -2,6 +2,7 @@ export * from './constants/pages.constant';
 
 export { ActivityGraphComponentFactory } from './components/activity-graph.component';
 export { ArModComponentFactory } from './components/ar-mod.component';
+export { ButtonComponentFactory } from './components/button-component';
 export { IdListComponentFactory } from './components/id-list.component';
 export { MobComponentFactory } from './components/mob.component';
 export { NegativeTextComponentFactory } from './components/negative-text.component';

@@ -3,6 +3,7 @@ import { intelAdditions } from './intel';
 import { maintenanceAdditions } from './maintenance';
 import { newsAdditions } from './news';
 import { overviewAdditions } from './overview';
+import { supplyDepotAdditions } from './supply-depot';
 
 export async function age5(): Promise<void> {
     try {
@@ -11,7 +12,8 @@ export async function age5(): Promise<void> {
             overviewAdditions(),
             newsAdditions(),
             intelAdditions(),
-            maintenanceAdditions()
+            maintenanceAdditions(),
+            supplyDepotAdditions()
         ]);
     } catch (e) {
         console.error(e);
