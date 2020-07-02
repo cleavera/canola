@@ -3,6 +3,7 @@ export { CropType } from './constants/crop-type.constant';
 export { MobDirection } from './constants/mob-direction.constant';
 export { MobType } from './constants/mob-type.constant';
 export { Season } from './constants/season.constant';
+export { SEED_INCOME_LOOKUP } from './constants/seed-income.lookup';
 
 export { Acres } from './classes/acres';
 export { ArMod } from './classes/ar-mod';

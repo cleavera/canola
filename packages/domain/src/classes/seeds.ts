@@ -73,4 +73,13 @@ export class Seeds implements ICropTypeMap<number> {
 
         return new Seeds(0, 0, 0, filteredSeeds);
     }
+
+    public static Scale(seeds: Seeds, scalar: number): Seeds {
+        return new Seeds(
+            Math.floor(seeds[CropType.TREE] * scalar),
+            Math.floor(seeds[CropType.BUSH] * scalar),
+            Math.floor(seeds[CropType.FLOWER] * scalar),
+            Math.floor(seeds[CropType.GRASS] * scalar)
+        );
+    }
 }

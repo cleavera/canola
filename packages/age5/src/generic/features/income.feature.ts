@@ -10,8 +10,8 @@ export async function incomeFeature(): Promise<void> {
     const income: Income = Income.ForLand(land, currentTime.season);
 
     fundsElement.appendChild(OverlayComponentFactory('Income', `
-        Per tick: ${income.tick.toString()}</br>
-        Per hour: ${income.hour.toString()}</br>
-        Per day: ${income.day.toString()}</br>
+        Per tick: ${income.tick.plants().sold().toString()}</br>
+        Per hour: ${income.hour.plants().sold().toString()}</br>
+        Per day: ${income.day.plants().sold().toString()}</br>
     `));
 }
