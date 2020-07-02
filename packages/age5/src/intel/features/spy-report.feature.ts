@@ -1,7 +1,7 @@
 import { CurrentPointInTimeRepository, IntelRepository, MobNews, NewsReport, PointInTime, Rank, RankRepository, SpyReport, Ticks } from '@canola/domain';
 import { Maybe } from '@cleavera/types';
 
-import { ArModComponentFactory, IdListComponentFactory, insertAfter, MobComponentFactory, PositiveTextComponentFactory, TableCellComponentFactory, TableRowComponentFactory, TextComponentFactory, throwIt } from '../../shared';
+import { ActivityGraphComponentFactory, ArModComponentFactory, IdListComponentFactory, insertAfter, MobComponentFactory, PositiveTextComponentFactory, TableCellComponentFactory, TableRowComponentFactory, TextComponentFactory, throwIt } from '../../shared';
 import { isSpyReport } from '../helpers/is-spy-report.helper';
 
 export async function spyReportFeature(): Promise<void> {
@@ -35,10 +35,12 @@ export async function spyReportFeature(): Promise<void> {
     const targetRank: Rank = await new RankRepository().getForId(spyReport.target.id);
 
     const summaryHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Summary')], 2);
+    const activityHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Activity')], 2);
     const incomingHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Incoming')]);
     const outgoingHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Outgoing')]);
     const defendersLabelCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory(`Defenders [${spyReport.defenders.length} total]`)], 2);
     const defendersCell: HTMLTableCellElement = TableCellComponentFactory([IdListComponentFactory(spyReport.defenders)], 2);
+    const activityCell: HTMLTableCellElement = TableCellComponentFactory([ActivityGraphComponentFactory(spyReport.activity.groupByHours(currentPointInTime))], 2);
 
     let incomingCell: Maybe<HTMLTableCellElement> = null;
     let outgoingCell: Maybe<HTMLTableCellElement> = null;
@@ -63,7 +65,9 @@ export async function spyReportFeature(): Promise<void> {
     const summaryHeaderRow: HTMLTableRowElement = TableRowComponentFactory(summaryHeaderCell);
     const mobRow: HTMLTableRowElement = TableRowComponentFactory(incomingCell, outgoingCell);
     const defendersRow: HTMLTableRowElement = TableRowComponentFactory(defendersCell);
+    const activityRow: HTMLTableRowElement = TableRowComponentFactory(activityCell);
     const defendersHeaderRow: HTMLTableRowElement = TableRowComponentFactory(defendersLabelCell);
+    const activityHeaderRow: HTMLTableRowElement = TableRowComponentFactory(activityHeaderCell);
 
     const arModCell: HTMLTableCellElement = TableCellComponentFactory([
         TextComponentFactory('Max ar modifier: '),
@@ -75,14 +79,20 @@ export async function spyReportFeature(): Promise<void> {
     arModRow.classList.add('lightbackground');
     mobHeaderRow.classList.add('lightbackground');
     defendersRow.classList.add('nonebackground');
+    activityRow.classList.add('nonebackground');
     summaryHeaderRow.classList.add('header');
     defendersHeaderRow.classList.add('header');
+    activityHeaderRow.classList.add('header');
 
     summaryHeaderRow.style.textAlign = 'center';
     defendersHeaderRow.style.textAlign = 'center';
+    activityHeaderRow.style.textAlign = 'center';
+    activityCell.style.padding = '10px 20px';
 
     (reportHeader.parentElement ?? throwIt('Cannot append to report')).insertBefore(summaryHeaderRow, reportHeader);
 
+    insertAfter(activityRow, summaryHeaderRow);
+    insertAfter(activityHeaderRow, summaryHeaderRow);
     insertAfter(defendersRow, summaryHeaderRow);
     insertAfter(defendersHeaderRow, summaryHeaderRow);
     insertAfter(arModRow, summaryHeaderRow);

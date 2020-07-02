@@ -2,6 +2,7 @@ import { IDict, Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 
 import { MobType } from '../constants/mob-type.constant';
+import { Activity } from './activity';
 import { ArMod } from './ar-mod';
 import { BattleReport } from './battle-report';
 import { CompanyName } from './company-name';
@@ -16,10 +17,10 @@ export class SpyReport {
     public incoming: Array<MobNews>;
     public outgoings: Array<MobNews>;
     public defenders: Array<CompanyName>;
-    public activity: Array<PointInTime>;
+    public activity: Activity;
     public arMod: ArMod;
 
-    constructor(target: CompanyName, reports: Array<NewsReport>, defenders: Array<CompanyName>, activity: Array<PointInTime>, incoming: Array<MobNews>, outgoings: Array<MobNews>, arMod: ArMod) {
+    constructor(target: CompanyName, reports: Array<NewsReport>, defenders: Array<CompanyName>, activity: Activity, incoming: Array<MobNews>, outgoings: Array<MobNews>, arMod: ArMod) {
         this.target = target;
         this.reports = reports;
         this.incoming = incoming;
@@ -75,7 +76,7 @@ export class SpyReport {
             arMod = ArMod.Min();
         }
 
-        return new SpyReport(target, reports, Object.values(defenders), activity, incoming, outgoings, arMod);
+        return new SpyReport(target, reports, Object.values(defenders), new Activity(activity), incoming, outgoings, arMod);
     }
 
     private static _getDefender(mob: MobNews): Maybe<CompanyName> {

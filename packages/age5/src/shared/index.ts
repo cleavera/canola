@@ -1,5 +1,6 @@
 export * from './constants/pages.constant';
 
+export { ActivityGraphComponentFactory } from './components/activity-graph.component';
 export { ArModComponentFactory } from './components/ar-mod.component';
 export { IdListComponentFactory } from './components/id-list.component';
 export { MobComponentFactory } from './components/mob.component';
