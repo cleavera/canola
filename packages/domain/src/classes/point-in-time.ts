@@ -1,5 +1,6 @@
 import { Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
+import { mkdir } from 'fs';
 
 import { MONTH_LOOKUP } from '../constants/month-lookup.constant';
 import { MONTH_SEASON_LOOKUP } from '../constants/month-season.lookup';
@@ -10,6 +11,8 @@ import * as TicksIn from '../constants/ticks-in.constant';
 import { Ticks } from './ticks';
 
 export class PointInTime {
+    private static readonly MS_IN_TICK: number = 1000 * 60 * 10;
+
     public tickNumber: number;
 
     constructor(tickNumber: number) {
@@ -85,6 +88,20 @@ export class PointInTime {
 
     public static Subtract(pointInTime1: PointInTime, pointInTime2: PointInTime): Ticks {
         return new Ticks(pointInTime1.tickNumber - pointInTime2.tickNumber);
+    }
+
+    public static ToDateTime(pointInTime: PointInTime, currentPointInTime: PointInTime): Date {
+        const currentDateTime: Date = this._roundDateToNearestTick(new Date(Date.now()));
+        const difference: Ticks = PointInTime.Subtract(currentPointInTime, pointInTime);
+        const minutesDifference: number = difference.ticks * 10;
+
+        currentDateTime.setMinutes(currentDateTime.getMinutes() - minutesDifference);
+
+        return currentDateTime;
+    }
+
+    private static _roundDateToNearestTick(date: Date): Date {
+        return new Date(Math.floor(date.getTime() / PointInTime.MS_IN_TICK) * PointInTime.MS_IN_TICK);
     }
 
     private static _normaliseDateString(dateString: string): string {

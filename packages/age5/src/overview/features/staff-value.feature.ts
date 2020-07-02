@@ -9,7 +9,7 @@ function sumWorkforceActionValue(filteredWorkforce: Workforce): number {
 }
 
 function getHarvesterEquivalent(workforce: Workforce, units: Units): number {
-    const totalGardens: number = sumWorkforceActionValue(workforce.getForActionType(ActionType.GARDENS));
+    const totalGardens: number = sumWorkforceActionValue(workforce.getForActionType(ActionType.HARVESTS));
     const harvester: UnitStats = units.getByName('Harvester') ?? throwIt('Could not find information on harvester');
 
     return Math.floor(totalGardens / (harvester.action.amount as number));
