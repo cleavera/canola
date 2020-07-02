@@ -6,6 +6,7 @@ import { outgoingValueFeature } from './features/outgoing-value.feature';
 import { requiredHarvestersFeature } from './features/required-harvesters.feature';
 import { staffValueFeature } from './features/staff-value.feature';
 import { stockValueFeature } from './features/stock-value.feature';
+import { workersEquivalentFeature } from './features/workers-equivalent.feature';
 
 export async function overviewAdditions(): Promise<void> {
     if (!isPage('/overview.php')) {
@@ -15,7 +16,10 @@ export async function overviewAdditions(): Promise<void> {
     await Promise.all([
         stockValueFeature(),
         requiredHarvestersFeature(),
-        staffValueFeature(),
+        (async(): Promise<void> => {
+            await staffValueFeature();
+            await workersEquivalentFeature();
+        })(),
         injuredStaffValueFeature(),
         insuranceClaimsValueFeature(),
         outgoingValueFeature(),
