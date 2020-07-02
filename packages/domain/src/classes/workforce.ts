@@ -20,4 +20,14 @@ export class Workforce {
             return staff.stats.action.type === actionType;
         }));
     }
+
+    public totalActionAmountForType(actionType: ActionType): number {
+        return this.staff.reduce((total: number, staff: Staff): number => {
+            if (staff.stats.action.type !== actionType) {
+                return total;
+            }
+
+            return total + (staff.amount * (staff.stats.action.amount ?? 0));
+        }, 0);
+    }
 }

@@ -1,22 +1,16 @@
-import { ActionType, Staff, Units, UnitsRepository, UnitStats, Workforce, WorkforceRepository } from '@canola/domain';
+import { ActionType, Units, UnitsRepository, UnitStats, Workforce, WorkforceRepository } from '@canola/domain';
 
 import { OverlayComponentFactory, PositiveTextComponentFactory, throwIt } from '../../shared';
 
-function sumWorkforceActionValue(filteredWorkforce: Workforce): number {
-    return filteredWorkforce.staff.reduce((total: number, staff: Staff): number => {
-        return total + (staff.amount * (staff.stats.action.amount ?? 0));
-    }, 0);
-}
-
 function getHarvesterEquivalent(workforce: Workforce, units: Units): number {
-    const totalGardens: number = sumWorkforceActionValue(workforce.getForActionType(ActionType.HARVESTS));
+    const totalHarvests: number = workforce.totalActionAmountForType(ActionType.HARVESTS);
     const harvester: UnitStats = units.getByName('Harvester') ?? throwIt('Could not find information on harvester');
 
-    return Math.floor(totalGardens / (harvester.action.amount as number));
+    return Math.floor(totalHarvests / (harvester.action.amount as number));
 }
 
 function getGardenerEquivalent(workforce: Workforce, units: Units): number {
-    const totalGardens: number = sumWorkforceActionValue(workforce.getForActionType(ActionType.GARDENS));
+    const totalGardens: number = workforce.totalActionAmountForType(ActionType.GARDENS);
     const gardener: UnitStats = units.getByName('Gardener') ?? throwIt('Could not find information on gardener');
 
     return Math.floor(totalGardens / (gardener.action.amount as number));
