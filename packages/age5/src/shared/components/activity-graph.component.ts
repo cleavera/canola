@@ -1,3 +1,5 @@
+import { NoInfoComponentFactory } from './no-info.component';
+
 export function ActivityGraphComponentFactory(activity: Array<number>): HTMLElement {
     const graphContainer: HTMLElement = document.createElement('div');
     const chartContainer: HTMLElement = document.createElement('div');
@@ -20,8 +22,13 @@ export function ActivityGraphComponentFactory(activity: Array<number>): HTMLElem
     const padder: HTMLDivElement = document.createElement('div');
     padder.style.flex = '1 1 0px';
     xAxisLabels.appendChild(padder);
+    let hasActivity: boolean = false;
 
     activity.forEach((count: number, index: number): void => {
+        if (count > 0) {
+            hasActivity = true;
+        }
+
         const bar: HTMLDivElement = document.createElement('div');
         bar.style.setProperty('--count', count.toString());
         bar.style.height = 'calc(var(--count, 0) * var(--unitHeight, 10px))';
@@ -44,6 +51,10 @@ export function ActivityGraphComponentFactory(activity: Array<number>): HTMLElem
         chartContainer.appendChild(bar);
         xAxisLabels.appendChild(label);
     });
+
+    if (!hasActivity) {
+        return NoInfoComponentFactory('No activity');
+    }
 
     graphContainer.style.setProperty('--unitHeight', `${(100 / max)}px`);
     chartContainer.style.display = 'flex';

@@ -1,7 +1,7 @@
 import { CurrentPointInTimeRepository, IntelRepository, MobNews, NewsReport, PointInTime, Rank, RankRepository, SpyReport, Ticks } from '@canola/domain';
 import { Maybe } from '@cleavera/types';
 
-import { ActivityGraphComponentFactory, ArModComponentFactory, IdListComponentFactory, insertAfter, MobComponentFactory, PositiveTextComponentFactory, TableCellComponentFactory, TableRowComponentFactory, TextComponentFactory, throwIt } from '../../shared';
+import { ActivityGraphComponentFactory, ArModComponentFactory, IdListComponentFactory, insertAfter, MobComponentFactory, NoInfoComponentFactory, PositiveTextComponentFactory, TableCellComponentFactory, TableRowComponentFactory, TextComponentFactory, throwIt } from '../../shared';
 import { isSpyReport } from '../helpers/is-spy-report.helper';
 
 export async function spyReportFeature(): Promise<void> {
@@ -39,7 +39,7 @@ export async function spyReportFeature(): Promise<void> {
     const incomingHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Incoming')]);
     const outgoingHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Outgoing')]);
     const defendersLabelCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory(`Defenders [${spyReport.defenders.length} total]`)], 2);
-    const defendersCell: HTMLTableCellElement = TableCellComponentFactory([IdListComponentFactory(spyReport.defenders)], 2);
+    const defendersCell: HTMLTableCellElement = TableCellComponentFactory([spyReport.defenders.length === 0 ? NoInfoComponentFactory('No defenders') : IdListComponentFactory(spyReport.defenders)], 2);
     const activityCell: HTMLTableCellElement = TableCellComponentFactory([ActivityGraphComponentFactory(spyReport.activity.groupByHours(currentPointInTime))], 2);
 
     let incomingCell: Maybe<HTMLTableCellElement> = null;
@@ -50,7 +50,7 @@ export async function spyReportFeature(): Promise<void> {
             return MobComponentFactory(incoming);
         }));
     } else {
-        incomingCell = TableCellComponentFactory([TextComponentFactory('No incoming mobs')]);
+        incomingCell = TableCellComponentFactory([NoInfoComponentFactory('No incoming mobs')]);
     }
 
     if (spyReport.outgoings.length > 0) {
@@ -58,7 +58,7 @@ export async function spyReportFeature(): Promise<void> {
             return MobComponentFactory(outgoing);
         }));
     } else {
-        outgoingCell = TableCellComponentFactory([TextComponentFactory('No outgoing mobs')]);
+        outgoingCell = TableCellComponentFactory([NoInfoComponentFactory('No outgoing mobs')]);
     }
 
     const mobHeaderRow: HTMLTableRowElement = TableRowComponentFactory(incomingHeaderCell, outgoingHeaderCell);

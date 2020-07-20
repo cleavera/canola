@@ -6,6 +6,7 @@ export { ButtonComponentFactory } from './components/button-component';
 export { IdListComponentFactory } from './components/id-list.component';
 export { MobComponentFactory } from './components/mob.component';
 export { NegativeTextComponentFactory } from './components/negative-text.component';
+export { NoInfoComponentFactory } from './components/no-info.component';
 export { OverlayComponentFactory } from './components/overlay.component';
 export { PositiveTextComponentFactory } from './components/positive-text.component';
 export { SeedInformationComponentFactory } from './components/seed-information.component';
