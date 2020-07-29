@@ -14,12 +14,8 @@ npm ci
 To build the browser extension go into the individual packages and run: 
 ```
 npm ci
-npm run get-dependencies
-```
-The packages need to be installed in the following order `core, browser, domain, age5`
-
-Then navigate to the apps/extension folder and run
-```
-npm ci
+npm run installALl
 npm run build
 ```
+
+This will install all the dependent packages and build them in the correct order.

@@ -1,0 +1,93 @@
+import { IDict, Maybe } from '@cleavera/types';
+import { isNull } from '@cleavera/utils';
+import { exec } from 'child_process';
+import { promises as fs } from 'fs';
+import { basename, join } from 'path';
+import { promisify } from 'util';
+
+export class Package {
+    public name: string;
+    public path: string;
+
+    constructor(name: string, path: string) {
+        this.name = name;
+        this.path = path;
+    }
+
+    public async install(installedList: Array<string> = []): Promise<void> {
+        if (installedList.includes(this.name)) {
+            return;
+        }
+
+        installedList.push(this.name);
+
+        const deps: Array<Package> = await this.getDependencies() || [];
+
+        for (let dep of deps) {
+            await dep.install(installedList);
+        }
+
+        console.log(`Installing ${this.name}`);
+
+        await promisify(exec)('npm i', { cwd: this.path });
+    }
+
+    public async update(builtList: Array<string> = []): Promise<void> {
+        if (builtList.includes(this.name)) {
+            return;
+        }
+
+        builtList.push(this.name);
+
+        const deps: Maybe<Array<Package>> = await this.getDependencies();
+
+        if (isNull(deps)) {
+            return;
+        }
+
+        for (const dep of deps) {
+            await dep.update(builtList);
+        }
+
+        console.log(`Updating local dependencies for ${this.name} [${deps.map((dep: Package) => {
+            return dep.name;
+        }).join(', ')}]`);
+
+        await promisify(exec)(`./node_modules/.bin/gosod ${deps.map((dep: Package) => {
+            return dep.path;
+        }).join(' ')}`, { cwd: this.path });
+    }
+
+    public async getDependencies(): Promise<Maybe<Array<Package>>> {
+        const packageFile: { peerDependencies: IDict<string>; } = JSON.parse(await fs.readFile(join(this.path, './package.json'), {
+            encoding: 'utf-8'
+        }));
+
+        const packages: Array<Package> = [];
+
+        for (const dependency of Object.keys(packageFile.peerDependencies || {})) {
+            if (dependency.startsWith('@canola')) {
+                packages.push(await Package.FromName(dependency));
+            }
+        }
+
+        if (!packages.length) {
+            return null;
+        }
+
+        return packages;
+    }
+
+    public static async FromName(name: string): Promise<Package> {
+        const [, folder] = name.split('/');
+        const path: string = join(__dirname, '../../packages', folder);
+
+        return new Package(name, path);
+    }
+
+    public static async FromPath(path: string): Promise<Package> {
+        const folderName: string = basename(path);
+
+        return new Package(`@canola/${folderName}`, path);
+    }
+}

@@ -47,7 +47,7 @@ const config: Configuration = {
         ]),
         new WebpackShellPlugin({
             onBuildStart: {
-                scripts: ['npm run get-dependencies'],
+                scripts: ['npm run updateAll'],
                 blocking: true
             }
         })
