@@ -11,7 +11,7 @@ First the build module needs to be installed, navigate to /build and run
 npm ci
 ```
 
-To build the browser extension go into the individual packages and run: 
+To build the browser extension navigate to `./apps/extension` and run: 
 ```
 npm ci
 npm run installALl
@@ -19,3 +19,10 @@ npm run build
 ```
 
 This will install all the dependent packages and build them in the correct order.
+
+There after you can just run
+```
+npm run build
+```
+
+To build any new changes.
