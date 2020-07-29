@@ -1,9 +1,10 @@
 import { IDict, Maybe } from '@cleavera/types';
 import { isNull } from '@cleavera/utils';
 import { exec } from 'child_process';
-import { promises as fs } from 'fs';
+import { promises as fs, Stats } from 'fs';
 import { basename, join } from 'path';
 import { promisify } from 'util';
+import { hashElement, HashElementNode } from 'folder-hash';
 
 export class Package {
     public name: string;
@@ -32,6 +33,16 @@ export class Package {
         await promisify(exec)('npm i', { cwd: this.path });
     }
 
+    public async hash(): Promise<string> {
+        const hashElementNode: HashElementNode = await hashElement(this.path, {
+            folders: { exclude: ['node_modules', 'dist'] },
+            files: { include: ['*.ts', 'package.json'] },
+            encoding: 'hex'
+        });
+
+        return hashElementNode.hash.toString();
+    }
+
     public async update(builtList: Array<string> = []): Promise<void> {
         if (builtList.includes(this.name)) {
             return;
@@ -53,9 +64,39 @@ export class Package {
             return dep.name;
         }).join(', ')}]`);
 
-        await promisify(exec)(`./node_modules/.bin/gosod ${deps.map((dep: Package) => {
-            return dep.path;
-        }).join(' ')}`, { cwd: this.path });
+        const outDir: string = join(__dirname, '../.cache');
+
+        try {
+            await fs.mkdir(outDir);
+        } catch (e) {
+            if (e.code !== 'EEXIST') {
+                throw e;
+            }
+        }
+
+        const packageLocations: Array<string> = [];
+
+        for (let dep of deps) {
+            const hash: string = await dep.hash();
+            const outFile: string = join(outDir, `${hash}.tgz`);
+
+            packageLocations.push(outFile);
+
+            try {
+                await fs.access(outFile)
+                continue;
+            } catch (e) {
+                console.log(`Packing ${dep.name}`);
+            }
+
+            const {stdout} = await promisify(exec)(`npm pack ${dep.path}`, { cwd: outDir });
+            const outs: Array<string> = stdout.split('\n');
+            outs.pop();
+            const packedName: string = outs.pop() || '';
+            await fs.rename(join(outDir, packedName), outFile);
+        }
+
+        await promisify(exec)(`npm i ${packageLocations.join(' ')} --no-save`, { cwd: this.path });
     }
 
     public async getDependencies(): Promise<Maybe<Array<Package>>> {

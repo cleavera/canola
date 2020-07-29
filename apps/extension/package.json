@@ -24,7 +24,6 @@
         "del-cli": "^3.0.0",
         "eslint": "^6.8.0",
         "eslint-plugin-import": "^2.20.2",
-        "gosod": "^1.1.2",
         "stylelint": "^13.3.3",
         "ts-loader": "^7.0.2",
         "ts-node": "^8.10.1",
