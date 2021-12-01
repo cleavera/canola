@@ -1,6 +1,4 @@
 import { MobDirection, MobNews, MobType } from '@canola/domain';
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
 
 import { throwIt } from '../helpers/throw.helper';
 import { CompanyNameComponentFactory } from './company-name.component';
@@ -9,7 +7,7 @@ import { PositiveTextComponentFactory } from './positive-text.component';
 import { TextComponentFactory } from './text.component';
 
 function getSecondPart(mob: MobNews): string {
-    if (isNull(mob.mob)) {
+    if (mob.mob === null) {
         throwIt('Cannot display expired mobs');
     }
 
@@ -35,7 +33,7 @@ function getSecondPart(mob: MobNews): string {
 }
 
 function getFirstPart(mob: MobNews): string {
-    if (isNull(mob.mob)) {
+    if (mob.mob === null) {
         throwIt('Cannot display expired mobs');
     }
 
@@ -51,14 +49,14 @@ function getFirstPart(mob: MobNews): string {
 }
 
 export function MobComponentFactory(mob: MobNews): HTMLDivElement {
-    if (isNull(mob.mob)) {
+    if (mob.mob === null) {
         throwIt('Cannot display expired mobs');
     }
 
     const container: HTMLDivElement = document.createElement('div');
     const companyName: HTMLSpanElement = CompanyNameComponentFactory(mob.isOutgoing ? mob.mob.target : mob.mob.sender);
 
-    let partElements: Maybe<[HTMLSpanElement, HTMLSpanElement]> = null;
+    let partElements: [HTMLSpanElement, HTMLSpanElement] | null = null;
 
     if (mob.mob.direction === MobDirection.RETURNING) {
         partElements = [

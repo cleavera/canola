@@ -1,13 +1,11 @@
 import { ArMod, CompanyName, CompanyNameRepository, Funds, MobType, Outgoing, OutgoingsRepository, Rank, RankRepository, Score } from '@canola/domain';
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
 
 import { OverlayComponentFactory, throwIt } from '../../shared';
 
 function arModToTrigger(mobScore: Score, targetScore: Score): string {
-    const arMod: Maybe<ArMod> = ArMod.FromMobRatio(mobScore.score / targetScore.score);
+    const arMod: ArMod | null = ArMod.FromMobRatio(mobScore.score / targetScore.score);
 
-    if (isNull(arMod)) {
+    if (arMod === null) {
         return `<span class='friendly'>This mob cannot trigger on its own</span>`;
     }
 
@@ -20,9 +18,9 @@ function arModToTrigger(mobScore: Score, targetScore: Score): string {
 
 async function individualValue(outgoingElement: HTMLElement, currentCompany: CompanyName): Promise<void> {
     const outgoing: Outgoing = await new OutgoingsRepository().parseOutgoingElement(outgoingElement, currentCompany);
-    const value: Maybe<Funds> = outgoing.value();
+    const value: Funds | null = outgoing.value();
 
-    if (isNull(value)) {
+    if (value === null) {
         return;
     }
 
@@ -41,7 +39,7 @@ export async function outgoingValueFeature(): Promise<void> {
     const outgoingElements: Array<HTMLElement> = Array.from(mainPageElement.querySelectorAll('#Outgoing div'));
     const currentCompany: CompanyName = await new CompanyNameRepository().getOwn();
 
-    if (isNull(outgoingElements)) {
+    if (outgoingElements === null) {
         return;
     }
 

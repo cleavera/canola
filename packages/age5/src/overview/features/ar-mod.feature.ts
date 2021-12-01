@@ -1,14 +1,12 @@
 import { ArMod, ArModRepository, Rank, RankRepository } from '@canola/domain';
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
 
 import { ArModComponentFactory } from '../../shared';
 
 export async function arModFeature(): Promise<void> {
-    const arModCell: Maybe<HTMLElement> = document.querySelector('#Misc tr:nth-of-type(4) td:nth-of-type(1)') ?? null;
-    const arMod: Maybe<ArMod> = await new ArModRepository().getOwn();
+    const arModCell: HTMLElement | null = document.querySelector('#Misc tr:nth-of-type(4) td:nth-of-type(1)') ?? null;
+    const arMod: ArMod | null = await new ArModRepository().getOwn();
 
-    if (isNull(arModCell) || isNull(arMod)) {
+    if (arModCell === null || arMod === null) {
         return;
     }
 

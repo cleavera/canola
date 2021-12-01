@@ -1,15 +1,13 @@
 import { Injuries, InjuriesRepository, Score } from '@canola/domain';
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
 
 import { OverlayComponentFactory, throwIt } from '../../shared';
 
 export async function injuredStaffValueFeature(): Promise<void> {
-    const injuries: Maybe<Injuries> = await new InjuriesRepository().getOwn();
+    const injuries: Injuries | null = await new InjuriesRepository().getOwn();
     const mainPageElement: HTMLElement = document.getElementById('main-page-data') ?? throwIt('No injured staff information found');
-    const injuredStaffTitleElement: Maybe<HTMLElement> = mainPageElement.querySelector('[onClick^="SwitchSetDisplay(\'Injuries\'"]') ?? null;
+    const injuredStaffTitleElement: HTMLElement | null = mainPageElement.querySelector('[onClick^="SwitchSetDisplay(\'Injuries\'"]') ?? null;
 
-    if (isNull(injuredStaffTitleElement) || isNull(injuries)) {
+    if (injuredStaffTitleElement === null || injuries === null) {
         return;
     }
 

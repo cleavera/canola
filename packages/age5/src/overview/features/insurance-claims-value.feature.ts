@@ -1,15 +1,13 @@
 import { Funds, InsuranceClaims, InsuranceRepository, Score } from '@canola/domain';
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
 
 import { OverlayComponentFactory, throwIt } from '../../shared';
 
 export async function insuranceClaimsValueFeature(): Promise<void> {
-    const claims: Maybe<InsuranceClaims> = await new InsuranceRepository().getOwn();
+    const claims: InsuranceClaims | null = await new InsuranceRepository().getOwn();
     const mainPageElement: HTMLElement = document.getElementById('main-page-data') ?? throwIt('No insurance claims information found');
-    const injuredStaffTitleElement: Maybe<HTMLElement> = mainPageElement.querySelector('[onClick^="SwitchSetDisplay(\'Insurances\'"]') ?? null;
+    const injuredStaffTitleElement: HTMLElement | null = mainPageElement.querySelector('[onClick^="SwitchSetDisplay(\'Insurances\'"]') ?? null;
 
-    if (isNull(injuredStaffTitleElement) || isNull(claims)) {
+    if (injuredStaffTitleElement === null || claims === null) {
         return;
     }
 

@@ -1,6 +1,4 @@
 import { CropType } from '@canola/domain';
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
 
 import { throwIt } from '../../shared';
 
@@ -11,28 +9,28 @@ export class LandSeedPlantsModel {
         this._table = table;
     }
 
-    public getLand(type: Maybe<CropType> = null): HTMLTableCellElement {
+    public getLand(type: CropType | null = null): HTMLTableCellElement {
         const row: HTMLTableRowElement = this._getRow(type);
 
         return row.querySelectorAll('td')[1];
     }
 
-    public getPlants(type: Maybe<CropType> = null): HTMLTableCellElement {
+    public getPlants(type: CropType | null = null): HTMLTableCellElement {
         const row: HTMLTableRowElement = this._getRow(type);
 
         return row.querySelectorAll('td')[3];
     }
 
-    public getSeeds(type: Maybe<CropType> = null): HTMLTableCellElement {
+    public getSeeds(type: CropType | null = null): HTMLTableCellElement {
         const row: HTMLTableRowElement = this._getRow(type);
 
         return row.querySelectorAll('td')[4];
     }
 
-    private _getRow(type: Maybe<CropType>): HTMLTableRowElement {
+    private _getRow(type: CropType | null): HTMLTableRowElement {
         const rows: ArrayLike<HTMLTableRowElement> = this._table.querySelectorAll('tr');
 
-        if (isNull(type)) {
+        if (type === null) {
             return rows[0];
         }
 

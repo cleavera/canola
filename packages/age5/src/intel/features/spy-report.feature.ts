@@ -1,5 +1,4 @@
 import { CurrentPointInTimeRepository, IntelRepository, MobNews, NewsReport, PointInTime, Rank, RankRepository, SpyReport, Ticks } from '@canola/domain';
-import { Maybe } from '@cleavera/types';
 
 import { ActivityGraphComponentFactory, ArModComponentFactory, IdListComponentFactory, insertAfter, MobComponentFactory, NoInfoComponentFactory, PositiveTextComponentFactory, TableCellComponentFactory, TableRowComponentFactory, TextComponentFactory, throwIt } from '../../shared';
 import { isSpyReport } from '../helpers/is-spy-report.helper';
@@ -42,8 +41,8 @@ export async function spyReportFeature(): Promise<void> {
     const defendersCell: HTMLTableCellElement = TableCellComponentFactory([spyReport.defenders.length === 0 ? NoInfoComponentFactory('No defenders') : IdListComponentFactory(spyReport.defenders)], 2);
     const activityCell: HTMLTableCellElement = TableCellComponentFactory([ActivityGraphComponentFactory(spyReport.activity.groupByHours(currentPointInTime))], 2);
 
-    let incomingCell: Maybe<HTMLTableCellElement> = null;
-    let outgoingCell: Maybe<HTMLTableCellElement> = null;
+    let incomingCell: HTMLTableCellElement | null = null;
+    let outgoingCell: HTMLTableCellElement | null = null;
 
     if (spyReport.incoming.length > 0) {
         incomingCell = TableCellComponentFactory(spyReport.incoming.map((incoming: MobNews) => {
