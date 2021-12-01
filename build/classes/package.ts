@@ -1,7 +1,5 @@
-import { IDict, Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
 import { exec } from 'child_process';
-import { promises as fs, Stats } from 'fs';
+import { promises as fs } from 'fs';
 import { basename, join } from 'path';
 import { promisify } from 'util';
 import { hashElement, HashElementNode } from 'folder-hash';
@@ -28,7 +26,7 @@ export class Package {
             await dep.install(installedList);
         }
 
-        console.log(`Installing ${this.name}`);
+        console.log(`Installing ${ this.name }`);
 
         await promisify(exec)('npm i', { cwd: this.path });
     }
@@ -50,9 +48,9 @@ export class Package {
 
         builtList.push(this.name);
 
-        const deps: Maybe<Array<Package>> = await this.getDependencies();
+        const deps: Array<Package> | null = await this.getDependencies();
 
-        if (isNull(deps)) {
+        if (deps === null) {
             return;
         }
 
@@ -60,9 +58,9 @@ export class Package {
             await dep.update(builtList);
         }
 
-        console.log(`Updating local dependencies for ${this.name} [${deps.map((dep: Package) => {
+        console.log(`Updating local dependencies for ${ this.name } [${ deps.map((dep: Package) => {
             return dep.name;
-        }).join(', ')}]`);
+        }).join(', ') }]`);
 
         const outDir: string = join(__dirname, '../.cache');
 
@@ -78,7 +76,7 @@ export class Package {
 
         for (let dep of deps) {
             const hash: string = await dep.hash();
-            const outFile: string = join(outDir, `${hash}.tgz`);
+            const outFile: string = join(outDir, `${ hash }.tgz`);
 
             packageLocations.push(outFile);
 
@@ -86,21 +84,21 @@ export class Package {
                 await fs.access(outFile)
                 continue;
             } catch (e) {
-                console.log(`Packing ${dep.name}`);
+                console.log(`Packing ${ dep.name }`);
             }
 
-            const {stdout} = await promisify(exec)(`npm pack ${dep.path}`, { cwd: outDir });
+            const { stdout } = await promisify(exec)(`npm pack ${ dep.path }`, { cwd: outDir });
             const outs: Array<string> = stdout.split('\n');
             outs.pop();
             const packedName: string = outs.pop() || '';
             await fs.rename(join(outDir, packedName), outFile);
         }
 
-        await promisify(exec)(`npm i ${packageLocations.join(' ')} --no-save`, { cwd: this.path });
+        await promisify(exec)(`npm i ${ packageLocations.join(' ') } --no-save`, { cwd: this.path });
     }
 
-    public async getDependencies(): Promise<Maybe<Array<Package>>> {
-        const packageFile: { peerDependencies: IDict<string>; } = JSON.parse(await fs.readFile(join(this.path, './package.json'), {
+    public async getDependencies(): Promise<Array<Package> | null> {
+        const packageFile: { peerDependencies: Record<string, string>; } = JSON.parse(await fs.readFile(join(this.path, './package.json'), {
             encoding: 'utf-8'
         }));
 
@@ -129,6 +127,6 @@ export class Package {
     public static async FromPath(path: string): Promise<Package> {
         const folderName: string = basename(path);
 
-        return new Package(`@canola/${folderName}`, path);
+        return new Package(`@canola/${ folderName }`, path);
     }
 }
