@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "npm run clean && tsc",
-    "clean": "del-cli ./dist",
+    "clean": "npx del-cli ./dist",
     "lint": "npx eslint ./src/**/*.ts",
     "prepack": "npm run lint && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"

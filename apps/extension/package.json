@@ -38,6 +38,20 @@
         "@canola/core": "*",
         "@canola/domain": "*"
     },
+    "peerDependenciesMeta": {
+        "@canola/age5": {
+            "optional": true
+        },
+        "@canola/browser": {
+            "optional": true
+        },
+        "@canola/core": {
+            "optional": true
+        },
+        "@canola/domain": {
+            "optional": true
+        }
+    },
     "dependencies": {
         "@cleavera/types": "^1.0.3",
         "webpack-shell-plugin-next": "^1.1.8"

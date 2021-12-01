@@ -14,8 +14,8 @@ npm ci
 To build the browser extension navigate to `./apps/extension` and run: 
 ```
 npm ci
-npm run installALl
-npm run build
+npm run installAll
+npm run updateAll
 ```
 
 This will install all the dependent packages and build them in the correct order.
