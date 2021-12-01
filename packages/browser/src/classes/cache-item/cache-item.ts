@@ -1,11 +1,8 @@
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
-
 export class CacheItem {
     public value!: any;
     public updated!: number;
 
-    private _timeout: Maybe<number> = null;
+    private _timeout: number | null = null;
     private readonly _expiryFunction: () => void;
     private readonly _cacheLifespan: number;
 
@@ -29,7 +26,7 @@ export class CacheItem {
     }
 
     private _removeTimeout(): void {
-        if (!isNull(this._timeout)) {
+        if (this._timeout !== null) {
             window.clearTimeout(this._timeout);
         }
     }

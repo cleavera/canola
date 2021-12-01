@@ -1,6 +1,4 @@
 import { ICache, ICacheKey } from '@canola/core';
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
 
 import { CacheItem } from '../cache-item/cache-item';
 
@@ -13,14 +11,14 @@ export class MemoryCache implements ICache {
         this._cache = new Map<ICacheKey, CacheItem>();
     }
 
-    public has(key: ICacheKey, maxAge: Maybe<number> = null): boolean {
-        const cacheItem: Maybe<CacheItem> = this._cache.get(key) ?? null;
+    public has(key: ICacheKey, maxAge: number | null = null): boolean {
+        const cacheItem: CacheItem | null = this._cache.get(key) ?? null;
 
-        if (isNull(cacheItem)) {
+        if (cacheItem === null) {
             return false;
         }
 
-        if (isNull(maxAge)) {
+        if (maxAge === null) {
             return true;
         }
 
@@ -28,9 +26,9 @@ export class MemoryCache implements ICache {
     }
 
     public get<T = unknown>(key: ICacheKey): T {
-        const cacheEntry: Maybe<CacheItem> = this._cache.get(key) ?? null;
+        const cacheEntry: CacheItem | null = this._cache.get(key) ?? null;
 
-        if (isNull(cacheEntry)) {
+        if (cacheEntry === null) {
             throw new Error(`Missing cache entry for ${key.toString()}`);
         }
 
@@ -38,9 +36,9 @@ export class MemoryCache implements ICache {
     }
 
     public set(key: ICacheKey, value: unknown, cacheExpiry: number = this._defaultLifespan): void {
-        const cacheEntry: Maybe<CacheItem> = this._cache.get(key) ?? null;
+        const cacheEntry: CacheItem | null = this._cache.get(key) ?? null;
 
-        if (!isNull(cacheEntry)) {
+        if (cacheEntry !== null) {
             cacheEntry.refresh(value);
 
             return;

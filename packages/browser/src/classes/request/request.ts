@@ -1,6 +1,4 @@
 import { CACHE, ICache, IDomElement, INJECTOR, IRequest } from '@canola/core';
-import { IDict, Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
 
 export class BrowserRequest implements IRequest {
     private readonly _baseURL: string;
@@ -17,7 +15,7 @@ export class BrowserRequest implements IRequest {
         return this._parseResponse(await this._cachedFetch(url));
     }
 
-    public async post(url: string, params: IDict<string>): Promise<IDomElement> {
+    public async post(url: string, params: Record<string, string>): Promise<IDomElement> {
         const body: string = new URLSearchParams(params).toString();
 
         return this._parseResponse(await this._fetch(url, body));
@@ -43,15 +41,15 @@ export class BrowserRequest implements IRequest {
         return request;
     }
 
-    private async _fetch(url: string, body: Maybe<string> = null): Promise<string> {
+    private async _fetch(url: string, body: string | null = null): Promise<string> {
         const headers: Headers = new Headers();
 
-        if (!isNull(body)) {
+        if (body !== null) {
             headers.append('Content-Type', 'application/x-www-form-urlencoded');
         }
 
         const response: Response = await fetch(this._getURL(url), {
-            method: isNull(body) ? 'GET' : 'POST',
+            method: body === null ? 'GET' : 'POST',
             credentials: 'include',
             headers,
             body
@@ -65,7 +63,7 @@ export class BrowserRequest implements IRequest {
     }
 
     private _getURL(path: string): string {
-        if (path.startsWith('http://')) {
+        if (path.startsWith('https://')) {
             return path;
         }
 
