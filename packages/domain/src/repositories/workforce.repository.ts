@@ -1,6 +1,4 @@
 import { IDomElement, IRequest } from '@canola/core';
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
 
 import { Staff } from '../classes/staff';
 import { UnitStats } from '../classes/unit-stats';
@@ -11,7 +9,7 @@ import { UnitsRepository } from './units.repository';
 
 export class WorkforceRepository {
     private readonly _unitsRepository: UnitsRepository;
-    private _units: Maybe<Units>;
+    private _units: Units | null;
 
     constructor() {
         this._unitsRepository = new UnitsRepository();
@@ -50,7 +48,7 @@ export class WorkforceRepository {
     }
 
     private async _getStaffStats(name: string): Promise<UnitStats> {
-        if (isNull(this._units)) {
+        if (this._units === null) {
             this._units = await this._unitsRepository.get();
         }
 

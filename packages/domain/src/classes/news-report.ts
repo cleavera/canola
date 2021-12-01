@@ -1,12 +1,10 @@
-import { Maybe } from '@cleavera/types';
-
 import { INewsContent } from '../interfaces/news-content.interface';
 import { BattleReport } from './battle-report';
 import { MobNews } from './mob-news';
 import { PointInTime } from './point-in-time';
 import { Recall } from './recall';
 
-export class NewsReport<TContent extends Maybe<INewsContent> = Maybe<INewsContent>> {
+export class NewsReport<TContent extends INewsContent | null = INewsContent | null> {
     public time: PointInTime;
     public content: TContent;
 

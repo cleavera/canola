@@ -1,7 +1,3 @@
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
-import { mkdir } from 'fs';
-
 import { MONTH_LOOKUP } from '../constants/month-lookup.constant';
 import { MONTH_SEASON_LOOKUP } from '../constants/month-season.lookup';
 import { SEASON_TICKS_LOOKUP } from '../constants/season-ticks.lookup';
@@ -149,9 +145,9 @@ export class PointInTime {
     }
 
     private static _getYear(dateString: string): number {
-        const match: Maybe<RegExpExecArray> = (/year (\d+)./).exec(dateString);
+        const match: RegExpExecArray | null = (/year (\d+)./).exec(dateString);
 
-        if (isNull(match)) {
+        if (match === null) {
             throw new Error(`Invalid date string: ${dateString}`);
         }
 

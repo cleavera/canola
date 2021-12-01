@@ -1,5 +1,3 @@
-import { Maybe } from '@cleavera/types';
-
 import { UnitStats } from './unit-stats';
 
 export class Units {
@@ -9,7 +7,7 @@ export class Units {
         this.list = unitList;
     }
 
-    public getByName(name: string): Maybe<UnitStats> {
+    public getByName(name: string): UnitStats | null {
         return this.list.find((unit: UnitStats): boolean => {
             return unit.name === name;
         }) ?? null;

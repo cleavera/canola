@@ -1,11 +1,9 @@
 import { IDomElement, IRequest } from '@canola/core';
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
-import { CropType } from '..';
 
 import { Plants } from '../classes/plants';
 import { Seeds } from '../classes/seeds';
 import { Stocks } from '../classes/stocks';
+import { CropType } from '../constants/crop-type.constant';
 import { getRequestService } from '../helpers/get-request-service.helper';
 import { ICropTypeMap } from '../interfaces/crop-type-map.interface';
 
@@ -79,9 +77,9 @@ export class StocksRepository {
     }
 
     private _getProcessingForType(processingString: string, regexp: RegExp): number {
-        const match: Maybe<RegExpExecArray> = regexp.exec(processingString);
+        const match: RegExpExecArray | null = regexp.exec(processingString);
 
-        if (isNull(match) || isNull(match[1] ?? null)) {
+        if (match === null || (match[1] ?? null) === null) {
             return 0;
         }
 

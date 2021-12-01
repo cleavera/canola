@@ -1,6 +1,4 @@
 import { IDomElement, IRequest } from '@canola/core';
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
 
 import { Injuries } from '../classes/injuries';
 import { Injury } from '../classes/injury';
@@ -14,19 +12,19 @@ import { UnitsRepository } from './units.repository';
 export class InjuriesRepository {
     private static readonly PARSE_COUNT_REGEX: RegExp = /\[([0-9,]+)]/;
     private readonly _unitsRepository: UnitsRepository;
-    private _units: Maybe<Units>;
+    private _units: Units | null;
 
     constructor() {
         this._unitsRepository = new UnitsRepository();
         this._units = null;
     }
 
-    public async getOwn(): Promise<Maybe<Injuries>> {
+    public async getOwn(): Promise<Injuries | null> {
         const request: IRequest = getRequestService();
         const response: IDomElement = await request.get('/overview.php');
-        const injuriesElement: Maybe<IDomElement> = response.querySelector('#Injuries');
+        const injuriesElement: IDomElement | null = response.querySelector('#Injuries');
 
-        if (isNull(injuriesElement)) {
+        if (injuriesElement === null) {
             return null;
         }
 
@@ -55,7 +53,7 @@ export class InjuriesRepository {
     }
 
     private async _getStaffStats(name: string): Promise<UnitStats> {
-        if (isNull(this._units)) {
+        if (this._units === null) {
             this._units = await this._unitsRepository.get();
         }
 

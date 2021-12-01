@@ -1,6 +1,3 @@
-import { IDict, Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
-
 import { MobType } from '../constants/mob-type.constant';
 import { Activity } from './activity';
 import { ArMod } from './ar-mod';
@@ -31,24 +28,24 @@ export class SpyReport {
     }
 
     public static ForReports(reports: Array<NewsReport>, currentPointInTime: PointInTime, target: CompanyName): SpyReport {
-        let arMod: Maybe<ArMod> = null;
+        let arMod: ArMod | null = null;
         const incoming: Array<MobNews> = [];
         const outgoings: Array<MobNews> = [];
-        const defenders: IDict<CompanyName> = {};
+        const defenders: Record<string, CompanyName> = {};
         const activity: Array<PointInTime> = [];
 
         for (const report of reports) {
             const tickDifference: Ticks = PointInTime.Subtract(currentPointInTime, report.time);
 
-            if (isNull(arMod) && NewsReport.isBattle(report) && BattleReport.isDefendingSelf(report.content, target)) {
+            if (arMod === null && NewsReport.isBattle(report) && BattleReport.isDefendingSelf(report.content, target)) {
                 arMod = ArMod.AdjustForTime(ArMod.Max(), tickDifference);
             }
 
             if (NewsReport.isMob(report)) {
                 const mob: MobNews = report.content;
-                const defender: Maybe<CompanyName> = this._getDefender(mob);
+                const defender: CompanyName | null = this._getDefender(mob);
 
-                if (!isNull(defender)) {
+                if (defender !== null) {
                     defenders[defender.id] = defender;
                 }
 
@@ -56,8 +53,9 @@ export class SpyReport {
                     activity.push(report.time);
                 }
 
-                if (!isNull(mob.mob)) {
+                if (mob.mob !== null) {
                     if (mob.isOutgoing) {
+                        // eslint-disable-next-line max-depth
                         if (!outgoings.some((outgoing: MobNews) => {
                             return outgoing.mob?.target.id === mob.mob?.target.id;
                         })) {
@@ -72,14 +70,14 @@ export class SpyReport {
             }
         }
 
-        if (isNull(arMod)) {
+        if (arMod === null) {
             arMod = ArMod.Min();
         }
 
         return new SpyReport(target, reports, Object.values(defenders), new Activity(activity), incoming, outgoings, arMod);
     }
 
-    private static _getDefender(mob: MobNews): Maybe<CompanyName> {
+    private static _getDefender(mob: MobNews): CompanyName | null {
         if (mob.originalMob.type !== MobType.DEFENDING) {
             return null;
         }

@@ -1,16 +1,14 @@
 import { IDomElement, IRequest } from '@canola/core';
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
 
 import { ArMod } from '../classes/ar-mod';
 import { getRequestService } from '../helpers/get-request-service.helper';
 
 export class ArModRepository {
-    public async getOwn(): Promise<Maybe<ArMod>> {
+    public async getOwn(): Promise<ArMod | null> {
         const request: IRequest = getRequestService();
         const response: IDomElement = await request.get('/overview.php');
-        const arModTitleCellElement: Maybe<IDomElement> = response.querySelector('#Misc tr:nth-of-type(4) td:nth-of-type(1)') ?? null;
-        const arModCellElement: Maybe<IDomElement> = response.querySelector('#Misc tr:nth-of-type(4) td:nth-of-type(2)') ?? null;
+        const arModTitleCellElement: IDomElement | null = response.querySelector('#Misc tr:nth-of-type(4) td:nth-of-type(1)') ?? null;
+        const arModCellElement: IDomElement | null = response.querySelector('#Misc tr:nth-of-type(4) td:nth-of-type(2)') ?? null;
 
         if (!this._hasArMod(arModTitleCellElement, arModCellElement)) {
             return null;
@@ -23,9 +21,9 @@ export class ArModRepository {
         throw new Error('Could not find AR modifier information');
     }
 
-    private _hasArMod(arModTitleCellElement: Maybe<IDomElement>, arModCellElement: Maybe<IDomElement>): boolean {
+    private _hasArMod(arModTitleCellElement: IDomElement | null, arModCellElement: IDomElement | null): boolean {
         return !(
-            isNull(arModTitleCellElement) || isNull(arModCellElement)
+            arModTitleCellElement === null || arModCellElement === null
         ) && (arModTitleCellElement.textContent ?? this._throwNoArModInformationFound()).includes('AR Modifier');
     }
 }

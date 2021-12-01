@@ -1,18 +1,16 @@
-import { Maybe } from '@cleavera/types';
-
 import { MobDirection } from '../constants/mob-direction.constant';
 import { CompanyName } from './company-name';
 import { Mob } from './mob';
 import { Ticks } from './ticks';
 
 export class MobNews {
-    public readonly mob: Maybe<Mob>;
+    public readonly mob: Mob | null;
     public readonly count: number;
     public readonly originalMob: Mob;
     public readonly context: CompanyName;
     public readonly isOutgoing: boolean;
 
-    constructor(context: CompanyName, count: number, mob: Maybe<Mob>, originalMob: Mob) {
+    constructor(context: CompanyName, count: number, mob: Mob | null, originalMob: Mob) {
         this.mob = mob;
         this.count = count;
         this.originalMob = originalMob;
@@ -24,7 +22,7 @@ export class MobNews {
         return new MobNews(context, count, this._adjustedMob(tickSinceSent, mob, context), mob);
     }
 
-    private static _adjustedMob(tickDifference: Ticks, mob: Mob, context: CompanyName): Maybe<Mob> {
+    private static _adjustedMob(tickDifference: Ticks, mob: Mob, context: CompanyName): Mob | null {
         const etaDifference: Ticks = Ticks.Subtract(mob.eta, tickDifference);
 
         if (etaDifference.ticks > 0) {

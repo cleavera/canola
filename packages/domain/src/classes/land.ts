@@ -1,4 +1,4 @@
-import { CropType } from '..';
+import { CropType } from '../constants/crop-type.constant';
 import { ICropTypeMap } from '../interfaces/crop-type-map.interface';
 import { Acres } from './acres';
 import { Plants } from './plants';

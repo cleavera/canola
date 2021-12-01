@@ -1,8 +1,6 @@
 import { IDomElement, IRequest } from '@canola/core';
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
-import { NewsReport } from '..';
 
+import { NewsReport } from '../classes/news-report';
 import { PointInTime } from '../classes/point-in-time';
 import { Acres } from '../classes/acres';
 import { CompanyName } from '../classes/company-name';
@@ -26,14 +24,14 @@ import { UnitsRepository } from './units.repository';
 export class IntelRepository {
     private static readonly ACRES_FILLED_SPLIT_PATTERN: string = ' of ';
     private readonly _unitsRepository: UnitsRepository;
-    private _units: Maybe<Units>;
+    private _units: Units | null;
 
     constructor() {
         this._unitsRepository = new UnitsRepository();
         this._units = null;
     }
 
-    public async buyIntel(driveBy: Maybe<number> = null, flyOver: Maybe<number> = null, haxor: Maybe<number> = null, spy: Maybe<number> = null): Promise<void> {
+    public async buyIntel(driveBy: number | null = null, flyOver: number | null = null, haxor: number | null = null, spy: number | null = null): Promise<void> {
         await getRequestService().post('/actions/intelligence_2.php', {
             drive_by: (driveBy ?? 0).toString(10),
             fly_over: (flyOver ?? 0).toString(10),
@@ -194,7 +192,7 @@ export class IntelRepository {
     }
 
     private async _getStaffStats(name: string): Promise<UnitStats> {
-        if (isNull(this._units)) {
+        if (this._units === null) {
             this._units = await this._unitsRepository.get();
         }
 

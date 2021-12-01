@@ -1,6 +1,4 @@
 import { IDomElement } from '@canola/core';
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
 
 import { BattleReport } from '../classes/battle-report';
 import { CompanyName } from '../classes/company-name';
@@ -40,47 +38,47 @@ export class NewsRepository {
         return report.content instanceof Recall;
     }
 
-    private _parseContent(context: CompanyName, contentRow: IDomElement, ticksSinceReport: Ticks): Maybe<INewsContent> {
+    private _parseContent(context: CompanyName, contentRow: IDomElement, ticksSinceReport: Ticks): INewsContent | null {
         const contentString: string = (contentRow.textContent ?? this._throwInvalidContent()).trim();
-        const mob: Maybe<MobNews> = this._parseMob(context, contentString, ticksSinceReport);
+        const mob: MobNews | null = this._parseMob(context, contentString, ticksSinceReport);
 
-        if (!isNull(mob)) {
+        if (mob !== null) {
             return mob;
         }
 
-        const recall: Maybe<Recall> = this._parseRecalls(contentString);
+        const recall: Recall | null = this._parseRecalls(contentString);
 
-        if (!isNull(recall)) {
+        if (recall !== null) {
             return recall;
         }
 
         return this._parseBattleReport(contentRow);
     }
 
-    private _parseRecalls(contentString: string): Maybe<Recall> {
-        const recallMatch: Maybe<RegExpExecArray> = NewsRepository.RECALL_PATTERN.exec(contentString);
+    private _parseRecalls(contentString: string): Recall | null {
+        const recallMatch: RegExpExecArray | null = NewsRepository.RECALL_PATTERN.exec(contentString);
 
-        if (isNull(recallMatch)) {
+        if (recallMatch === null) {
             return null;
         }
 
-        if (isNull(recallMatch[1] ?? null)) {
+        if ((recallMatch[1] ?? null) === null) {
             return new Recall();
         }
 
         return new Recall(CompanyName.FromString(recallMatch[1]));
     }
 
-    private _parseBattleReport(contentRow: IDomElement): Maybe<BattleReport> {
-        const reportHeaderElement: Maybe<IDomElement> = contentRow.querySelector('table tr') ?? null;
+    private _parseBattleReport(contentRow: IDomElement): BattleReport | null {
+        const reportHeaderElement: IDomElement | null = contentRow.querySelector('table tr') ?? null;
 
-        if (isNull(reportHeaderElement)) {
+        if (reportHeaderElement === null) {
             return null;
         }
 
-        const reportHeaderMatch: Maybe<RegExpExecArray> = NewsRepository.BATTLE_REPORT_PATTERN.exec(reportHeaderElement.textContent ?? '');
+        const reportHeaderMatch: RegExpExecArray | null = NewsRepository.BATTLE_REPORT_PATTERN.exec(reportHeaderElement.textContent ?? '');
 
-        if (isNull(reportHeaderMatch)) {
+        if (reportHeaderMatch === null) {
             return null;
         }
 
@@ -90,10 +88,10 @@ export class NewsRepository {
         return new BattleReport(target, type);
     }
 
-    private _parseMob(context: CompanyName, contentString: string, ticksSinceReport: Ticks): Maybe<MobNews> {
-        const outgoingMatch: Maybe<RegExpExecArray> = NewsRepository.OUTGOING_MOB_PATTERN.exec(contentString);
+    private _parseMob(context: CompanyName, contentString: string, ticksSinceReport: Ticks): MobNews | null {
+        const outgoingMatch: RegExpExecArray | null = NewsRepository.OUTGOING_MOB_PATTERN.exec(contentString);
 
-        if (!isNull(outgoingMatch)) {
+        if (outgoingMatch !== null) {
             const type: MobType = this._getMobType(outgoingMatch[2]);
             const count: number = this._parseCount(outgoingMatch[1]);
             const target: CompanyName = CompanyName.FromString(outgoingMatch[3]);
@@ -102,9 +100,9 @@ export class NewsRepository {
             return MobNews.FromOriginalMob(context, count, new Mob(context, target, eta, MobDirection.APPROACHING, type), ticksSinceReport);
         }
 
-        const incomingMatch: Maybe<RegExpExecArray> = NewsRepository.INCOMING_MOB_PATTERN.exec(contentString);
+        const incomingMatch: RegExpExecArray | null = NewsRepository.INCOMING_MOB_PATTERN.exec(contentString);
 
-        if (!isNull(incomingMatch)) {
+        if (incomingMatch !== null) {
             const type: MobType = this._getMobType(incomingMatch[4]);
             const count: number = this._parseCount(incomingMatch[2]);
             const sender: CompanyName = CompanyName.FromString(incomingMatch[3]);
@@ -113,9 +111,9 @@ export class NewsRepository {
             return MobNews.FromOriginalMob(context, count, new Mob(sender, context, eta, MobDirection.APPROACHING, type), ticksSinceReport);
         }
 
-        const stealthMatch: Maybe<RegExpExecArray> = NewsRepository.STEALTH_MOB_PATTERN.exec(contentString);
+        const stealthMatch: RegExpExecArray | null = NewsRepository.STEALTH_MOB_PATTERN.exec(contentString);
 
-        if (!isNull(stealthMatch)) {
+        if (stealthMatch !== null) {
             const type: MobType = this._getMobType(stealthMatch[4]);
             const count: number = this._parseCount(stealthMatch[2]);
             const sender: CompanyName = CompanyName.FromString(stealthMatch[3]);

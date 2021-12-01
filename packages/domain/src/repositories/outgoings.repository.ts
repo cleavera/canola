@@ -1,6 +1,4 @@
 import { IDomElement, IRequest } from '@canola/core';
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
 
 import { CompanyName } from '../classes/company-name';
 import { Mob } from '../classes/mob';
@@ -23,7 +21,7 @@ export class OutgoingsRepository {
 
     private readonly _request: IRequest;
     private readonly _unitsRepository: UnitsRepository;
-    private _units: Maybe<Units>;
+    private _units: Units | null;
 
     constructor() {
         this._request = getRequestService();
@@ -31,11 +29,11 @@ export class OutgoingsRepository {
         this._units = null;
     }
 
-    public async getOwn(): Promise<Maybe<Outgoings>> {
+    public async getOwn(): Promise<Outgoings | null> {
         const response: IDomElement = await this._request.get('/overview.php');
-        const outgoingsList: Maybe<IDomElement> = response.querySelector('#Outgoing') ?? null;
+        const outgoingsList: IDomElement | null = response.querySelector('#Outgoing') ?? null;
 
-        if (isNull(outgoingsList)) {
+        if (outgoingsList === null) {
             return null;
         }
 
@@ -45,10 +43,10 @@ export class OutgoingsRepository {
     }
 
     public async parseOutgoingElement(outgoingElement: IDomElement, sender: CompanyName): Promise<Outgoing> {
-        const [, mobDetailsElement = null]: Array<Maybe<IDomElement>> = Array.from(outgoingElement.querySelectorAll('a'));
-        let mobDetailsLink: Maybe<string> = null;
+        const [, mobDetailsElement = null]: Array<IDomElement | null> = Array.from(outgoingElement.querySelectorAll('a'));
+        let mobDetailsLink: string | null = null;
 
-        if (!isNull(mobDetailsElement)) {
+        if (mobDetailsElement !== null) {
             mobDetailsLink = mobDetailsElement.getAttribute('href');
         }
 
@@ -66,11 +64,11 @@ export class OutgoingsRepository {
         return Promise.all(mobs);
     }
 
-    private async _parseRow(row: string, mobDetailsLink: Maybe<string>, sender: CompanyName): Promise<Outgoing> {
+    private async _parseRow(row: string, mobDetailsLink: string | null, sender: CompanyName): Promise<Outgoing> {
         const mob: Mob = this._parseMobRow(row, sender);
-        let staff: Maybe<Array<Staff>> = null;
+        let staff: Array<Staff> | null = null;
 
-        if (!isNull(mobDetailsLink)) {
+        if (mobDetailsLink !== null) {
             staff = await this._getStaff(mobDetailsLink);
         }
 
@@ -159,7 +157,7 @@ export class OutgoingsRepository {
     }
 
     private async _getStaffStats(name: string): Promise<UnitStats> {
-        if (isNull(this._units)) {
+        if (this._units === null) {
             this._units = await this._unitsRepository.get();
         }
 

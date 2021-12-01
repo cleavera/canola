@@ -1,6 +1,4 @@
 import { IDomElement, IRequest } from '@canola/core';
-import { Maybe } from '@cleavera/types';
-import { isNull } from '@cleavera/utils';
 
 import { BaseTech } from '../classes/base-tech';
 import { BaseTechnologies } from '../classes/base-technologies';
@@ -15,7 +13,7 @@ export class TechRepository {
     private static readonly PROGRESS_REGEX: RegExp = / complete, ETA ([0-9,]+)\./;
 
     private readonly _techsRepository: BaseTechnologiesRepository;
-    private _techs: Maybe<BaseTechnologies>;
+    private _techs: BaseTechnologies | null;
 
     constructor() {
         this._techsRepository = new BaseTechnologiesRepository();
@@ -58,14 +56,14 @@ export class TechRepository {
         return new Tech(developments);
     }
 
-    private _getProgress(progressString: string, totalTicks: Ticks): Maybe<Ticks> {
+    private _getProgress(progressString: string, totalTicks: Ticks): Ticks | null {
         if (progressString.trim() === 'Complete') {
             return totalTicks;
         }
 
-        const match: Maybe<RegExpExecArray> = TechRepository.PROGRESS_REGEX.exec(progressString);
+        const match: RegExpExecArray | null = TechRepository.PROGRESS_REGEX.exec(progressString);
 
-        if (isNull(match)) {
+        if (match === null) {
             return null;
         }
 
@@ -75,7 +73,7 @@ export class TechRepository {
     }
 
     private async _getBaseTech(name: string): Promise<BaseTech> {
-        if (isNull(this._techs)) {
+        if (this._techs === null) {
             this._techs = await this._techsRepository.get();
         }
 

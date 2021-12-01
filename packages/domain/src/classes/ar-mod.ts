@@ -1,5 +1,3 @@
-import { Maybe } from '@cleavera/types';
-
 import { Funds } from './funds';
 import { Score } from './score';
 import { Ticks } from './ticks';
@@ -35,7 +33,7 @@ export class ArMod {
         return new ArMod(mod);
     }
 
-    public static FromMobRatio(ratio: number): Maybe<ArMod> {
+    public static FromMobRatio(ratio: number): ArMod | null {
         const mod: number = Math.max(0, 1 - (ratio / this.DEFAULT_MIN_AR_TRIGGERING_RATIO));
 
         if (mod > this.MAX_AR_MOD) {

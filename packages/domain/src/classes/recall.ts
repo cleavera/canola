@@ -1,11 +1,9 @@
-import { Maybe } from '@cleavera/types';
-
 import { CompanyName } from './company-name';
 
 export class Recall {
-    public sender: Maybe<CompanyName>;
+    public sender: CompanyName | null;
 
-    constructor(sender: Maybe<CompanyName> = null) {
+    constructor(sender: CompanyName | null = null) {
         this.sender = sender;
     }
 }
