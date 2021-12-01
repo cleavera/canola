@@ -63,7 +63,7 @@ export class BrowserRequest implements IRequest {
     }
 
     private _getURL(path: string): string {
-        if (path.startsWith('https://')) {
+        if ((/^http(s?):\/\//).test(path)) {
             return path;
         }
 

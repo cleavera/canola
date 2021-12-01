@@ -2,6 +2,7 @@ import * as CopyPlugin from 'copy-webpack-plugin';
 import { resolve } from 'path';
 import { Configuration } from 'webpack';
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires,import/no-commonjs
 const WebpackShellPlugin = require('webpack-shell-plugin-next');
 
 const config: Configuration = {
@@ -34,17 +35,18 @@ const config: Configuration = {
     },
 
     plugins: [
-        new CopyPlugin([
-            {
-                from: './src/manifest.json',
-                to: './manifest.json'
-            },
-            {
-                from: './src/icons/*.png',
-                flatten: true,
-                to: './icons/'
-            }
-        ]),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: './src/manifest.json',
+                    to: './manifest.json'
+                },
+                {
+                    from: './src/icons/*.png',
+                    to: './icons/[name][ext]'
+                }
+            ]
+        }),
         new WebpackShellPlugin({
             onBuildStart: {
                 scripts: ['npm run updateAll'],

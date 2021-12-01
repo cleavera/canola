@@ -66,9 +66,9 @@ export class Package {
 
         try {
             await fs.mkdir(outDir);
-        } catch (e) {
-            if (e.code !== 'EEXIST') {
-                throw e;
+        } catch (error) {
+            if (!((error as { code: string }).code === 'EEXIST')) {
+                throw error;
             }
         }
 
