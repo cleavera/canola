@@ -1,11 +1,11 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Canola toolkit",
     "version": "1.2.0",
     "author": "Anthony Cleaver",
     "description": "Adds features and extensions for the bushtarion web game (formerly Antisback's bushtarion toolkit)",
 
-    "permissions": [
+    "host_permissions": [
         "*://*.bushtarion.com/*"
     ],
 
