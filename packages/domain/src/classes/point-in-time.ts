@@ -103,7 +103,12 @@ export class PointInTime {
     private static _normaliseDateString(dateString: string): string {
         if (dateString.indexOf('Bonfire Night') !== -1 && dateString.indexOf('Midnight')  !== -1) {
             return dateString
-                .replace(/Bonfire Night/, 'Unk 6 Nov');
+                .replace(/Bonfire Night/, 'Unk 6 Nov')
+                .replace(/year (\d),/, 'year $1.')
+                .replace(/st/g, '')
+                .replace(/nd/g, '')
+                .replace(/rd/g, '')
+                .replace(/th/g, '');
         } else {
 
             return dateString
