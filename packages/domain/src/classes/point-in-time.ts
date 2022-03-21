@@ -101,36 +101,27 @@ export class PointInTime {
     }
 
     private static _normaliseDateString(dateString: string): string {
-        if (dateString.indexOf('Bonfire Night') !== -1 && dateString.indexOf('Midnight')  !== -1) {
-            return dateString
-                .replace(/Bonfire Night/, 'Unk 6 Nov')
-                .replace(/year (\d),/, 'year $1.')
-                .replace(/st/g, '')
-                .replace(/nd/g, '')
-                .replace(/rd/g, '')
-                .replace(/th/g, '');
-        } else {
-
-            return dateString
-                .replace(/Morning time/g, 'Morning')
-                .replace(/Mon, 1st Mar/g, 'Mon 1st Mar')
-                .replace(/April Fools Day/g, 'Unk 1 Apr')
-                .replace(/Valentines Day/g, 'Unk 14 Feb')
-                .replace(/Christmas Eve/g, 'Unk 24 Dec')
-                .replace(/Christmas Day/g, 'Unk 25 Dec')
-                .replace(/Boxing Day/g, 'Unk 26 Dec')
-                .replace(/New Years Eve/, 'Unk 31 Dec')
-                .replace(/New Years Day/, 'Unk 1 Jan')
-                .replace(/Day of Worship/, 'Wed 28th Feb')
-                .replace(/International Comma of Angst Day/, 'Unk 4 Aug')
-                .replace(/Bonfire Night/, 'Unk 5 Nov')
-                .replace(/Halloween/, 'Unk 31 Oct')
-                .replace(/year (\d),/, 'year $1.')
-                .replace(/st/g, '')
-                .replace(/nd/g, '')
-                .replace(/rd/g, '')
-                .replace(/th/g, '');
-        }
+        return dateString
+            .replace(/Morning time/g, 'Morning')
+            .replace(/Mon, 1st Mar/g, 'Mon 1st Mar')
+            .replace(/April Fools Day/g, 'Unk 1 Apr')
+            .replace(/Valentines Day/g, 'Unk 14 Feb')
+            .replace(/Christmas Eve/g, 'Unk 24 Dec')
+            .replace(/Christmas Day/g, 'Unk 25 Dec')
+            .replace(/Boxing Day/g, 'Unk 26 Dec')
+            .replace(/New Years Eve/, 'Unk 31 Dec')
+            .replace(/New Years Day/, 'Unk 1 Jan')
+            .replace(/Day of Worship/, 'Wed 28th Feb')
+            .replace(/International Comma of Angst Day/, 'Unk 4 Aug')
+            .replace(/Bonfire Night(?=, year \d. Midnight)/, 'Unk 6 Nov')
+            .replace(/Bonfire Night(?!, year \d. Midnight)/, 'Unk 5 Nov')
+            .replace(/Halloween/, 'Unk 31 Oct')
+            .replace(/year (\d),/, 'year $1.')
+            .replace(/st/g, '')
+            .replace(/nd/g, '')
+            .replace(/rd/g, '')
+            .replace(/th/g, '');
+        
     }
 
     private static _getSeason(month: number): Season {
