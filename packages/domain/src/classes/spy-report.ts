@@ -55,7 +55,7 @@ export class SpyReport {
                     hasAttacked[idAttacked.id] = idAttacked;
                 }
                 
-                if (idAttacked !== null && tickDifference < 145) {
+                if (idAttacked !== null && tickDifference.ticks < 145) {
                     hasAttackedInLastDay[idAttacked.id] = idAttacked;
                 }
                 
