@@ -46,19 +46,19 @@ export class SpyReport {
             if (arMod === null && NewsReport.isBattle(report) && BattleReport.isDefendingSelf(report.content, target)) {
                 arMod = ArMod.AdjustForTime(ArMod.Max(), tickDifference);
             }
-            
+
             if (NewsReport.isBattle(report) && BattleReport.isAttacking(report.content)) {
-                const mob: MobNews = report.content;
-                const idAttacked: CompanyName | null = this._getAttacking(mob);
-                
+                const idAttacked: CompanyName | null = BattleReport.getTarget(report.content);
+
                 if (idAttacked !== null) {
                     hasAttacked[idAttacked.id] = idAttacked;
                 }
-                
+
                 if (idAttacked !== null && tickDifference.ticks < 145) {
                     hasAttackedInLastDay[idAttacked.id] = idAttacked;
                 }
-                
+            }
+
 
             if (NewsReport.isMob(report)) {
                 const mob: MobNews = report.content;
@@ -113,18 +113,5 @@ export class SpyReport {
 
         return defender;
     }
-        
-    private static _getAttacking(mob: MobNews): CompanyName | null {
-        if (mob.originalMob.type !== MobType.ATTACKING) {
-            return null;
-        }
 
-        let attacking: CompanyName = mob.originalMob.target;
-
-        if (mob.isOutgoing) {
-            attacking = mob.originalMob.target;
-        }
-
-        return attacking;
-    }
 }
