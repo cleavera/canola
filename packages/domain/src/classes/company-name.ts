@@ -1,5 +1,5 @@
 export class CompanyName {
-    private static readonly PARSER_REGEX: RegExp = /([A-z0-9\s-_|.'{},=]+) \[([0-9]{1,4})]/;
+    private static readonly PARSER_REGEX: RegExp = /([A-z0-9\s-_|.'{}~@,=]+) \[([0-9]{1,4})]/;
 
     public id: string;
     public name: string;

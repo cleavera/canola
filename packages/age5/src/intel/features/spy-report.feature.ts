@@ -39,6 +39,11 @@ export async function spyReportFeature(): Promise<void> {
     const outgoingHeaderCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory('Outgoing')]);
     const defendersLabelCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory(`Defenders [${spyReport.defenders.length} total]`)], 2);
     const defendersCell: HTMLTableCellElement = TableCellComponentFactory([spyReport.defenders.length === 0 ? NoInfoComponentFactory('No defenders') : IdListComponentFactory(spyReport.defenders)], 2);
+    const hasAttackedLabelCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory(`Has attacked [${spyReport.hasAttacked.length} total]`)], 2);
+    const hasAttackedCell: HTMLTableCellElement = TableCellComponentFactory([spyReport.hasAttacked.length === 0 ? NoInfoComponentFactory('No attacks') : IdListComponentFactory(spyReport.hasAttacked)], 2);
+    const hasAttackedInLastDayLabelCell: HTMLTableCellElement = TableCellComponentFactory([TextComponentFactory(`Has attacked in last 24 hours [${spyReport.hasAttackedInLastDay.length} total]`)], 2);
+    const hasAttackedInLastDayCell: HTMLTableCellElement = TableCellComponentFactory([spyReport.hasAttackedInLastDay.length === 0 ? NoInfoComponentFactory('No attacks') : IdListComponentFactory(spyReport.hasAttackedInLastDay)], 2);
+
     const activityCell: HTMLTableCellElement = TableCellComponentFactory([ActivityGraphComponentFactory(spyReport.activity.groupByHours(currentPointInTime))], 2);
 
     let incomingCell: HTMLTableCellElement | null = null;
@@ -64,8 +69,12 @@ export async function spyReportFeature(): Promise<void> {
     const summaryHeaderRow: HTMLTableRowElement = TableRowComponentFactory(summaryHeaderCell);
     const mobRow: HTMLTableRowElement = TableRowComponentFactory(incomingCell, outgoingCell);
     const defendersRow: HTMLTableRowElement = TableRowComponentFactory(defendersCell);
+    const hasAttackedRow: HTMLTableRowElement = TableRowComponentFactory(hasAttackedCell);
+    const hasAttackedInLastDayRow: HTMLTableRowElement = TableRowComponentFactory(hasAttackedInLastDayCell);
     const activityRow: HTMLTableRowElement = TableRowComponentFactory(activityCell);
     const defendersHeaderRow: HTMLTableRowElement = TableRowComponentFactory(defendersLabelCell);
+    const hasAttackedHeaderRow: HTMLTableRowElement = TableRowComponentFactory(hasAttackedLabelCell);
+    const hasAttackedInLastDayHeaderRow: HTMLTableRowElement = TableRowComponentFactory(hasAttackedInLastDayLabelCell);
     const activityHeaderRow: HTMLTableRowElement = TableRowComponentFactory(activityHeaderCell);
 
     const arModCell: HTMLTableCellElement = TableCellComponentFactory([
@@ -78,13 +87,19 @@ export async function spyReportFeature(): Promise<void> {
     arModRow.classList.add('lightbackground');
     mobHeaderRow.classList.add('lightbackground');
     defendersRow.classList.add('nonebackground');
+    hasAttackedRow.classList.add('nonebackground');
+    hasAttackedInLastDayRow.classList.add('nonebackground');
     activityRow.classList.add('nonebackground');
     summaryHeaderRow.classList.add('header');
     defendersHeaderRow.classList.add('header');
+    hasAttackedHeaderRow.classList.add('header');
+    hasAttackedInLastDayHeaderRow.classList.add('header');
     activityHeaderRow.classList.add('header');
 
     summaryHeaderRow.style.textAlign = 'center';
     defendersHeaderRow.style.textAlign = 'center';
+    hasAttackedHeaderRow.style.textAlign = 'center';
+    hasAttackedInLastDayHeaderRow.style.textAlign = 'center';
     activityHeaderRow.style.textAlign = 'center';
     activityCell.style.padding = '10px 20px';
 
@@ -94,6 +109,10 @@ export async function spyReportFeature(): Promise<void> {
     insertAfter(activityHeaderRow, summaryHeaderRow);
     insertAfter(defendersRow, summaryHeaderRow);
     insertAfter(defendersHeaderRow, summaryHeaderRow);
+    insertAfter(hasAttackedRow, summaryHeaderRow);
+    insertAfter(hasAttackedHeaderRow, summaryHeaderRow);
+    insertAfter(hasAttackedInLastDayRow, summaryHeaderRow);
+    insertAfter(hasAttackedInLastDayHeaderRow, summaryHeaderRow);
     insertAfter(arModRow, summaryHeaderRow);
     insertAfter(mobRow, summaryHeaderRow);
     insertAfter(mobHeaderRow, summaryHeaderRow);

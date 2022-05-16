@@ -16,8 +16,10 @@ export class SpyReport {
     public defenders: Array<CompanyName>;
     public activity: Activity;
     public arMod: ArMod;
+    public hasAttacked: Array<CompanyName>;
+    public hasAttackedInLastDay: Array<CompanyName>;
 
-    constructor(target: CompanyName, reports: Array<NewsReport>, defenders: Array<CompanyName>, activity: Activity, incoming: Array<MobNews>, outgoings: Array<MobNews>, arMod: ArMod) {
+    constructor(target: CompanyName, reports: Array<NewsReport>, defenders: Array<CompanyName>, activity: Activity, incoming: Array<MobNews>, outgoings: Array<MobNews>, arMod: ArMod, hasAttacked: Array<CompanyName>, hasAttackedInLastDay: Array<CompanyName>) {
         this.target = target;
         this.reports = reports;
         this.incoming = incoming;
@@ -25,6 +27,8 @@ export class SpyReport {
         this.defenders = defenders;
         this.activity = activity;
         this.arMod = arMod;
+        this.hasAttacked = hasAttacked;
+        this.hasAttackedInLastDay = hasAttackedInLastDay;
     }
 
     public static ForReports(reports: Array<NewsReport>, currentPointInTime: PointInTime, target: CompanyName): SpyReport {
@@ -32,6 +36,8 @@ export class SpyReport {
         const incoming: Array<MobNews> = [];
         const outgoings: Array<MobNews> = [];
         const defenders: Record<string, CompanyName> = {};
+        const hasAttacked: Record<string, CompanyName> = {};
+        const hasAttackedInLastDay: Record<string, CompanyName> = {};
         const activity: Array<PointInTime> = [];
 
         for (const report of reports) {
@@ -40,6 +46,19 @@ export class SpyReport {
             if (arMod === null && NewsReport.isBattle(report) && BattleReport.isDefendingSelf(report.content, target)) {
                 arMod = ArMod.AdjustForTime(ArMod.Max(), tickDifference);
             }
+
+            if (NewsReport.isBattle(report) && BattleReport.isAttacking(report.content)) {
+                const idAttacked: CompanyName | null = BattleReport.getTarget(report.content);
+
+                if (idAttacked !== null) {
+                    hasAttacked[idAttacked.id] = idAttacked;
+                }
+
+                if (idAttacked !== null && tickDifference.ticks < 145) {
+                    hasAttackedInLastDay[idAttacked.id] = idAttacked;
+                }
+            }
+
 
             if (NewsReport.isMob(report)) {
                 const mob: MobNews = report.content;
@@ -74,7 +93,7 @@ export class SpyReport {
             arMod = ArMod.Min();
         }
 
-        return new SpyReport(target, reports, Object.values(defenders), new Activity(activity), incoming, outgoings, arMod);
+        return new SpyReport(target, reports, Object.values(defenders), new Activity(activity), incoming, outgoings, arMod, Object.values(hasAttacked), Object.values(hasAttackedInLastDay));
     }
 
     private static _getDefender(mob: MobNews): CompanyName | null {
@@ -94,4 +113,5 @@ export class SpyReport {
 
         return defender;
     }
+
 }
