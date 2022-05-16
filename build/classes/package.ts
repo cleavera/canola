@@ -98,9 +98,7 @@ export class Package {
     }
 
     public async getDependencies(): Promise<Array<Package> | null> {
-        const packageFile: { peerDependencies: Record<string, string>; } = JSON.parse(await fs.readFile(join(this.path, './package.json'), {
-            encoding: 'utf-8'
-        }));
+        const packageFile: { peerDependencies: Record<string, string>; } = JSON.parse(await fs.readFile(join(this.path, './package.json'), 'utf-8'));
 
         const packages: Array<Package> = [];
 
