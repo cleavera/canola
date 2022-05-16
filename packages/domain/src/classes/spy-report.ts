@@ -93,7 +93,7 @@ export class SpyReport {
             arMod = ArMod.Min();
         }
 
-        return new SpyReport(target, reports, Object.values(defenders), new Activity(activity), incoming, outgoings, arMod);
+        return new SpyReport(target, reports, Object.values(defenders), new Activity(activity), incoming, outgoings, arMod, Object.values(hasAttacked), Object.values(hasAttackedInLastDay));
     }
 
     private static _getDefender(mob: MobNews): CompanyName | null {
