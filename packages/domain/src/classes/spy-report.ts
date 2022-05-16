@@ -27,8 +27,8 @@ export class SpyReport {
         this.defenders = defenders;
         this.activity = activity;
         this.arMod = arMod;
-        this.hasAttacked = hasAttacked
-        this.hasAttackedInLastDay = hasAttackedInLastDay
+        this.hasAttacked = hasAttacked;
+        this.hasAttackedInLastDay = hasAttackedInLastDay;
     }
 
     public static ForReports(reports: Array<NewsReport>, currentPointInTime: PointInTime, target: CompanyName): SpyReport {
